@@ -4,1089 +4,1878 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>EVEREST — Viabilidade DF</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
   <style>
     :root{
-      --everest-red: #8b1e24;
+      --red: #8b1e24;
       --ink: #111316;
       --muted: #5b616b;
       --bg: #ffffff;
       --bg-soft: #f6f7f9;
       --line: rgba(17,19,22,.12);
-
       --radius: 20px;
       --shadow: 0 14px 50px rgba(0,0,0,.12);
-
-      --padX: clamp(28px, 5vw, 72px);
-      --padY: clamp(26px, 4.5vw, 60px);
+      --padX: clamp(28px, 4.8vw, 70px);
+      --padY: clamp(18px, 3.2vw, 46px);
     }
-
-    *{ box-sizing: border-box; }
-    html,body{ height:100%; }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; margin:0; }
     body{
-      margin:0;
-      font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--ink);
+      font-family:"Montserrat",system-ui,sans-serif;
+      color:var(--ink);
       background:
         radial-gradient(1100px 700px at 20% 5%, rgba(139,30,36,.08), transparent 60%),
         radial-gradient(900px 600px at 90% 20%, rgba(0,0,0,.06), transparent 55%),
         var(--bg-soft);
       overflow:hidden;
     }
-
-    .stage{
-      height: 100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: clamp(10px, 2vw, 26px);
-    }
-
+    .stage{ height:100%; display:flex; align-items:center; justify-content:center; padding:clamp(8px,1.8vw,24px); }
     .deck{
-      width: min(1280px, 96vw);
-      aspect-ratio: 16/9;
-      background: var(--bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
-      border: 1px solid rgba(0,0,0,.06);
+      width:min(1280px,96vw); aspect-ratio:16/9;
+      background:var(--bg); border-radius:var(--radius);
+      box-shadow:var(--shadow); overflow:hidden; position:relative;
+      border:1px solid rgba(0,0,0,.06);
     }
-
     .topbar{
-      height: 86px;
-      background: var(--everest-red);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding: 0 var(--padX);
-      color: #fff;
+      height:82px; background:var(--red);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 var(--padX); color:#fff; flex-shrink:0;
     }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap: 14px;
-      min-width: 260px;
-    }
-
-    .brand img{
-      height: 46px;
-      width:auto;
-      filter: drop-shadow(0 6px 18px rgba(0,0,0,.18));
-    }
-
-    .nav{
-      display:flex;
-      align-items:center;
-      gap: 22px;
-      opacity:.92;
-      font-weight:600;
-      letter-spacing:.06em;
-      text-transform: uppercase;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .nav span{ display:inline-flex; gap:10px; align-items:center; opacity:.9; }
-    .nav .dot{ width:6px;height:6px;border-radius:999px;background:rgba(255,255,255,.55); display:inline-block; }
-
-    .content{
-      height: calc(100% - 86px);
-      position:relative;
-      background: linear-gradient(180deg, rgba(139,30,36,.02), transparent 28%);
-    }
-
+    .brand{ display:flex; align-items:center; gap:14px; min-width:220px; }
+    .brand img{ height:42px; width:auto; filter:drop-shadow(0 6px 18px rgba(0,0,0,.18)); }
+    .nav{ display:flex; align-items:center; gap:8px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:11px; white-space:nowrap; }
+    .nav a{ color:#fff; text-decoration:none; opacity:.88; padding:7px 10px; border-radius:999px; }
+    .nav a:hover{ background:rgba(255,255,255,.14); opacity:1; }
+    .nav .dot{ width:5px;height:5px;border-radius:999px;background:rgba(255,255,255,.45);display:inline-block;margin:0 2px; }
+    .content{ height:calc(100% - 82px); position:relative; background:linear-gradient(180deg,rgba(139,30,36,.02),transparent 28%); }
     .slides{ height:100%; width:100%; position:relative; }
-
     .slide{
-      position:absolute;
-      inset:0;
-      padding: var(--padY) var(--padX);
-      display:flex;
-      flex-direction:column;
-      gap: 18px;
-      opacity:0;
-      transform: translateX(18px);
-      transition: opacity .35s ease, transform .35s ease;
+      position:absolute; inset:0;
+      padding:var(--padY) var(--padX);
+      display:flex; flex-direction:column; gap:14px;
+      opacity:0; transform:translateX(18px);
+      transition:opacity .32s ease,transform .32s ease;
+      pointer-events:none; overflow:hidden;
+    }
+    .slide.active{ opacity:1; transform:translateX(0); pointer-events:auto; }
+    h1,h2,h3,h4,p{ margin:0; }
+    .kicker{ color:var(--red); font-weight:700; letter-spacing:.09em; text-transform:uppercase; font-size:11px; }
+    .title{ font-size:clamp(28px,3.8vw,52px); line-height:1.04; letter-spacing:-0.022em; font-weight:800; }
+    .subtitle{ color:var(--muted); font-size:clamp(14px,1.45vw,20px); line-height:1.45; max-width:80ch; }
+    .rule{ height:2px; width:60px; background:rgba(17,19,22,.13); border-radius:999px; margin-top:4px; }
+    .grid2{ display:grid; grid-template-columns:1.05fr .95fr; gap:14px; align-items:start; flex:1; min-height:0; }
+    .grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; align-items:start; flex:1; min-height:0; }
+    .span2{ grid-column:1/-1; }
+    .card{
+      background:rgba(255,255,255,.88); border:1px solid var(--line);
+      border-radius:16px; padding:14px 16px;
+      box-shadow:0 8px 24px rgba(0,0,0,.055);
+    }
+    .card h3{ font-size:14px; letter-spacing:-.01em; font-weight:700; margin-bottom:8px; }
+    .card h4{ font-size:12px; font-weight:700; color:var(--muted); letter-spacing:.04em; text-transform:uppercase; margin-bottom:6px; }
+    .bullets{ margin:8px 0 0 0; padding:0 0 0 16px; color:var(--ink); font-weight:500; line-height:1.5; font-size:13px; }
+    .bullets li{ margin:6px 0; }
+    .bullets li b,
+    .bullets li span{ color:var(--muted); font-weight:600; }
+    .callout{
+      margin-top:10px; display:inline-flex; gap:8px; align-items:center;
+      padding:9px 12px; border-radius:12px;
+      border:1px solid rgba(139,30,36,.18); background:rgba(139,30,36,.06);
+      color:rgba(17,19,22,.88); font-weight:700; font-size:12px; width:fit-content;
+    }
+    .tablewrap{ border:1px solid var(--line); border-radius:16px; overflow:hidden; background:rgba(255,255,255,.92); box-shadow:0 8px 24px rgba(0,0,0,.055); }
+    .tablewrap.scroll{ overflow:auto; }
+    table{ width:100%; border-collapse:collapse; font-size:12px; line-height:1.35; }
+    th,td{ padding:9px 10px; border-bottom:1px solid rgba(17,19,22,.08); vertical-align:top; text-align:left; white-space:nowrap; }
+    th{ background:rgba(139,30,36,.06); font-weight:800; letter-spacing:-.01em; }
+    tr:last-child td{ border-bottom:0; }
+    .footer{
+      margin-top:auto; display:flex; align-items:flex-end; justify-content:space-between;
+      gap:14px; padding-top:8px; border-top:1px solid rgba(17,19,22,.08); flex-shrink:0;
+    }
+    .footer .logos{ display:flex; align-items:center; gap:12px; }
+    .footer .logos img{ height:48px; width:auto; opacity:.88; }
+    .footer .meta{ text-align:right; color:rgba(17,19,22,.5); font-size:11px; font-weight:700; }
+    .cover{ justify-content:center; }
+    .toc .toclist{ margin-top:4px; display:grid; grid-template-columns:1fr 1fr; gap:5px 12px; flex:1; min-height:0; align-content:start; overflow:hidden; }
+    .toc .tocitem{ border:1px solid var(--line); border-radius:10px; padding:7px 11px; background:rgba(255,255,255,.85); }
+    .toc .tocitem b{ display:block; font-size:11.5px; letter-spacing:-.01em; }
+    .toc .tocitem span{ display:block; margin-top:2px; color:var(--muted); font-size:10.5px; line-height:1.3; }
+    .small{ font-size:11.5px; color:var(--muted); line-height:1.4; }
+    .controls{
+      position:absolute; right:14px; bottom:14px;
+      display:flex; align-items:center; gap:8px;
+      background:rgba(255,255,255,.92); border:1px solid rgba(0,0,0,.08);
+      border-radius:999px; padding:7px 10px;
+      box-shadow:0 8px 22px rgba(0,0,0,.09); user-select:none;
+    }
+    .btn{ border:0; background:transparent; font:inherit; color:var(--ink); font-weight:800; padding:5px 10px; border-radius:999px; cursor:pointer; }
+    .btn:hover{ background:rgba(139,30,36,.08); }
+    .counter{ font-size:11.5px; font-weight:800; color:rgba(17,19,22,.55); padding:0 5px; min-width:64px; text-align:center; }
+
+
+    /* ═══ PRINT / PDF ═══ */
+    .btn-pdf{
+      position:fixed; top:18px; right:18px; z-index:9999;
+      display:flex; align-items:center; gap:7px;
+      background:var(--red); color:#fff;
+      border:0; border-radius:999px;
+      padding:9px 18px 9px 14px;
+      font:700 12px/1 inherit; cursor:pointer;
+      box-shadow:0 4px 16px rgba(139,30,36,.35);
+      transition:opacity .15s;
+    }
+    .btn-pdf:hover{ opacity:.88; }
+    .btn-pdf svg{ flex-shrink:0; }
+
+    @media print {
+      @page { size:A4 landscape; margin:0; }
+      html, body { margin:0; padding:0; background:#fff; }
+      .topbar, .controls, .btn-pdf { display:none !important; }
+      #stage { width:100%; height:auto; padding:0; background:#fff; }
+      #deck { width:100%; height:auto; background:none; box-shadow:none; border-radius:0; }
+      #slides { width:100%; height:auto; position:static; }
+      .slide {
+        display:flex !important;
+        position:relative !important;
+        width:100% !important;
+        height:auto !important;
+        min-height:0 !important;
+        page-break-after:always;
+        break-after:page;
+        padding:28px 36px !important;
+        box-sizing:border-box;
+        transform:none !important;
+        opacity:1 !important;
+        overflow:visible !important;
+      }
+      .slide:last-child { page-break-after:avoid; break-after:avoid; }
+      /* scale content to 85% */
+      .slide > * { zoom:0.85; }
+    }
+
+    /* ═══ BENCHMARK SYSTEM ═══ */
+    .s-heavenly{ --school:#6344A0; --school-light:rgba(99,68,160,.07); --school-mid:rgba(99,68,160,.15); }
+    .s-marista  { --school:#0B6AA0; --school-light:rgba(11,106,160,.07); --school-mid:rgba(11,106,160,.15); }
+    .s-eleva    { --school:#0B7A62; --school-light:rgba(11,122,98,.07); --school-mid:rgba(11,122,98,.15); }
+    .s-galois   { --school:#1A3366; --school-light:rgba(26,51,102,.07); --school-mid:rgba(26,51,102,.15); }
+
+    .school-stripe{
+      position:absolute; left:0; top:0; bottom:0; width:5px;
+      background:var(--school); border-radius:0 0 0 0;
       pointer-events:none;
     }
-    .slide.active{ opacity:1; transform: translateX(0); pointer-events:auto; }
 
-    h1,h2,h3,p{ margin:0; }
-    .kicker{
-      color: var(--everest-red);
-      font-weight:700;
-      letter-spacing:.08em;
-      text-transform: uppercase;
-      font-size: 12px;
+    .school-badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:5px 12px 5px 8px; border-radius:999px;
+      background:var(--school-light); border:1px solid var(--school-mid);
+      font-size:11px; font-weight:700; color:var(--school);
+      letter-spacing:.04em; text-transform:uppercase; white-space:nowrap;
     }
-    .title{
-      font-size: clamp(34px, 4.2vw, 56px);
-      line-height: 1.05;
-      letter-spacing: -0.02em;
+    .school-badge img{ height:20px; width:auto; border-radius:3px; }
+    .school-badge .dot2{ width:6px; height:6px; border-radius:999px; background:var(--school); }
+
+    .school-card{
+      background:var(--school-light); border:1px solid var(--school-mid);
+      border-radius:16px; padding:14px 16px;
+    }
+    .school-card h3{ color:var(--school); font-size:14px; font-weight:700; margin-bottom:8px; }
+
+    .pill{
+      display:inline-block; padding:3px 9px; border-radius:999px;
+      background:var(--school-mid); color:var(--school);
+      font-size:10.5px; font-weight:700; letter-spacing:.03em;
+      margin:2px 2px 0 0;
+    }
+
+    .stat-num{
+      font-size:clamp(36px,4.8vw,64px); font-weight:800; line-height:1;
+      color:var(--school,var(--red)); letter-spacing:-.03em;
+    }
+    .stat-label{ font-size:11px; color:var(--muted); font-weight:600; margin-top:3px; letter-spacing:.04em; text-transform:uppercase; }
+
+    .quote-block{
+      border-left:3px solid var(--school,var(--red));
+      padding:9px 13px; background:var(--school-light,rgba(139,30,36,.04));
+      border-radius:0 10px 10px 0;
+      font-size:12px; line-height:1.5; font-style:italic; color:var(--ink);
+    }
+    .quote-block cite{ display:block; margin-top:6px; font-style:normal; font-weight:700; font-size:11px; color:var(--muted); }
+
+    /* Bilingualism bar */
+    .bili-track{ height:28px; border-radius:999px; overflow:hidden; display:flex; margin:10px 0 4px; background:rgba(0,0,0,.06); }
+    .bili-seg{ display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; transition:width .5s; white-space:nowrap; gap:4px; }
+
+    /* Process steps */
+    .steps{ display:flex; gap:0; align-items:flex-start; flex:1; }
+    .step{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; }
+    .step:not(:last-child)::after{
+      content:''; position:absolute; top:18px; left:50%; width:100%;
+      height:2px; background:var(--school-mid,var(--line));
+    }
+    .step-num{
+      width:36px; height:36px; border-radius:999px;
+      background:var(--school,var(--red)); color:#fff;
+      font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center;
+      position:relative; z-index:1; flex-shrink:0;
+    }
+    .step-body{ margin-top:8px; padding:0 8px; }
+    .step-body b{ display:block; font-size:12px; font-weight:700; }
+    .step-body span{ display:block; font-size:11px; color:var(--muted); line-height:1.4; margin-top:3px; }
+
+    /* Donut chart */
+    .donut-wrap{ display:flex; align-items:center; gap:18px; }
+    .donut-ring{ position:relative; width:90px; height:90px; flex-shrink:0; }
+    .donut-ring svg{ width:100%; height:100%; transform:rotate(-90deg); }
+    .donut-label{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .donut-label b{ font-size:22px; font-weight:800; line-height:1; color:var(--school,var(--red)); }
+    .donut-label span{ font-size:9px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+
+    /* Pros/Cons split */
+    .split{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .split-pos{ background:rgba(22,160,90,.07); border:1px solid rgba(22,160,90,.2); border-radius:14px; padding:12px 14px; }
+    .split-neg{ background:rgba(220,80,60,.07); border:1px solid rgba(220,80,60,.2); border-radius:14px; padding:12px 14px; }
+    .split-pos h4{ color:#0f7a44; font-size:12px; font-weight:700; margin-bottom:6px; }
+    .split-neg h4{ color:#b83020; font-size:12px; font-weight:700; margin-bottom:6px; }
+
+    /* Status row */
+    .status-row{ display:flex; gap:10px; align-items:stretch; flex-wrap:wrap; }
+    .status-box{ flex:1; min-width:120px; border-radius:14px; padding:11px 13px; background:var(--school-light); border:1px solid var(--school-mid); }
+    .status-box .lbl{ font-size:10px; font-weight:700; color:var(--school); letter-spacing:.07em; text-transform:uppercase; margin-bottom:5px; }
+    .status-box .val{ font-size:12.5px; font-weight:600; color:var(--ink); line-height:1.4; }
+
+    /* Matrix table overrides */
+    .matrix th:first-child, .matrix td:first-child{ font-weight:700; background:rgba(139,30,36,.04); }
+    .matrix .hl{ background:rgba(139,30,36,.08); font-weight:700; }
+
+
+    /* ═══ COVER SLIDE ═══ */
+    .slide.cover{
+      background: #0e0f11 !important;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+    .slide.cover::before{
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(900px 600px at -10% 110%, rgba(139,30,36,.6), transparent 55%),
+        radial-gradient(600px 500px at 105% -5%, rgba(139,30,36,.2), transparent 50%);
+      pointer-events: none;
+    }
+    .slide.cover .cover-watermark{
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-52%);
+      font-size: clamp(160px, 24vw, 300px);
       font-weight: 800;
+      line-height: 1;
+      letter-spacing: -.06em;
+      color: rgba(255,255,255,.03);
+      user-select: none;
+      pointer-events: none;
+      z-index: 0;
+      text-align: right;
     }
-    .subtitle{
-      color: var(--muted);
-      font-size: clamp(16px, 1.6vw, 22px);
-      line-height: 1.45;
-      max-width: 78ch;
+    .slide.cover .cover-content{
+      position: relative;
+      z-index: 1;
+      padding-bottom: clamp(28px, 4vw, 56px);
     }
-    .rule{
-      height: 2px;
-      width: 72px;
-      background: rgba(17,19,22,.14);
+    .slide.cover .kicker{
+      color: rgba(255,255,255,.45);
+      font-size: 10.5px;
+      letter-spacing: .12em;
+      margin-bottom: 14px;
+    }
+    .slide.cover .title{
+      color: #fff !important;
+      font-size: clamp(32px, 4.2vw, 56px) !important;
+    }
+    .slide.cover .rule{
+      background: var(--red);
+      width: 56px;
+      height: 3px;
+      margin-top: 18px;
+    }
+    .slide.cover .subtitle{
+      color: rgba(255,255,255,.5) !important;
+      margin-top: 14px;
+    }
+    .slide.cover .footer{
+      border-top-color: rgba(255,255,255,.08) !important;
+      position: relative;
+      z-index: 1;
+    }
+    .slide.cover .footer .meta{
+      color: rgba(255,255,255,.3) !important;
+    }
+
+    /* ═══ CHAPTER TRANSITION SLIDES ═══ */
+    .slide.slide-chapter{
+      background: #0e0f11 !important;
+      justify-content: flex-end;
+      gap: 0;
+      overflow: hidden;
+    }
+    .slide.slide-chapter::before{
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(900px 600px at -10% 110%, rgba(139,30,36,.55), transparent 55%),
+        radial-gradient(700px 500px at 110% -10%, rgba(139,30,36,.18), transparent 50%);
+      pointer-events: none;
+    }
+    .ch-watermark{
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-54%);
+      font-size: clamp(200px, 28vw, 340px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -.06em;
+      color: rgba(255,255,255,.04);
+      user-select: none;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .ch-content{
+      position: relative;
+      z-index: 1;
+      padding-bottom: clamp(28px, 4vw, 56px);
+    }
+    .ch-tag{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
       border-radius: 999px;
-      margin-top: 6px;
+      border: 1px solid rgba(255,255,255,.15);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.45);
+      margin-bottom: 18px;
     }
-
-    .grid2{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 18px;
-      align-items:start;
-      flex:1;
-      min-height: 0;
+    .ch-tag::before{
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 999px;
+      background: var(--red);
+      display: inline-block;
     }
-
-    .grid2 .span2{
-      grid-column: 1 / -1;
+    .ch-title{
+      font-size: clamp(44px, 6.5vw, 88px) !important;
+      font-weight: 800 !important;
+      line-height: 1.02 !important;
+      letter-spacing: -.035em !important;
+      color: #fff !important;
+      margin: 0 !important;
     }
-
-    .card{
-      background: rgba(255,255,255,.85);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.06);
+    .ch-rule{
+      height: 3px;
+      width: 48px;
+      background: var(--red);
+      border-radius: 999px;
+      margin: 20px 0 18px;
     }
-    .card h3{
-      font-size: 16px;
-      letter-spacing: -0.01em;
+    .ch-body{
+      font-size: clamp(14px, 1.45vw, 19px);
+      color: rgba(255,255,255,.5);
+      line-height: 1.6;
+      max-width: 58ch;
+      font-weight: 400;
       margin: 0;
     }
-
-    .bullets{
-      margin: 10px 0 0 0;
-      padding: 0 0 0 18px;
-      color: var(--ink);
-      font-weight: 500;
-      line-height: 1.55;
-      font-size: 14px;
+    .slide.slide-chapter .footer{
+      border-top-color: rgba(255,255,255,.08) !important;
+      position: relative;
+      z-index: 1;
     }
-    .bullets li{ margin: 8px 0; }
-    .bullets li span{ color: var(--muted); font-weight:600; }
-
-    .callout{
-      margin-top: 10px;
-      display:inline-flex;
-      gap: 10px;
-      align-items:center;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(139,30,36,.18);
-      background: rgba(139,30,36,.06);
-      color: rgba(17,19,22,.86);
-      font-weight: 700;
-      font-size: 13px;
-      width: fit-content;
+    .slide.slide-chapter .footer .meta{
+      color: rgba(255,255,255,.25) !important;
     }
 
-    .tablewrap{
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      overflow: hidden;
-      background: rgba(255,255,255,.9);
-      box-shadow: 0 10px 30px rgba(0,0,0,.06);
-    }
-    .tablewrap.scroll{ overflow:auto; }
-    table{
-      width:100%;
-      border-collapse: collapse;
-      font-size: 12.5px;
-      line-height: 1.35;
-    }
-    th, td{
-      padding: 10px 10px;
-      border-bottom: 1px solid rgba(17,19,22,.08);
-      vertical-align: top;
-      text-align: left;
-      white-space: nowrap;
-    }
-    th{
-      background: rgba(139,30,36,.06);
-      font-weight: 800;
-      letter-spacing: -0.01em;
-    }
-    tr:last-child td{ border-bottom: 0; }
-
-    .footer{
-      margin-top:auto;
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap: 18px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(17,19,22,.08);
-    }
-    .footer .logos{ display:flex; align-items:center; gap: 14px; }
-    .footer .logos img{ height: 28px; width:auto; opacity: .92; }
-    .footer .meta{ text-align:right; color: rgba(17,19,22,.55); font-size: 12px; font-weight: 700; }
-
-    .cover{ justify-content:center; gap: 18px; }
-    .cover .center{ max-width: 980px; }
-
-    .toc .toclist{
-      margin-top: 10px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px 18px;
-      flex:1;
-      min-height:0;
-      align-content:start;
-    }
-    .toc .tocitem{
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 12px 12px;
-      background: rgba(255,255,255,.85);
-    }
-    .toc .tocitem b{ display:block; font-size: 13px; letter-spacing: -0.01em; }
-    .toc .tocitem span{ display:block; margin-top: 4px; color: var(--muted); font-size: 12px; line-height: 1.35; }
-
-    .controls{
-      position:absolute;
-      right: 14px;
-      bottom: 14px;
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      background: rgba(255,255,255,.9);
-      border: 1px solid rgba(0,0,0,.08);
-      border-radius: 999px;
-      padding: 8px 10px;
-      box-shadow: 0 10px 26px rgba(0,0,0,.10);
-      user-select:none;
-    }
-    .btn{
-      border: 0;
-      background: transparent;
-      font: inherit;
-      color: var(--ink);
-      font-weight: 800;
-      padding: 6px 10px;
-      border-radius: 999px;
-      cursor:pointer;
-    }
-    .btn:hover{ background: rgba(139,30,36,.08); }
-    .counter{
-      font-size: 12px;
-      font-weight: 800;
-      color: rgba(17,19,22,.6);
-      padding: 0 6px;
-      min-width: 72px;
-      text-align:center;
-    }
-
-    .small{ font-size: 12px; color: var(--muted); line-height: 1.45; }
-.nav a{
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  font-size: 12px;
-  opacity: .92;
-  padding: 8px 10px;
-  border-radius: 999px;
-}
-.nav a:hover{
-  background: rgba(255,255,255,.12);
-  opacity: 1;
-}
-.nav a:focus-visible{
-  outline: 2px solid rgba(255,255,255,.65);
-  outline-offset: 2px;
-}
-    @media (max-width: 900px){
+    @media(max-width:900px){
       .nav{ display:none; }
-      .grid2{ grid-template-columns: 1fr; }
-      .topbar{ height: 78px; }
-      .content{ height: calc(100% - 78px); }
-      th, td{ padding: 8px 8px; }
+      .grid2,.grid3{ grid-template-columns:1fr; }
+      .topbar{ height:72px; }
+      .content{ height:calc(100% - 72px); }
     }
   </style>
 </head>
-
 <body>
-  <div class="stage">
-    <div class="deck" id="deck">
+<div class="stage">
+  <div class="deck" id="deck">
+    <div class="topbar">
+      <div class="brand">
+        <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" loading="eager"/>
+      </div>
+      <div class="nav">
+        <a href="Relatorio_Consolidado.pdf" target="_blank" rel="noopener">Relatório</a>
+        <i class="dot"></i>
+        <a href="Relatorio_Desk_Research.pdf" target="_blank" rel="noopener">Deskresearch</a>
+        <i class="dot"></i>
+        <a href="Relatorio_Benchmarking.pdf" target="_blank" rel="noopener">Benchmarking</a>
+        <i class="dot"></i>
+        <a href="dashboard_everest.html" target="_blank" rel="noopener">Dashboard</a>
+      </div>
+    </div>
 
-      <div class="topbar">
-        <div class="brand">
-          <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" loading="eager" />
-        </div>
-<div class="nav">
-  <a href="Relatorio_Consolidado.pdf" target="_blank" rel="noopener">Relatório Completo</a><i class="dot"></i>
-  <a href="Relatorio_Desk_Research.pdf" target="_blank" rel="noopener">Deskresearch</a><i class="dot"></i>
-  <a href="Relatorio_Benchmarking.pdf" target="_blank" rel="noopener">Benchmarking</a><i class="dot"></i>
-  <a href="dashboard_everest.html" target="_blank" rel="noopener">Dashboard</a>
-</div>      </div>
+    <div class="content">
+      <div class="slides" id="slides">
 
-      <div class="content">
-        <div class="slides" id="slides">
 
-          <!-- Slide 0: Capa -->
-          <section class="slide cover active" data-title="Capa">
-            <div class="center">
-              <div class="kicker">Projeto EVEREST • Estudo de viabilidade</div>
-              <h1 class="title">Viabilidade de Implantação<br/>Colégio Everest (Lago Sul – DF)</h1>
-              <div class="rule"></div>
-              <p class="subtitle">Dimensionamento e perfil do público (PDAD 2021) + benchmark competitivo (clientes secretos).</p>
-            </div>
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" loading="lazy" />
-              </div>
-              <div class="meta">DF • 2026</div>
-            </div>
-          </section>
-
-          <!-- Slide 1: Sumário -->
-          <section class="slide toc" data-title="Sumário">
-            <div>
-              <div class="kicker">Sumário</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 44px);">Estrutura do deck</h2>
-              <div class="rule"></div>
-              <p class="subtitle">Capa → Sumário → Conteúdo (Slides 2–17).</p>
-            </div>
-
-            <div class="toclist">
-              <div class="tocitem"><b>1) Contexto e definições</b><span>Objetivo e conceitos (TAM / SAM / Núcleo).</span></div>
-              <div class="tocitem"><b>2) Premissas estratégicas</b><span>Ticket, comprometimento e corte de renda.</span></div>
-              <div class="tocitem"><b>3) Metodologia e recorte</b><span>Anéis territoriais e leitura por fricção logística.</span></div>
-              <div class="tocitem"><b>4) Mercado potencial</b><span>Funil TAM → SAM → Núcleo (por anel).</span></div>
-              <div class="tocitem"><b>5) Concentração do núcleo</b><span>Onde estão as famílias elegíveis com filhos.</span></div>
-              <div class="tocitem"><b>6) Mobilidade: tempo</b><span>Universo e núcleo; raio funcional e previsibilidade.</span></div>
-              <div class="tocitem"><b>7) Mobilidade: modal</b><span>Implicações para operação e experiência premium.</span></div>
-              <div class="tocitem"><b>8) Síntese por anel</b><span>Primária sustenta; Secundária/Terciária escalam com mitigadores.</span></div>
-              <div class="tocitem"><b>9) Benchmark e oportunidades</b><span>Trade-offs e espaços de posicionamento.</span></div>
-              <div class="tocitem"><b>10) Condições de viabilidade</b><span>O que precisa estar verdadeiro para dar certo.</span></div>
-              <div class="tocitem"><b>11) Próximos passos (30–60 dias)</b><span>Agenda objetiva de validação e desenho operacional.</span></div>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Sumário</div>
-            </div>
-          </section>
-
-          <!-- Slide 2 -->
-          <section class="slide" data-title="Contexto e definições">
-            <div>
-              <div class="kicker">1) Contexto e definições</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">TAM, SAM e Núcleo prioritário</h2>
-              <div class="rule"></div>
-              <p class="subtitle">Para estimar mercado premium com realismo, separamos <b>alcance territorial</b> (TAM), <b>capacidade de pagamento</b> (SAM) e <b>demanda imediata</b> (núcleo).</p>
-            </div>
-
-            <div class="grid2">
-              <div class="card">
-                <h3>O que o estudo faz</h3>
-                <ul class="bullets">
-                  <li>Integra evidência <span>quantitativa</span> (PDAD 2021) e evidência <span>observacional</span> (clientes secretos).</li>
-                  <li>Traduz “potencial” em critérios de decisão: tamanho acionável, localização, fricções e diferenciação.</li>
-                </ul>
-                <div class="callout">Cenário central: TAM 155.019 → SAM 7.424 → Núcleo 2.665 → 0–17: 4.683</div>
-              </div>
-
-              <div class="card">
-                <h3>Definições (para o deck)</h3>
-                <ul class="bullets">
-                  <li><span>TAM:</span> todos os domicílios no recorte territorial (anéis), sem filtro de renda.</li>
-                  <li><span>SAM:</span> parte do TAM com capacidade financeira para o ticket, via regra mensalidade como % da renda.</li>
-                  <li><span>Núcleo:</span> parte do SAM com presença de 0–17 (demanda potencial mais imediata).</li>
-                </ul>
-                <p class="small" style="margin-top:10px;">Leitura recomendada: TAM informa alcance; SAM aproxima pagabilidade; Núcleo aproxima conversão inicial.</p>
-              </div>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 2</div>
-            </div>
-          </section>
-
-          <!-- Slide 3 -->
-          <section class="slide" data-title="Premissas">
-            <div>
-              <div class="kicker">2) Premissas estratégicas</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">Ticket e elegibilidade financeira</h2>
-              <div class="rule"></div>
-              <p class="subtitle">A elegibilidade é estimada por uma regra transparente (mensalidade como % da renda), que define um corte de renda e permite dimensionar SAM e Núcleo.</p>
-            </div>
-
-            <div class="grid2">
-              <div class="card">
-                <h3>Premissas</h3>
-                <ul class="bullets">
-                  <li><span>Ticket estimado:</span> R$ 5.000–6.000/mês por aluno.</li>
-                  <li><span>Comprometimento sustentável:</span> 15%–20% da renda familiar mensal.</li>
-                  <li><span>Cenário central:</span> R$ 5.000 / 15% ⇒ renda mínima ~R$ 33.333/mês.</li>
-                </ul>
-              </div>
-
-              <div class="card">
-                <h3>Por que isso importa</h3>
-                <ul class="bullets">
-                  <li>Reduz superestimação ao aproximar o universo “pagável”.</li>
-                  <li>Ajuda a calibrar expectativas de mercado e a desenhar captação faseada.</li>
-                  <li>Permite simular cenários (ticket × %) e seus impactos no funil.</li>
-                </ul>
-                <div class="callout">Regra: renda mínima ≈ mensalidade / % comprometimento</div>
-              </div>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 3</div>
-            </div>
-          </section>
-
-          <!-- Slide 4 -->
-          <section class="slide" data-title="Panorama numérico">
-            <div>
-              <div class="kicker">3) Panorama numérico</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">O funil do mercado (cenário central)</h2>
-              <div class="rule"></div>
-              <p class="subtitle">O mercado acionável é uma fração do território total. A leitura correta é pelo funil (TAM → SAM → Núcleo), não apenas pelo tamanho do território.</p>
-            </div>
-
-            <div class="grid2">
-              <div class="card">
-                <h3>Callouts</h3>
-                <ul class="bullets">
-                  <li><span>TAM (domicílios):</span> 155.019</li>
-                  <li><span>SAM (renda):</span> 7.424</li>
-                  <li><span>Núcleo (renda + 0–17):</span> 2.665</li>
-                  <li><span>Potencial matrículas (0–17):</span> 4.683</li>
-                </ul>
-              </div>
-
-              <div class="card">
-                <h3>Notas de leitura</h3>
-                <ul class="bullets">
-                  <li>TAM informa alcance territorial; não mede conversão.</li>
-                  <li>SAM aproxima capacidade de pagamento para o ticket.</li>
-                  <li>Núcleo aproxima demanda imediata e eficiência de captação.</li>
-                </ul>
-                <div class="callout">Decisão: onde o Núcleo é denso e a fricção é baixa</div>
-              </div>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 4</div>
-            </div>
-          </section>
-
-          <!-- Slide 5 -->
-          <section class="slide" data-title="Anéis">
-            <div>
-              <div class="kicker">4) Metodologia e recorte</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">Anéis territoriais: como interpretar</h2>
-              <div class="rule"></div>
-              <p class="subtitle">Os anéis representam proximidade, conveniência e propensão de escolha — porque tempo e previsibilidade de deslocamento entram no “custo” percebido pelas famílias.</p>
-            </div>
-
-            <div class="grid2">
-              <div class="card">
-                <h3>Primária</h3>
-                <ul class="bullets">
-                  <li><span>Regiões:</span> Lago Sul; Jardim Botânico.</li>
-                  <li><span>Leitura:</span> maior propensão e menor fricção; tende a sustentar tração inicial.</li>
-                </ul>
-              </div>
-
-              <div class="card">
-                <h3>Secundária e Terciária</h3>
-                <ul class="bullets">
-                  <li><span>Secundária:</span> Plano Piloto (Asa Sul, Asa Norte, Noroeste) — grande volume, mais concorrência e escolha “local”.</li>
-                  <li><span>Terciária:</span> Sudoeste/Octogonal; Lago Norte — complemento relevante, condicionado à conveniência e mitigadores.</li>
-                </ul>
-                <div class="callout">Implantação: Primária sustenta • Escala: depende de mitigadores</div>
-              </div>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 5</div>
-            </div>
-          </section>
-
-          <!-- Slide 6 -->
-          <section class="slide" data-title="Funil por anel">
-            <div>
-              <div class="kicker">5) Mercado potencial</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">Funil por anel (TAM → SAM → Núcleo)</h2>
-              <div class="rule"></div>
-              <p class="subtitle">O funil mostra, por anel, como o mercado “encolhe” quando aplicamos filtros sucessivos e onde existe mais demanda acionável (renda + filhos).</p>
-            </div>
-
-            <div class="tablewrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Região territorial</th><th>TAM (domicílios)</th><th>SAM (renda)</th><th>Núcleo (renda + 0–17)</th><th>Matrículas potenciais (0–17)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td>Primária</td><td>30.255</td><td>2.809</td><td>1.127</td><td>1.833</td></tr>
-                  <tr><td>Secundária</td><td>87.321</td><td>2.485</td><td>813</td><td>1.435</td></tr>
-                  <tr><td>Terciária</td><td>37.443</td><td>2.130</td><td>725</td><td>1.415</td></tr>
-                  <tr><td><b>Total</b></td><td><b>155.019</b></td><td><b>7.424</b></td><td><b>2.665</b></td><td><b>4.683</b></td></tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 6</div>
-            </div>
-          </section>
-
-          <!-- Slide 7 -->
-          <section class="slide" data-title="Eficiência do núcleo">
-            <div>
-              <div class="kicker">5) Mercado potencial</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">Densidade acionável: Núcleo dentro do SAM</h2>
-              <div class="rule"></div>
-              <p class="subtitle">Além do tamanho absoluto, importa a densidade de famílias com 0–17 dentro dos elegíveis por renda. Isso indica onde o mercado é mais “pronto” para conversão.</p>
-            </div>
-
-            <div class="grid2">
-              <div class="tablewrap">
-                <table>
-                  <thead><tr><th>Região</th><th>SAM (renda)</th><th>Núcleo</th><th>Núcleo / SAM</th></tr></thead>
-                  <tbody>
-                    <tr><td>Primária</td><td>2.809</td><td>1.127</td><td><b>40,1%</b></td></tr>
-                    <tr><td>Secundária</td><td>2.485</td><td>813</td><td>32,7%</td></tr>
-                    <tr><td>Terciária</td><td>2.130</td><td>725</td><td>34,0%</td></tr>
-                    <tr><td><b>Total</b></td><td><b>7.424</b></td><td><b>2.665</b></td><td><b>35,9%</b></td></tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div class="card">
-                <h3>Interpretação</h3>
-                <ul class="bullets">
-                  <li>Maior densidade sugere maior eficiência potencial de captação.</li>
-                  <li>Primária tende a ser o “motor” de tração inicial.</li>
-                  <li>Secundária/Terciária adicionam escala, com maior sensibilidade a fricções.</li>
-                </ul>
-                <div class="callout">Uso prático: priorizar onde Núcleo é denso + acesso é previsível</div>
-              </div>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 7</div>
-            </div>
-          </section>
-
-          <!-- Slide 8 -->
-          <section class="slide" data-title="Concentração do núcleo">
-            <div>
-              <div class="kicker">6) Concentração territorial</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">Onde está o Núcleo (por Região Administrativa)</h2>
-              <div class="rule"></div>
-              <p class="subtitle">O ranking por RA mostra onde estão as famílias elegíveis com filhos. Ele orienta micro-localização e captação faseada por território.</p>
-            </div>
-
-            <div class="grid2">
-              <div class="tablewrap">
-                <table>
-                  <thead><tr><th>Região Administrativa</th><th>Núcleo (domicílios)</th><th>% do total</th></tr></thead>
-                  <tbody>
-                    <tr><td>Plano Piloto</td><td>813</td><td>30,5%</td></tr>
-                    <tr><td>Lago Sul</td><td>615</td><td>23,1%</td></tr>
-                    <tr><td>Sudoeste/Octogonal</td><td>551</td><td>20,7%</td></tr>
-                    <tr><td>Jardim Botânico</td><td>503</td><td>18,9%</td></tr>
-                    <tr><td>Lago Norte</td><td>183</td><td>6,9%</td></tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div class="card">
-                <h3>Nota de leitura</h3>
-                <ul class="bullets">
-                  <li>Volume absoluto e propensão não são a mesma coisa.</li>
-                  <li>Implantação deve equilibrar densidade do núcleo e fricção logística.</li>
-                  <li>Este ranking ajuda a planejar ativação territorial e comunicação segmentada.</li>
-                </ul>
-                <div class="callout">Captação em camadas: Primária → Secundária/Terciária</div>
-              </div>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 8</div>
-            </div>
-          </section>
-          <!-- Slide 9 -->
-          <section class="slide" data-title="Tempo (universo)">
-            <div>
-              <div class="kicker">7) Mobilidade — tempo</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">Tempo casa–escola (universo)</h2>
-              <div class="rule"></div>
-              <p class="subtitle">
-                O tempo de deslocamento descreve a conveniência do dia a dia e ajuda a calibrar o raio funcional.
-                Diferenças entre anéis indicam fricções distintas — com maior dispersão na Primária.
-              </p>
-            </div>
-
-            <div class="tablewrap scroll" style="max-height: 44vh;">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Região</th><th>Até 15 min</th><th>15–30 min</th><th>30–45 min</th><th>45–60 min</th><th>≥60 min</th><th>NS</th><th>Base</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td>Primária</td><td>26,4%</td><td>38,6%</td><td>19,7%</td><td>7,5%</td><td>3,2%</td><td>4,5%</td><td>5.792</td></tr>
-                  <tr><td>Secundária</td><td>58,9%</td><td>31,8%</td><td>5,6%</td><td>1,5%</td><td>0,7%</td><td>1,4%</td><td>10.497</td></tr>
-                  <tr><td>Terciária</td><td>48,2%</td><td>35,5%</td><td>9,3%</td><td>2,1%</td><td>1,1%</td><td>3,8%</td><td>4.931</td></tr>
-                  <tr><td><b>Total</b></td><td><b>51,6%</b></td><td><b>33,9%</b></td><td><b>8,5%</b></td><td><b>2,8%</b></td><td><b>1,2%</b></td><td><b>2,0%</b></td><td><b>21.220</b></td></tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 9</div>
-            </div>
-          </section>
-
-          <!-- Slide 10 -->
-          <section class="slide" data-title="Tempo (núcleo)">
-            <div>
-              <div class="kicker">7) Mobilidade — tempo</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">Tempo casa–escola (núcleo)</h2>
-              <div class="rule"></div>
-              <p class="subtitle">
-                Ao focar o núcleo prioritário, a preferência por trajetos curtos e previsíveis fica mais clara.
-                Isso reforça que implantação e crescimento dependem de acesso e desenho operacional.
-              </p>
-            </div>
-
-            <div class="grid2">
-              <div class="tablewrap">
-                <table>
-                  <thead>
-                    <tr><th>Região</th><th>Até 15 min</th><th>15–30 min</th><th>30–45 min</th><th>Base</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>Primária</td><td>30,5%</td><td>56,5%</td><td>13,1%</td><td>162</td></tr>
-                    <tr><td>Secundária</td><td>67,7%</td><td>0,0%</td><td>32,3%</td><td>151</td></tr>
-                    <tr><td>Terciária</td><td>100,0%</td><td>0,0%</td><td>0,0%</td><td>30</td></tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div class="card">
-                <h3>Implicação</h3>
-                <ul class="bullets">
-                  <li>Definir raio operacional e reduzir imprevisibilidade é determinante de conversão.</li>
-                  <li>Para ciclos iniciais, a exigência por conveniência tende a ser maior.</li>
-                  <li>Extensão do raio depende de mitigadores (rotas/janelas/apoio de transporte).</li>
-                </ul>
-                <div class="callout">Referência: raio funcional ≤ 30 min</div>
-              </div>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 10</div>
-            </div>
-          </section>
-
-          <!-- Slide 11 -->
-          <section class="slide" data-title="Modal (universo)">
-            <div>
-              <div class="kicker">8) Mobilidade — modal</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">Como as famílias se deslocam (universo)</h2>
-              <div class="rule"></div>
-              <p class="subtitle">
-                O modal dominante indica como as famílias resolvem logística. Isso determina exigências de infraestrutura (fluxo/segurança) e oportunidades de serviços.
-              </p>
-            </div>
-
-            <div class="tablewrap scroll" style="max-height: 44vh;">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Região</th><th>Automóvel</th><th>Ônibus</th><th>Escolar priv.</th><th>Escolar púb.</th><th>A pé</th><th>Outros/NS</th><th>Base</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td>Primária</td><td>45,3%</td><td>22,8%</td><td>7,3%</td><td>19,2%</td><td>4,4%</td><td>1,0%</td><td>5.588</td></tr>
-                  <tr><td>Secundária</td><td>51,2%</td><td>29,6%</td><td>2,7%</td><td>12,1%</td><td>2,9%</td><td>1,5%</td><td>10.481</td></tr>
-                  <tr><td>Terciária</td><td>55,9%</td><td>26,5%</td><td>4,1%</td><td>9,8%</td><td>2,1%</td><td>1,6%</td><td>4.911</td></tr>
-                  <tr><td><b>Total</b></td><td><b>51,4%</b></td><td><b>28,1%</b></td><td><b>3,8%</b></td><td><b>12,8%</b></td><td><b>2,7%</b></td><td><b>1,2%</b></td><td><b>20.980</b></td></tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 11</div>
-            </div>
-          </section>
-
-          <!-- Slide 12 -->
-          <section class="slide" data-title="Modal (núcleo)">
-            <div>
-              <div class="kicker">8) Mobilidade — modal</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">Como o núcleo se desloca (implicação premium)</h2>
-              <div class="rule"></div>
-              <p class="subtitle">
-                No núcleo prioritário, automóvel e transporte dedicado tendem a ter maior peso; por isso, a experiência de chegada/saída precisa ser produto, não detalhe.
-              </p>
-            </div>
-
-            <div class="grid2">
-              <div class="tablewrap">
-                <table>
-                  <thead>
-                    <tr><th>Região</th><th>Automóvel</th><th>Escolar priv.</th><th>Ônibus</th><th>Base</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>Primária</td><td>60,0%</td><td>26,9%</td><td>13,1%</td><td>162</td></tr>
-                    <tr><td>Secundária</td><td>67,7%</td><td>0,0%</td><td>32,3%</td><td>151</td></tr>
-                    <tr><td>Terciária</td><td>100,0%</td><td>0,0%</td><td>0,0%</td><td>30</td></tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div class="card">
-                <h3>O que isso significa</h3>
-                <ul class="bullets">
-                  <li>Fluxos, horários, sinalização, equipe e comunicação precisam reduzir atrito.</li>
-                  <li>Mitigadores podem ampliar raio funcional com previsibilidade.</li>
-                  <li>Segurança e previsibilidade influenciam o “premium percebido”.</li>
-                </ul>
-                <div class="callout">Premium percebido = previsibilidade + segurança + tempo</div>
-              </div>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 12</div>
-            </div>
-          </section>
-
-          <!-- Slide 13 -->
-          <section class="slide" data-title="Síntese por anel">
-            <div>
-              <div class="kicker">9) Síntese</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">Implicações por anel (como capturar o núcleo)</h2>
-              <div class="rule"></div>
-              <p class="subtitle">
-                Os anéis descrevem mecanismos distintos de aquisição: Primária sustenta tração; Secundária/Terciária escalam com mitigação de fricções e proposta clara.
-              </p>
-            </div>
-
-            <div class="grid2">
-              <div class="card">
-                <h3>Primária (Lago Sul + Jardim Botânico)</h3>
-                <ul class="bullets">
-                  <li>Maior densidade do núcleo e maior propensão de escolha.</li>
-                  <li>Priorizar micro-localização e execução operacional premium.</li>
-                  <li>Território natural para early adopters e prova de proposta.</li>
-                </ul>
-              </div>
-
-              <div class="card">
-                <h3>Secundária e Terciária</h3>
-                <ul class="bullets">
-                  <li><span>Secundária:</span> depende de diferenciação crível + prova de valor + logística consistente.</li>
-                  <li><span>Terciária:</span> depende de mitigadores e ativação seletiva por subáreas.</li>
-                </ul>
-                <div class="callout">Estratégia: sustentar na Primária • escalar com mitigadores</div>
-              </div>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 13</div>
-            </div>
-          </section>
-
-          <!-- Slide 14 -->
-          <section class="slide" data-title="Benchmark">
-            <div>
-              <div class="kicker">10) Benchmark</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">Leitura didática do cenário competitivo</h2>
-              <div class="rule"></div>
-              <p class="subtitle">
-                O premium é competitivo, mas segmentado por teses. Entender trade-offs do dia a dia ajuda a desenhar uma proposta Everest crível e distinta.
-              </p>
-            </div>
-
-            <div class="grid2">
-              <div class="card">
-                <h3>O que o benchmark responde</h3>
-                <ul class="bullets">
-                  <li>Quais atributos são “mínimos do premium”.</li>
-                  <li>Onde cada escola é forte e onde há lacunas.</li>
-                  <li>Quais trade-offs operacionais afetam a rotina.</li>
-                </ul>
-              </div>
-
-              <div class="card">
-                <h3>Trade-offs observáveis</h3>
-                <ul class="bullets">
-                  <li>Flexível vs integral obrigatório.</li>
-                  <li>Bilinguismo robusto vs inglês ampliado.</li>
-                  <li>Inclusão com protocolo vs inclusão como discurso.</li>
-                  <li>Experiência operacional como diferencial “silencioso”.</li>
-                </ul>
-                <p class="small" style="margin-top:10px;">Ponte: a seguir, forças por escola e oportunidades acionáveis.</p>
-              </div>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 14</div>
-            </div>
-          </section>
-
-          <!-- Slide 15 -->
-          <section class="slide" data-title="Oportunidades">
-            <div>
-              <div class="kicker">10) Benchmark</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">Forças por concorrente e oportunidades Everest</h2>
-              <div class="rule"></div>
-              <p class="subtitle">
-                Cada concorrente “ganha” por uma tese; a oportunidade do Everest é combinar atributos fortes que hoje aparecem separados e torná-los evidentes para as famílias.
-              </p>
-            </div>
-
-            <div class="grid2">
-              <div class="card">
-                <h3>Forças percebidas</h3>
-                <ul class="bullets">
-                  <li><span>Galois:</span> excelência acadêmica e performance, com provas/resultados.</li>
-                  <li><span>Marista:</span> formação humana/valores e comunidade, com tradição.</li>
-                  <li><span>Heavenly:</span> bilinguismo e internacionalização, com proposta aspiracional.</li>
-                  <li><span>Eleva:</span> modelo estruturado e marca de grupo, com padronização.</li>
-                </ul>
-              </div>
-
-              <div class="card" style="border-color: rgba(139,30,36,.22);">
-                <h3>Oportunidades Everest</h3>
-                <ul class="bullets">
-                  <li>Combinação rara: acadêmico com provas + bilinguismo defensável.</li>
-                  <li>Inclusão estruturada: protocolo, equipe e acompanhamento como padrão.</li>
-                  <li>Rotina premium: logística, segurança e previsibilidade desenhadas.</li>
-                  <li>Mensagem verificável: menos promessa genérica, mais evidência.</li>
-                </ul>
-                <div class="callout">Direção: “força acadêmica” + “experiência premium completa”</div>
-              </div>
-            </div>
-
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 15</div>
-            </div>
-          </section>
-
-          <!-- Slide 16 -->
-<section class="slide" data-title="Condições de viabilidade">
-  <div>
-    <div class="kicker">11) Condições de viabilidade</div>
-    <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">O que precisa estar verdadeiro</h2>
-    <div class="rule"></div>
-    <p class="subtitle">
-      Existe mercado potencial, mas a implantação só será bem-sucedida se três condições práticas forem atendidas:
-      acesso, proposta com provas e logística como produto.
-    </p>
+<!-- ─── SLIDE 0 — CAPA ─── -->
+<section class="slide cover active" data-title="Capa">
+  <div class="cover-watermark">EVEREST</div>
+  <div class="cover-content">
+    <div class="kicker">PROJETO COLÉGIO EVEREST · ESTUDO ESTRATÉGICO</div>
+    <h1 class="title" style="font-size:clamp(32px,4.2vw,56px);margin-top:10px;max-width:820px;">Pesquisa de Posicionamento e<br/>Proposta de Valor de Instituições<br/>de Ensino de Brasília</h1>
+    <div class="rule" style="margin-top:18px;"></div>
+    <p class="subtitle" style="margin-top:14px;">Dimensionamento e perfil do público (PDAD 2021) + Benchmark competitivo (Clientes Secretos)</p>
   </div>
-
-  <div class="grid2">
-    <div class="card">
-      <h3>1) Micro-localização e acesso</h3>
-      <ul class="bullets">
-        <li>Priorizar terreno/acesso que minimize tempo e imprevisibilidade (especialmente Primária).</li>
-        <li>Validar em horários de pico: filas, retornos, segurança e capacidade de escoamento.</li>
-      </ul>
-      <div class="callout">Critério: acesso previsível no pico</div>
-    </div>
-
-    <div class="card">
-      <h3>2) Proposta premium com provas</h3>
-      <ul class="bullets">
-        <li>Tese clara: excelência acadêmica + bilinguismo defensável + inclusão com protocolo.</li>
-        <li>Evidências e narrativa simples: o que será entregue e como aparece na rotina.</li>
-      </ul>
-      <div class="callout">Critério: mensagem verificável</div>
-    </div>
-
-    <div class="card span2">
-      <h3>3) Logística como parte do produto</h3>
-      <ul class="bullets">
-        <li>Drop-off/pick-up como experiência: fluxo, segurança, previsibilidade e comunicação.</li>
-        <li>Mitigadores para ampliar raio: janelas de horário, rotas e apoio/transporte.</li>
-      </ul>
-      <div class="callout">Viabilidade = Localização + Produto + Operação</div>
-    </div>
-  </div>
-
   <div class="footer">
-    <div class="logos">
-      <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-      <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-    </div>
-    <div class="meta">Slide 16</div>
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria" style="filter:brightness(0) invert(1);opacity:.45;"/></div>
+    <div class="meta">DF · 2026</div>
   </div>
 </section>
-          <!-- Slide 17 -->
-          <section class="slide" data-title="Próximos passos">
-            <div>
-              <div class="kicker">12) Próximos passos</div>
-              <h2 class="title" style="font-size: clamp(30px, 3.6vw, 46px);">Agenda 30–60 dias</h2>
-              <div class="rule"></div>
-              <p class="subtitle">
-                As condições de viabilidade se traduzem em um plano curto de testes e desenho operacional para reduzir risco antes de comprometer investimento.
-              </p>
-            </div>
 
-            <div class="grid2">
-              <div class="card">
-                <h3>Agenda objetiva</h3>
-                <ul class="bullets">
-                  <li><span>Tese e proof points:</span> fechar proposta, evidências e materiais.</li>
-                  <li><span>Terrenos:</span> checklist + shortlist (3–5 opções) com critérios de acesso.</li>
-                  <li><span>Teste de pico:</span> simular rotina real (manhã/tarde) e medir tempos/fluxos.</li>
-                  <li><span>Cenários:</span> simular mensalidade × % renda e impactos no funil.</li>
-                  <li><span>Operação:</span> desenhar chegada/saída, segurança, comunicação e mitigadores.</li>
-                  <li><span>Captação faseada:</span> Primária → Secundária/Terciária, com metas e métricas.</li>
-                </ul>
-              </div>
+<!-- ─── SLIDE 1 — METODOLOGIA ─── -->
+<section class="slide" data-title="Metodologia">
+  <div>
+    <div class="kicker">Metodologia · Como este estudo foi construído</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Duas fontes, uma decisão</h2>
+    <div class="rule"></div>
+    <p class="subtitle">O estudo combina evidência quantitativa (o tamanho do mercado) com evidência observacional (como esse mercado se comporta na prática).</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Fonte 1 — PDAD 2021</h3>
+      <ul class="bullets">
+        <li><b>O que é:</b> Pesquisa Distrital por Amostra de Domicílios, realizada pela CODEPLAN.</li>
+        <li><b>Para que serve:</b> Dimensionar o mercado potencial (TAM/SAM/Núcleo), identificar renda, presença de crianças 0–17, tempo de deslocamento e modal por região administrativa.</li>
+        <li><b>Limitação:</b> Os dados são de 2021. Os números absolutos podem ter variado, mas as proporções entre regiões — quem mora onde e com qual renda — são estruturalmente estáveis.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Fonte 2 — Benchmark via Cliente Secreto</h3>
+      <ul class="bullets">
+        <li><b>O que é:</b> Auditoria presencial com questionário estruturado nas 4 escolas concorrentes.</li>
+        <li><b>Para que serve:</b> Mapear teses de posicionamento, trade-offs operacionais, diferenciais comprováveis e lacunas de mercado.</li>
+        <li><b>Escolas auditadas:</b> Heavenly International · Colégio Marista · Escola Eleva · Colégio Galois.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout" style="align-self:flex-start;">PDAD responde "onde e quantos" · Cliente Secreto responde "como e por quê"</div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 1 · Metodologia</div>
+  </div>
+</section>
 
-              <div class="card">
-                <h3>Riscos a monitorar</h3>
-                <ul class="bullets">
-                  <li>Diferenciação insuficiente.</li>
-                  <li>Fricção logística (acesso/fluxo/segurança).</li>
-                  <li>Competição local subestimada.</li>
-                  <li>Conversão menor fora da Primária.</li>
-                </ul>
-                <div class="callout">Boa prática: métricas por território e por etapa do funil</div>
-              </div>
-            </div>
+<!-- ─── SLIDE 2 — SUMÁRIO ─── -->
+<section class="slide toc" data-title="Sumário">
+  <div>
+    <div class="kicker">Sumário</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,34px);">Estrutura da apresentação</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="toclist">
+    <div class="tocitem" style="grid-column:1/-1;background:rgba(139,30,36,.04);border-color:rgba(139,30,36,.15);"><b style="color:var(--red);letter-spacing:.04em;text-transform:uppercase;font-size:11px;">Bloco 1 — Mercado e Território</b></div>
+    <div class="tocitem" onclick="goToSlide('Premissas estratégicas')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>A · Premissas e funil de mercado</b><span>Ticket, elegibilidade e TAM/SAM/Núcleo.</span></div>
+    <div class="tocitem" onclick="goToSlide('Regiões de influência')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>B · Regiões de influência e densidade</b><span>Onde o mercado está "pronto" para conversão.</span></div>
+    <div class="tocitem" onclick="goToSlide('Tempo casa–escola')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>C · Mobilidade e síntese territorial</b><span>Tempo, modal e implicações operacionais por região.</span></div>
+    <div class="tocitem" style="grid-column:1/-1;background:rgba(139,30,36,.04);border-color:rgba(139,30,36,.15);"><b style="color:var(--red);letter-spacing:.04em;text-transform:uppercase;font-size:11px;">Bloco 2 — Benchmark Competitivo</b></div>
+    <div class="tocitem" onclick="goToSlide('Benchmark — método e escopo')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>D · Mapa competitivo</b><span>Tese central e trade-offs por escola.</span></div>
+    <div class="tocitem" onclick="goToSlide('Heavenly — Identidade e Proposta')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>E · Heavenly International School</b><span>Confessional · Bilíngue integrado · Personalizado.</span></div>
+    <div class="tocitem" onclick="goToSlide('Marista — Identidade e Força Institucional')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>F · Colégio Marista</b><span>Inclusão institucionalizada · Robustez · Católico Social.</span></div>
+    <div class="tocitem" onclick="goToSlide('Eleva — Cidadania Global e Rede Inspired')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>G · Escola Eleva</b><span>Premium global · Imersão 80% · Rede Inspired.</span></div>
+    <div class="tocitem" onclick="goToSlide('Galois — Alta Performance e Cultura')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>H · Colégio Galois</b><span>Alta performance · Disciplina · Fábrica de aprovações.</span></div>
+    <div class="tocitem" onclick="goToSlide('Matriz Comparativa Consolidada')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>I · Matriz comparativa e oportunidades Everest</b><span>As 4 escolas lado a lado + combinação rara.</span></div>
+    <div class="tocitem" style="grid-column:1/-1;background:rgba(139,30,36,.04);border-color:rgba(139,30,36,.15);"><b style="color:var(--red);letter-spacing:.04em;text-transform:uppercase;font-size:11px;">Bloco 3 — Decisão</b></div>
+    <div class="tocitem" onclick="goToSlide('Condições de viabilidade')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>J · Condições de viabilidade</b><span>O que precisa estar verdadeiro.</span></div>
+    <div class="tocitem" onclick="goToSlide('Recomendações Estratégicas')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>K · Recomendações Estratégicas</b><span>Próximos passos.</span></div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Sumário</div>
+  </div>
+</section>
 
-            <div class="footer">
-              <div class="logos">
-                <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" />
-                <img src="https://colegioeverest.com.br/images/home/clientes/semper_altius.jpg" alt="Rede Semper Altius" />
-              </div>
-              <div class="meta">Slide 17</div>
-            </div>
-          </section>
+<!-- ─── SLIDE 2 — PREMISSAS ESTRATÉGICAS ─── -->
+<!-- ─── TRANSIÇÃO BLOCO 1 ─── -->
+<section class="slide slide-chapter" data-title="Bloco 1 — Mercado e Território">
+  <div class="ch-watermark">01</div>
+  <div class="ch-content">
+    <span class="ch-tag">Bloco 01 de 03</span>
+    <h2 class="ch-title">Mercado e<br/>Território</h2>
+    <div class="ch-rule"></div>
+    <p class="ch-body">Dimensionamento do público potencial a partir dos dados do PDAD 2021 — quem são, onde estão e como se movem.</p>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria" style="filter:brightness(0) invert(1);opacity:.38;"/></div>
+    <div class="meta">Bloco 01</div>
+  </div>
+</section>
 
+<section class="slide" data-title="Premissas estratégicas">
+  <div>
+    <div class="kicker">A · Premissas e funil de mercado</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Ticket e regra de elegibilidade</h2>
+    <div class="rule"></div>
+    <p class="subtitle"><b>Mensagem-chave:</b> o corte de renda vem de uma regra simples, transparente e auditável — não define "quem vai comprar", mas aproxima o universo pagável e permite simulações.</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Premissas do cenário central</h3>
+      <ul class="bullets">
+        <li><b>Ticket estimado:</b> R$ 5.000–6.000/mês por aluno.</li>
+        <li><b>Comprometimento sustentável:</b> 15%–20% da renda familiar.</li>
+        <li><b>Cenário central:</b> R$ 5.000 / 15% → renda mínima <b>~R$ 33.333/mês</b>.</li>
+      </ul>
+      <div class="callout">Regra: renda mínima = mensalidade ÷ % comprometimento</div>
+    </div>
+    <div class="card">
+      <h3>Como ler</h3>
+      <ul class="bullets">
+        <li>O corte não define quem compra — aproxima o universo pagável e reduz superestimação.</li>
+        <li>Permite simular cenários: se o ticket subir ou o % comprometimento mudar, o SAM se recalcula diretamente.</li>
+        <li>Quanto mais alto o comprometimento aceito, maior o SAM — mas menor a sustentabilidade financeira das famílias.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 2</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 3 — FUNIL E DEFINIÇÕES ─── -->
+<section class="slide" data-title="Funil e definições — TAM/SAM/Núcleo">
+  <div>
+    <div class="kicker">A · Premissas e funil de mercado</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">TAM ≠ SAM ≠ Núcleo — separar evita superestimação</h2>
+    <div class="rule"></div>
+    <p class="subtitle"><b>Mensagem-chave:</b> TAM (território) ≠ SAM (pagável) ≠ Núcleo (pagável + filhos). Cada camada tem uma função diferente na decisão.</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Definições operacionais</h3>
+      <ul class="bullets">
+        <li><b>TAM:</b> todos os domicílios no recorte territorial, sem filtro de renda. Informa alcance.</li>
+        <li><b>SAM:</b> domicílios com renda elegível ao ticket (mensalidade como % da renda). Aproxima pagabilidade.</li>
+        <li><b>Núcleo:</b> parte do SAM com presença de 0–17 anos. Aproxima conversão inicial.</li>
+      </ul>
+      <div class="callout">TAM 155.019 → SAM 7.424 → Núcleo 2.665 → 0–17: 4.683</div>
+    </div>
+    <div class="card">
+      <h3>Como ler</h3>
+      <ul class="bullets">
+        <li>TAM grande não é sinônimo de matrículas — só indica o território coberto.</li>
+        <li>SAM é o universo "pagável" dentro desse território.</li>
+        <li>Núcleo é a demanda mais imediata: famílias elegíveis que já têm filhos em idade escolar.</li>
+        <li>O dado relevante para decisão não é o maior número, mas onde o Núcleo é <b>denso e a fricção é baixa</b>.</li>
+      </ul>
+      <p class="small" style="margin-top:10px;padding:8px 10px;background:rgba(17,19,22,.04);border-radius:10px;border-left:3px solid rgba(17,19,22,.15);"><b>Fricção</b> = tudo que torna o deslocamento mais difícil, imprevisível ou demorado no dia a dia — trânsito, tempo de trajeto, falta de rota direta, dificuldade de estacionamento.</p>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 3</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 4 — IMPLICAÇÕES DO FUNIL ─── -->
+<section class="slide" data-title="Implicações do funil">
+  <div>
+    <div class="kicker">A · Premissas e funil de mercado</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">O que muda na decisão</h2>
+    <div class="rule"></div>
+    <p class="subtitle"><b>Mensagem-chave:</b> o mercado acionável é uma fração do território. A conversão premium depende de quatro variáveis simultâneas — renda, filhos, conveniência e proposta de valor.</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Por que "tamanho do território" engana</h3>
+      <ul class="bullets">
+        <li>TAM 155.019 domicílios → Núcleo 2.665 → <b>razão de conversão ≈ 1,7%</b> do total.</li>
+        <li>O funil explica por que tamanho de território não é sinônimo de matrícula.</li>
+        <li>Conversão premium tende a depender de: <b>renda + filhos + conveniência + proposta de valor</b>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Como usar na decisão</h3>
+      <ul class="bullets">
+        <li><b>Onde sustentar tração (prioridade):</b> onde o Núcleo é mais denso e a fricção logística é menor.</li>
+        <li><b>Onde escalar (condicional):</b> regiões com volume maior mas maior dependência de mitigadores de fricção.</li>
+        <li>A proposta premium precisa ser <b>comprovável</b> (evidências tangíveis), não apenas declarada.</li>
+      </ul>
+      <div class="callout">Núcleo denso + fricção baixa + proposta de valor = máxima conversão</div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 4</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 5 — REGIÕES DE INFLUÊNCIA ─── -->
+<section class="slide" data-title="Regiões de influência">
+  <div>
+    <div class="kicker">B · Regiões de influência e densidade</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Propensão, fricção e como captar</h2>
+    <div class="rule"></div>
+    <p class="subtitle"><b>Mensagem-chave:</b> regiões de influência representam propensão de escolha e fricção logística (distância/tempo e previsibilidade). Não são "melhor/pior" — são mecanismos diferentes de aquisição.</p>
+  </div>
+  <div class="grid3">
+    <div class="card">
+      <h3>Primária</h3>
+      <div style="margin:8px 0;"><span class="pill" style="background:rgba(139,30,36,.1);color:var(--red);">Lago Sul · Jardim Botânico</span></div>
+      <ul class="bullets">
+        <li>Maior propensão de escolha e menor fricção logística.</li>
+        <li>Tende a sustentar tração inicial — território natural de early adopters.</li>
+        <li>Prioridade absoluta de micro-localização e operação premium.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Secundária</h3>
+      <div style="margin:8px 0;"><span class="pill" style="background:rgba(17,19,22,.06);color:var(--ink);">Plano Piloto (Asa Sul · Asa Norte · Noroeste)</span></div>
+      <ul class="bullets">
+        <li>Grande volume absoluto, mas com mais opções de concorrência local.</li>
+        <li>Sensível à diferenciação crível e rotina previsível.</li>
+        <li>Escala quando a proposta já tem prova de valor consolidada.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Terciária</h3>
+      <div style="margin:8px 0;"><span class="pill" style="background:rgba(17,19,22,.06);color:var(--ink);">Sudoeste/Octogonal · Lago Norte</span></div>
+      <ul class="bullets">
+        <li>Complemento relevante, condicionado à conveniência percebida.</li>
+        <li>Depende de mitigadores e ativação seletiva por subáreas.</li>
+        <li>Não ativar antes da Primária estar consolidada.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 5</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 6 — FUNIL POR REGIÃO + DENSIDADE ─── -->
+<section class="slide" data-title="Funil por região e densidade do núcleo">
+  <div>
+    <div class="kicker">B · Regiões de influência e densidade</div>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Tamanho e aderência — onde atuar</h2>
+    <div class="rule"></div>
+    <p class="subtitle"><b>Mensagem-chave:</b> além do tamanho (TAM/SAM/Núcleo), precisamos de um indicador de "aderência": <b>densidade do núcleo = Núcleo ÷ SAM</b>. Indica qual fração do universo pagável já tem filhos 0–17.</p>
+  </div>
+  <div class="grid2">
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Região</th><th>TAM</th><th>SAM</th><th>Núcleo</th><th>0–17</th><th>Densidade (N÷S)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Primária</td><td>30.255</td><td>2.809</td><td>1.127</td><td>1.833</td><td><b>40,1%</b></td></tr>
+          <tr><td>Secundária</td><td>87.321</td><td>2.485</td><td>813</td><td>1.435</td><td>32,7%</td></tr>
+          <tr><td>Terciária</td><td>37.443</td><td>2.130</td><td>725</td><td>1.415</td><td>34,0%</td></tr>
+          <tr><td><b>Total</b></td><td><b>155.019</b></td><td><b>7.424</b></td><td><b>2.665</b></td><td><b>4.683</b></td><td><b>35,9%</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Interpretação e uso prático</h3>
+      <ul class="bullets">
+        <li><b>Primária (40,1%):</b> mercado mais "pronto" — motor de tração inicial e maior eficiência potencial de captação.</li>
+        <li><b>Secundária/Terciária:</b> adicionam escala, com sensibilidade maior a fricções e mitigadores.</li>
+        <li><b>Indicadores acionáveis por região:</b> combinar densidade com % Núcleo com deslocamento ≤30 min e % Núcleo em automóvel para identificar subáreas prioritárias.</li>
+      </ul>
+      <div class="callout">Usar: onde Densidade é alta + fricção é baixa = prioridade</div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 6</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 7 — CONCENTRAÇÃO POR RA ─── -->
+<section class="slide" data-title="Concentração do núcleo por RA">
+  <div>
+    <div class="kicker">B · Regiões de influência e densidade</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Onde está o Núcleo (por Região Administrativa)</h2>
+    <div class="rule"></div>
+    <p class="subtitle"><b>Mensagem-chave:</b> o ranking por RA mostra onde estão as famílias pagáveis com filhos. Orienta micro-localização e captação faseada — volume absoluto e propensão não são a mesma coisa.</p>
+  </div>
+  <div class="grid2">
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Região Administrativa</th><th>Núcleo</th><th>% do total</th><th>Região de influência</th></tr></thead>
+        <tbody>
+          <tr><td>Plano Piloto</td><td>813</td><td>30,5%</td><td>Secundária</td></tr>
+          <tr><td>Lago Sul</td><td>615</td><td>23,1%</td><td>Primária ★</td></tr>
+          <tr><td>Sudoeste/Octogonal</td><td>551</td><td>20,7%</td><td>Terciária</td></tr>
+          <tr><td>Jardim Botânico</td><td>503</td><td>18,9%</td><td>Primária ★</td></tr>
+          <tr><td>Lago Norte</td><td>183</td><td>6,9%</td><td>Terciária</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Como ler: volume ≠ propensão</h3>
+      <ul class="bullets">
+        <li>Plano Piloto tem o maior volume absoluto (30,5%), mas está na região Secundária: maior concorrência e maior sensibilidade a fricções.</li>
+        <li>Lago Sul + Jardim Botânico juntos = <b>42,0% do Núcleo</b>, com menor fricção logística e maior propensão.</li>
+        <li>A implantação equilibra onde o Núcleo é denso + onde o acesso é previsível.</li>
+      </ul>
+      <div class="callout">Captação faseada: Primária (★) → Secundária → Terciária</div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 7</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 8 — TEMPO CASA–ESCOLA ─── -->
+<section class="slide" data-title="Tempo casa–escola">
+  <div>
+    <div class="kicker">C · Mobilidade e síntese territorial</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Tempo de deslocamento por região</h2>
+    <div class="rule"></div>
+    <p class="subtitle"><b>Mensagem-chave:</b> tempo é proxy de conveniência. ≤30 min define a zona primária de captação; até 45 min é zona secundária condicionada. No núcleo, trajetos curtos e previsíveis pesam mais — especialmente nos ciclos iniciais.</p>
+  </div>
+  <div class="grid2">
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Região</th><th>≤15 min</th><th>15–30 min</th><th><b>≤30 min (∑)</b></th><th>30–45 min</th><th>≥45 min</th></tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="6" style="background:rgba(139,30,36,.04);font-weight:700;font-size:11px;letter-spacing:.04em;">UNIVERSO (todos os domicílios)</td></tr>
+          <tr><td>Primária</td><td>26,4%</td><td>38,6%</td><td><b>65,0%</b></td><td>19,7%</td><td>10,7%</td></tr>
+          <tr><td>Secundária</td><td>58,9%</td><td>31,8%</td><td><b>90,7%</b></td><td>5,6%</td><td>2,2%</td></tr>
+          <tr><td>Terciária</td><td>48,2%</td><td>35,5%</td><td><b>83,7%</b></td><td>9,3%</td><td>3,2%</td></tr>
+          <tr><td colspan="6" style="background:rgba(139,30,36,.04);font-weight:700;font-size:11px;letter-spacing:.04em;">NÚCLEO PRIORITÁRIO (renda + 0–17)</td></tr>
+          <tr><td>Primária</td><td>30,5%</td><td>56,5%</td><td><b>87,0%</b></td><td>13,1%</td><td>—</td></tr>
+          <tr><td>Secundária</td><td>67,7%</td><td>—</td><td><b>67,7%</b></td><td>32,3%</td><td>—</td></tr>
+          <tr><td>Terciária</td><td>100,0%</td><td>—</td><td><b>100%</b></td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Implicações de captação</h3>
+      <ul class="bullets">
+        <li>87% do Núcleo Primário chega em ≤30 min — raio funcional bem estabelecido.</li>
+        <li>Nos ciclos iniciais, a localização compensa a ausência de reputação consolidada — famílias próximas toleram menos incerteza para testar uma escola nova.</li>
+        <li>Extensão do raio depende de mitigadores: rotas, janelas de horário, transporte dedicado.</li>
+      </ul>
+      <div class="callout">Raio funcional de referência: ≤ 30 minutos</div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 8</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 9 — MODAL ─── -->
+<section class="slide" data-title="Modal de deslocamento">
+  <div>
+    <div class="kicker">C · Mobilidade e síntese territorial</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Como as famílias se deslocam</h2>
+    <div class="rule"></div>
+    <p class="subtitle"><b>Mensagem-chave:</b> modal define o desenho da operação. No premium, chegada/saída é parte do produto percebido. Automóvel dominante exige fluxo interno, segurança e previsibilidade como serviço.</p>
+  </div>
+  <div class="grid2">
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Região</th><th>Automóvel</th><th>Esc. privado</th><th>Ônibus</th><th>Outros</th></tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="5" style="background:rgba(139,30,36,.04);font-weight:700;font-size:11px;letter-spacing:.04em;">UNIVERSO</td></tr>
+          <tr><td>Primária</td><td>45,3%</td><td>7,3%</td><td>22,8%</td><td>24,6%</td></tr>
+          <tr><td>Secundária</td><td>51,2%</td><td>2,7%</td><td>29,6%</td><td>16,5%</td></tr>
+          <tr><td>Terciária</td><td>55,9%</td><td>4,1%</td><td>26,5%</td><td>13,5%</td></tr>
+          <tr><td colspan="5" style="background:rgba(139,30,36,.04);font-weight:700;font-size:11px;letter-spacing:.04em;">NÚCLEO PRIORITÁRIO</td></tr>
+          <tr><td>Primária</td><td><b>60,0%</b></td><td><b>26,9%</b></td><td>13,1%</td><td>—</td></tr>
+          <tr><td>Secundária</td><td><b>67,7%</b></td><td>—</td><td>32,3%</td><td>—</td></tr>
+          <tr><td>Terciária</td><td><b>100,0%</b></td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Implicações operacionais</h3>
+      <ul class="bullets">
+        <li>Núcleo Primário: 60% automóvel + 27% escolar privado → drop-off como produto, não logística.</li>
+        <li>Fluxos, sinalização, equipe e comunicação precisam <b>reduzir atrito percebido</b>.</li>
+        <li>Transporte escolar/rotas pode ampliar raio funcional com previsibilidade — mitigador de escala.</li>
+      </ul>
+      <div class="callout">Premium percebido = previsibilidade + segurança + tempo</div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 9</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 10 — SÍNTESE POR REGIÃO ─── -->
+<section class="slide" data-title="Síntese por região">
+  <div>
+    <div class="kicker">C · Mobilidade e síntese territorial</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Como capturar o núcleo por região</h2>
+    <div class="rule"></div>
+    <p class="subtitle"><b>Mensagem-chave:</b> Primária sustenta; Secundária/Terciária escalam com mitigadores e prova de valor. Cada região exige um mecanismo de aquisição diferente.</p>
+  </div>
+  <div class="grid3">
+    <div class="card">
+      <h3>Primária</h3>
+      <div style="margin:6px 0;"><span class="pill" style="background:rgba(139,30,36,.1);color:var(--red);">Lago Sul · Jardim Botânico</span></div>
+      <ul class="bullets">
+        <li>Maior densidade do Núcleo (40,1%) e menor fricção logística.</li>
+        <li>Território natural para os primeiros alunos — onde a escola constrói reputação antes de escalar.</li>
+        <li>Exige micro-localização precisa e operação premium desde o primeiro dia.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Secundária</h3>
+      <div style="margin:6px 0;"><span class="pill" style="background:rgba(17,19,22,.06);color:var(--ink);">Plano Piloto</span></div>
+      <ul class="bullets">
+        <li>Volume + concorrência local.</li>
+        <li>Depende de diferenciação crível e rotina previsível.</li>
+        <li>Escala quando há prova de valor consolidada na Primária.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Terciária</h3>
+      <div style="margin:6px 0;"><span class="pill" style="background:rgba(17,19,22,.06);color:var(--ink);">Sudoeste · Lago Norte</span></div>
+      <ul class="bullets">
+        <li>Potencial complementar, não prioritário.</li>
+        <li>Só faz sentido ativar quando a Primária está consolidada e a Secundária em curso.</li>
+        <li>Depende de mitigadores concretos — transporte, comunicação segmentada e subáreas com maior propensão identificadas.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 10</div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- ─── BLOCO F — BENCHMARK COMPETITIVO ─── -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<!-- ─── SLIDE 12 — BENCHMARK INTRO ─── -->
+<!-- ─── TRANSIÇÃO BLOCO 2 ─── -->
+<section class="slide slide-chapter" data-title="Bloco 2 — Benchmark Competitivo">
+  <div class="ch-watermark">02</div>
+  <div class="ch-content">
+    <span class="ch-tag">Bloco 02 de 03</span>
+    <h2 class="ch-title">Benchmark<br/>Competitivo</h2>
+    <div class="ch-rule"></div>
+    <p class="ch-body">Análise de campo via cliente secreto — teses, trade-offs e evidências das 4 escolas que disputam o mesmo público.</p>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria" style="filter:brightness(0) invert(1);opacity:.38;"/></div>
+    <div class="meta">Bloco 02</div>
+  </div>
+</section>
+
+<section class="slide" data-title="Benchmark — método e escopo">
+  <div>
+    <div class="kicker">D · Mapa competitivo</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">4 escolas que disputam o mesmo público</h2>
+    <div class="rule"></div>
+    <p class="subtitle">Cada escola domina uma tese e, por isso, assume lacunas concretas — documentadas nas visitas. As famílias que não se identificam com essas lacunas estão disponíveis.</p>
+  </div>
+
+  <!-- 4 school cards with logos -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;flex:1;min-height:0;">
+
+    <div style="border-radius:16px;border:1px solid rgba(99,68,160,.2);background:rgba(99,68,160,.05);padding:16px 14px;display:flex;flex-direction:column;gap:10px;">
+      <div style="height:44px;display:flex;align-items:center;">
+        <img src="https://hisbsb.com.br/wp-content/uploads/2025/06/heavenly-logo-header.png" alt="Heavenly" style="max-height:40px;max-width:100%;width:auto;object-fit:contain;"/>
+      </div>
+      <div style="height:1px;background:rgba(99,68,160,.15);"></div>
+      <div style="font-size:11px;font-weight:700;color:#6344A0;letter-spacing:.04em;text-transform:uppercase;">Tese central</div>
+      <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Confessional + bilinguismo equilibrado + turmas reduzidas</p>
+      <div style="margin-top:auto;padding:7px 10px;border-radius:10px;background:rgba(99,68,160,.1);font-size:11px;font-weight:700;color:#6344A0;">Trade-off: marca em consolidação</div>
+    </div>
+
+    <div style="border-radius:16px;border:1px solid rgba(11,106,160,.2);background:rgba(11,106,160,.05);padding:16px 14px;display:flex;flex-direction:column;gap:10px;">
+      <div style="height:44px;display:flex;align-items:center;">
+        <img src="https://brasilia.colegiosmaristas.com.br/wp-content/uploads/sites/7/2023/05/logo-BSB.png" alt="Marista" style="max-height:40px;max-width:100%;width:auto;object-fit:contain;"/>
+      </div>
+      <div style="height:1px;background:rgba(11,106,160,.15);"></div>
+      <div style="font-size:11px;font-weight:700;color:#0B6AA0;letter-spacing:.04em;text-transform:uppercase;">Tese central</div>
+      <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Robustez institucional + inclusão estruturada + segurança como diferencial</p>
+      <div style="margin-top:auto;padding:7px 10px;border-radius:10px;background:rgba(11,106,160,.1);font-size:11px;font-weight:700;color:#0B6AA0;">Trade-off: turmas maiores (25–30)</div>
+    </div>
+
+    <div style="border-radius:16px;border:1px solid rgba(11,122,98,.2);background:rgba(11,122,98,.05);padding:16px 14px;display:flex;flex-direction:column;gap:10px;">
+      <div style="height:44px;display:flex;align-items:center;">
+        <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/Escola-Eleva-Logo.svg" alt="Eleva" style="max-height:36px;max-width:100%;width:auto;object-fit:contain;"/>
+      </div>
+      <div style="height:1px;background:rgba(11,122,98,.15);"></div>
+      <div style="font-size:11px;font-weight:700;color:#0B7A62;letter-spacing:.04em;text-transform:uppercase;">Tese central</div>
+      <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Premium internacional + rede Inspired + imersão 80% em inglês</p>
+      <div style="margin-top:auto;padding:7px 10px;border-radius:10px;background:rgba(11,122,98,.1);font-size:11px;font-weight:700;color:#0B7A62;">Trade-off: rotatividade de professores a cada 2–3 anos</div>
+    </div>
+
+    <div style="border-radius:16px;border:1px solid rgba(26,51,102,.2);background:rgba(26,51,102,.05);padding:16px 14px;display:flex;flex-direction:column;gap:10px;">
+      <div style="height:44px;display:flex;align-items:center;">
+        <img src="https://galois.com.br/wp-content/uploads/2019/07/Galois-Logo-Positivo-RGB.png" alt="Galois" style="max-height:40px;max-width:100%;width:auto;object-fit:contain;"/>
+      </div>
+      <div style="height:1px;background:rgba(26,51,102,.15);"></div>
+      <div style="font-size:11px;font-weight:700;color:#1A3366;letter-spacing:.04em;text-transform:uppercase;">Tese central</div>
+      <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Alta performance acadêmica + cultura de testes + aprovação no ensino superior</p>
+      <div style="margin-top:auto;padding:7px 10px;border-radius:10px;background:rgba(26,51,102,.1);font-size:11px;font-weight:700;color:#1A3366;">Trade-off: pressão e ansiedade</div>
+    </div>
+
+  </div>
+
+  <div class="callout" style="align-self:flex-start;">Trade-off = o que a escola abre mão para ser forte onde escolheu ser forte</div>
+
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 13</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 13 — HEAVENLY: IDENTIDADE ─── -->
+<section class="slide s-heavenly" data-title="Heavenly — Identidade e Proposta">
+  <div class="school-stripe"></div>
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+    <div class="school-badge">
+      <div class="dot2"></div>
+      HEAVENLY INTERNATIONAL SCHOOL
+    </div>
+    <span class="pill">Confessional · Personalizado · Acolhedor</span>
+    <span class="pill" style="background:rgba(139,30,36,.08);color:var(--red);">Em consolidação de marca</span>
+  </div>
+  <div>
+    <div class="kicker">E · Heavenly International School</div>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Do Everest à Heavenly — o rebranding e o que ficou</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="grid2">
+    <div>
+      <div class="quote-block">
+        "A escola anteriormente fazia parte da rede Colégio Everest. Atua em Brasília desde 2013. Passou por transição para rede própria — para permitir maior autonomia nas decisões pedagógicas e administrativas."
+        <cite>— Auditoria Q1 (cliente secreto)</cite>
+      </div>
+      <div class="card" style="margin-top:10px;">
+        <h3>DNA preservado</h3>
+        <ul class="bullets">
+          <li>Metodologia <b>Semper Altius</b> mantida — "Formação Integral".</li>
+          <li>Afasta operação local das crises institucionais globais da antiga mantenedora.</li>
+          <li>Público-alvo: famílias conservadoras em busca de <b>blindagem cultural</b> e bilinguismo seguro.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="school-card">
+      <h3>Formação Integral — 4 eixos</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:32px;height:32px;border-radius:10px;background:var(--school);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0;">I</div>
+          <span style="font-size:13px;font-weight:600;">Intelectual</span>
         </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:32px;height:32px;border-radius:10px;background:var(--school);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0;">H</div>
+          <span style="font-size:13px;font-weight:600;">Humana</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:32px;height:32px;border-radius:10px;background:var(--school);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0;">E</div>
+          <span style="font-size:13px;font-weight:600;">Espiritual</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:32px;height:32px;border-radius:10px;background:var(--school);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0;">A</div>
+          <span style="font-size:13px;font-weight:600;">Apostólica</span>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:12px;border-color:var(--school-mid);background:var(--school-light);color:var(--school);">Material próprio (legado Integra) — alinhamento ideológico total</div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 13 · Heavenly</div>
+  </div>
+</section>
 
-        <div class="controls" role="group" aria-label="Navegação do deck">
-          <button class="btn" id="prev" title="Anterior (←)">←</button>
-          <div class="counter" id="counter">1 / 18</div>
-          <button class="btn" id="next" title="Próximo (→)">→</button>
+<!-- ─── SLIDE 14 — HEAVENLY: PEDAGOGIA E BILINGUISMO ─── -->
+<section class="slide s-heavenly" data-title="Heavenly — Pedagogia e Bilinguismo">
+  <div class="school-stripe"></div>
+  <div class="school-badge"><div class="dot2"></div>HEAVENLY INTERNATIONAL SCHOOL</div>
+  <div>
+    <div class="kicker">E · Heavenly International School</div>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Como ensina e como o inglês entra no currículo</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <h3>Como a escola ensina</h3>
+        <ul class="bullets">
+          <li><b>Base Clássica:</b> aulas expositivas estruturadas.</li>
+          <li><b>Aprendizagem Ativa:</b> resolução de problemas, cenários práticos.</li>
+          <li><b>Currículo Integrado:</b> conteúdos nacionais e internacionais.</li>
+        </ul>
+        <p class="small" style="margin-top:8px;">Posição estratégica: rigor sem rigidez — afasta-se do construtivismo radical <em>e</em> do conteudismo puro.</p>
+      </div>
+      <div class="card" style="margin-top:10px;">
+        <h3>Grade EF1 (Auditoria Q2)</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;">
+          <span class="pill">Português</span><span class="pill">Science</span><span class="pill">English</span><span class="pill">Matemática</span><span class="pill">História</span><span class="pill">Geografia</span><span class="pill">Ecology</span><span class="pill">Música</span><span class="pill">Arts</span><span class="pill">Virtudes</span><span class="pill">Formação Católica</span><span class="pill">Ed. Física</span>
+        </div>
+      </div>
+    </div>
+    <div class="school-card">
+      <h3>Ensino bilíngue integrado — modelo 50/50</h3>
+      <div style="margin:12px 0 6px;">
+        <div class="bili-track">
+          <div class="bili-seg" style="width:50%;background:var(--school);">🇧🇷 50% PT</div>
+          <div class="bili-seg" style="width:50%;background:#888;">🇺🇸 50% EN</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:600;">
+          <span>Português (língua materna)</span><span>Inglês (conteúdo real)</span>
+        </div>
+      </div>
+      <div class="quote-block" style="margin-top:10px;">
+        Modelo 50/50 considerado o mais equilibrado por especialistas: evita perda de proficiência na língua materna em anos críticos de alfabetização, mitigando o risco das escolas de imersão total.
+      </div>
+      <ul class="bullets" style="margin-top:10px;">
+        <li>Disciplinas de conteúdo real ministradas em inglês (Science, Ecology).</li>
+        <li>O aluno aprende inglês estudando matérias reais em inglês — não estudando inglês pelo inglês. A língua é o meio, não o fim.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 14 · Heavenly</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 15 — HEAVENLY: OPERAÇÃO, INCLUSÃO, COMERCIAL ─── -->
+<section class="slide s-heavenly" data-title="Heavenly — Operação e Comercial">
+  <div class="school-stripe"></div>
+  <div class="school-badge"><div class="dot2"></div>HEAVENLY INTERNATIONAL SCHOOL</div>
+  <div>
+    <div class="kicker">E · Heavenly International School</div>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Jornada, turmas reduzidas e fidelização de famílias</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="grid3">
+    <div class="card">
+      <h3>Operação e jornada</h3>
+      <div style="margin:8px 0;"><span class="stat-num" style="font-size:clamp(22px,2.8vw,36px);">08h10–15h40</span><div class="stat-label">Semi-integral estendido</div></div>
+      <ul class="bullets">
+        <li>Turmas de <b>18–20 alunos</b> em média.</li>
+        <li>Estratégico para famílias que buscam equilíbrio entre tela e convívio familiar.</li>
+        <li>Política de introdução gradual de telas; prioridade atividades offline.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Inclusão e neurodivergência</h3>
+      <div class="steps" style="flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="step-num" style="width:28px;height:28px;font-size:12px;flex-shrink:0;">1</div>
+          <div><b style="font-size:12px;">Recepção do laudo</b><p class="small">Solicitação de cópia para análise pedagógica.</p></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="step-num" style="width:28px;height:28px;font-size:12px;flex-shrink:0;">2</div>
+          <div><b style="font-size:12px;">Leitura assistida</b><p class="small">Suporte em avaliações para alunos que necessitam.</p></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="step-num" style="width:28px;height:28px;font-size:12px;flex-shrink:0;">3</div>
+          <div><b style="font-size:12px;">Formatos adaptados</b><p class="small">Tarefas em diferentes níveis de complexidade.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="school-card">
+      <h3>Política comercial — foco em famílias numerosas</h3>
+      <div style="display:flex;gap:10px;margin:10px 0;">
+        <div style="flex:1;text-align:center;padding:10px;background:rgba(255,255,255,.6);border-radius:12px;border:1px solid var(--school-mid);">
+          <div class="stat-num" style="font-size:clamp(26px,3.2vw,42px);">30%</div>
+          <div class="stat-label">3º filho</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:10px;background:rgba(255,255,255,.6);border-radius:12px;border:1px solid var(--school-mid);">
+          <div class="stat-num" style="font-size:clamp(26px,3.2vw,42px);">50%</div>
+          <div class="stat-label">4º filho+</div>
+        </div>
+      </div>
+      <p class="small">Estratégia de fidelização de famílias numerosas: quanto mais filhos, menor o custo por aluno — e maior o vínculo com a escola.</p>
+      <div class="quote-block" style="margin-top:8px;">"A escola adota abordagem que valoriza o desenvolvimento de habilidades interpessoais e socioemocionais. Os alunos são inseridos em projetos colaborativos. Introdução gradual de tecnologia: atividades sem telas têm prioridade."<cite>— Auditoria Q31</cite></div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 15 · Heavenly</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 16 — MARISTA: IDENTIDADE ─── -->
+<section class="slide s-marista" data-title="Marista — Identidade e Força Institucional">
+  <div class="school-stripe"></div>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    <div class="school-badge"><div class="dot2"></div>COLÉGIO MARISTA (L2 SUL)</div>
+    <span class="pill">Confessional Social · Inclusivo · Robusto</span>
+    <span class="pill" style="background:rgba(139,30,36,.08);color:var(--red);">Consolidado / Tradicional Renovado</span>
+  </div>
+  <div>
+    <div class="kicker">F · Colégio Marista</div>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Tradição, cuidado integral e força de rede</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="grid2">
+    <div>
+      <div class="grid2" style="gap:10px;">
+        <div class="status-box">
+          <div class="lbl">Metodologia</div>
+          <div class="val">Aprendizagem por interação social: o aluno constrói o conhecimento junto com colegas e professores. Exige mais autonomia dado o tamanho das turmas.</div>
+        </div>
+        <div class="status-box">
+          <div class="lbl">Material Didático</div>
+          <div class="val">Sistema Marista de Educação (SME). Editorial próprio, fortemente alinhado à BNCC.</div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:10px;">
+        <h3>Percepção de mercado</h3>
+        <ul class="bullets">
+          <li>Beneficia-se da credibilidade histórica e rede global Marista.</li>
+          <li>Leve resistência em nichos de elite segmentados: percepção de "escola de massa" (turmas de 25–30 alunos).</li>
+          <li>Powerhouse global com forte intercâmbio de práticas pedagógicas.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="school-card">
+      <h3>Católico Social vs. Católico Dogmático</h3>
+      <div style="margin:10px 0;">
+        <div class="bili-track" style="height:22px;">
+          <div class="bili-seg" style="width:60%;background:var(--school);">Comunidade · Solidariedade</div>
+          <div class="bili-seg" style="width:40%;background:#888;">Fé · Valores</div>
+        </div>
+      </div>
+      <ul class="bullets">
+        <li>Menos dogmático que a Heavenly; mais orientado à cidadania.</li>
+        <li>Projetos estruturantes: <b>Campanha da Fraternidade</b> e Missões Sociais (PIS).</li>
+        <li>Formação do "bom cidadão solidário e consciente" como proposta central.</li>
+      </ul>
+      <div class="callout" style="border-color:var(--school-mid);background:var(--school-light);color:var(--school);">Escola mais segura para famílias que valorizam inclusão no DF</div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 16 · Marista</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 17 — MARISTA: INFRAESTRUTURA E INCLUSÃO ─── -->
+<section class="slide s-marista" data-title="Marista — Segurança e Inclusão TEA/TDAH">
+  <div class="school-stripe"></div>
+  <div class="school-badge"><div class="dot2"></div>COLÉGIO MARISTA (L2 SUL)</div>
+  <div>
+    <div class="kicker">F · Colégio Marista</div>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Segurança de referência e inclusão real</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="grid2">
+    <div>
+      <div class="school-card" style="display:flex;align-items:center;gap:18px;padding:18px;">
+        <div style="text-align:center;flex-shrink:0;">
+          <div class="stat-num">260</div>
+          <div class="stat-label">câmeras</div>
+        </div>
+        <div>
+          <h3 style="color:var(--school);">Monitoramento 24/7</h3>
+          <p class="small" style="margin-top:4px;">Reconhecimento Facial integrado à rede de 260 câmeras. A resposta mais avançada, dentre as escolas visitadas, à preocupação das famílias com segurança física no Brasil.</p>
+        </div>
+      </div>
+      <div class="card" style="margin-top:10px;">
+        <h3>SOE — Serviço de Orientação Educacional</h3>
+        <p class="small" style="margin-top:6px;">O Serviço de Orientação Educacional é a espinha dorsal da proposta — não um serviço periférico. Isso gera uma retenção muito alta de alunos que têm dificuldades de socialização: a escola não abandona esses alunos.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Liderança técnica em TEA/TDAH — processo institucionalizado</h3>
+      <div class="steps" style="flex-direction:column;gap:10px;margin-top:10px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="step-num" style="width:30px;height:30px;font-size:13px;flex-shrink:0;">1</div>
+          <div><b style="font-size:12.5px;">PDI — Plano de Desenvolvimento Individual</b><p class="small">Documento legal e pedagógico que rege a adaptação curricular do aluno atípico.</p></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="step-num" style="width:30px;height:30px;font-size:13px;flex-shrink:0;">2</div>
+          <div><b style="font-size:12.5px;">Segurança jurídica</b><p class="small">Oferece segurança jurídica e educacional impecável para a família.</p></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="step-num" style="width:30px;height:30px;font-size:13px;flex-shrink:0;">3</div>
+          <div><b style="font-size:12.5px;">Equipe multidisciplinar</b><p class="small">Acompanhamento contínuo e estruturado — não atua apenas com "boa vontade".</p></div>
+        </div>
+      </div>
+      <div class="quote-block" style="margin-top:10px;">
+        "O Marista não atua apenas com 'boa vontade' na inclusão; o processo é institucionalizado."
+        <cite>— Análise de Campo Q30</cite>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 17 · Marista</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 18 — MARISTA: BILINGUISMO, PROJETOS E CONCLUSÃO ─── -->
+<section class="slide s-marista" data-title="Marista — Bilinguismo e Projetos">
+  <div class="school-stripe"></div>
+  <div class="school-badge"><div class="dot2"></div>COLÉGIO MARISTA (L2 SUL)</div>
+  <div>
+    <div class="kicker">F · Colégio Marista</div>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Inglês como credencial, cidadania como missão</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Inglês como complemento ao currículo</h3>
+      <div class="bili-track">
+        <div class="bili-seg" style="width:80%;background:var(--school);">🇧🇷 ~80% Português</div>
+        <div class="bili-seg" style="width:20%;background:#aaa;">🇺🇸 EN</div>
+      </div>
+      <p class="small" style="margin-top:6px;">O inglês funciona como um reforço de qualidade ao currículo principal, não como língua de instrução. Os materiais são certificados por Cambridge e Oxford — alta qualidade técnica — mas o tempo de contato diário com o idioma é bem menor do que na Eleva ou na Heavenly.</p>
+    </div>
+    <div class="school-card">
+      <h3>Projetos estruturantes do cidadão solidário</h3>
+      <div class="grid2" style="gap:8px;margin-top:8px;">
+        <div style="background:rgba(255,255,255,.6);border-radius:12px;padding:10px 12px;border:1px solid var(--school-mid);">
+          <b style="font-size:12px;color:var(--school);">Campanha da Fraternidade</b>
+          <p class="small" style="margin-top:4px;">Engajamento comunitário e consciência social desde os anos iniciais.</p>
+        </div>
+        <div style="background:rgba(255,255,255,.6);border-radius:12px;padding:10px 12px;border:1px solid var(--school-mid);">
+          <b style="font-size:12px;color:var(--school);">Missões Sociais (PIS)</b>
+          <p class="small" style="margin-top:4px;">Projetos de inserção social que conectam o aluno à realidade do país.</p>
+        </div>
+        <div style="grid-column:1/-1;background:rgba(255,255,255,.6);border-radius:12px;padding:10px 12px;border:1px solid var(--school-mid);">
+          <b style="font-size:12px;color:var(--school);">Campus Universitário</b>
+          <p class="small" style="margin-top:4px;">Estrutura física robusta que transmite a percepção de uma instituição completa — mais próxima de uma universidade do que de uma escola tradicional.</p>
+        </div>
+      </div>
+      <div class="callout" style="border-color:var(--school-mid);background:var(--school-light);color:var(--school);margin-top:10px;">
+        Domina o mercado de famílias que priorizam "formação do bom cidadão"
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 18 · Marista</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 19 — ELEVA: CIDADANIA GLOBAL ─── -->
+<section class="slide s-eleva" data-title="Eleva — Cidadania Global e Rede Inspired">
+  <div class="school-stripe"></div>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    <div class="school-badge"><div class="dot2"></div>ESCOLA ELEVA BRASÍLIA</div>
+    <span class="pill">Global · Elitista · Inovador</span>
+    <span class="pill" style="background:rgba(139,30,36,.08);color:var(--red);">A escola que define o teto de mensalidades do DF</span>
+  </div>
+  <div>
+    <div class="kicker">G · Escola Eleva</div>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">O produto é o pertencimento à rede global</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="grid2">
+    <div>
+      <div class="quote-block">
+        "O grande ativo da Eleva não é apenas o ensino, mas o pertencimento à rede Inspired (mais de 80 escolas pelo mundo)."
+      </div>
+      <div class="card" style="margin-top:10px;">
+        <h3>Proposta de valor central</h3>
+        <ul class="bullets">
+          <li>Vende acesso a um <b>círculo social de alto nível</b>: currículo reconhecido internacionalmente e uma rede de contatos que se constrói desde a infância.</li>
+          <li>Famílias projetam o filho para um cenário de expatriação ou vivência global.</li>
+          <li>Ambiente laico e pragmático, voltado ao desempenho corporativo/global.</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:10px;">
+        <h3>Vivência internacional materializada</h3>
+        <ul class="bullets">
+          <li>Intercâmbios reais nas sedes da rede Inspired (Europa e EUA).</li>
+          <li>Parte intrínseca da jornada do aluno — não "viagem de formatura".</li>
+        </ul>
+      </div>
+    </div>
+    <div class="school-card">
+      <h3>Jornada Eleva: da imersão à cidadania</h3>
+      <div style="margin:14px 0;display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:999px;background:var(--school);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+          <div><b style="font-size:13px;">Formação bilíngue</b><p class="small" style="margin-top:2px;">Imersão no Brasil com metodologia Eleva.</p></div>
+        </div>
+        <div style="width:2px;height:16px;background:var(--school-mid);margin-left:17px;"></div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:999px;background:var(--school);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+          <div><b style="font-size:13px;">Experiência internacional real</b><p class="small" style="margin-top:2px;">Períodos nas sedes da rede na Europa e nos EUA — parte da jornada, não viagem de formatura.</p></div>
+        </div>
+        <div style="width:2px;height:16px;background:var(--school-mid);margin-left:17px;"></div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:999px;background:var(--school);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+          <div><b style="font-size:13px;">Cidadania Global</b><p class="small" style="margin-top:2px;">Currículo transferível e competências globais.</p></div>
         </div>
       </div>
     </div>
   </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 19 · Eleva</div>
+  </div>
+</section>
 
-  <script>
-    (function(){
-      const slides = Array.from(document.querySelectorAll(".slide"));
-      const counter = document.getElementById("counter");
-      const prevBtn = document.getElementById("prev");
-      const nextBtn = document.getElementById("next");
+<!-- ─── SLIDE 20 — ELEVA: IMERSÃO E INOVAÇÃO ─── -->
+<section class="slide s-eleva" data-title="Eleva — Imersão 80% e Inovação">
+  <div class="school-stripe"></div>
+  <div class="school-badge"><div class="dot2"></div>ESCOLA ELEVA BRASÍLIA</div>
+  <div>
+    <div class="kicker">G · Escola Eleva</div>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Imersão em inglês, arquitetura aberta e inovação</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="grid2">
+    <div class="school-card">
+      <h3>Imersão estrutural real (EF1)</h3>
+      <div class="donut-wrap" style="margin:12px 0;">
+        <div class="donut-ring">
+          <svg viewBox="0 0 36 36">
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e8e8e8" stroke-width="3.8"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0B7A62" stroke-width="3.8"
+              stroke-dasharray="80 20" stroke-linecap="round"/>
+          </svg>
+          <div class="donut-label"><b>80%</b><span>Inglês</span></div>
+        </div>
+        <div>
+          <ul class="bullets" style="padding-left:14px;">
+            <li><b>80%</b> do tempo de instrução no EF1 em língua inglesa.</li>
+            <li><b>20%</b> componentes curriculares nacionais obrigatórios.</li>
+            <li>Única instituição analisada que alfabetiza a criança <em>pensando</em> na segunda língua, ultrapassando a lógica da tradução mental.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="quote-block">
+        "Aproximadamente 80% do tempo de instrução no Fundamental 1 ocorre em língua inglesa."
+        <cite>— Auditoria Q6</cite>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Cultura de inovação — além do laboratório de informática</h3>
+        <ul class="bullets">
+          <li><b>Cultura maker:</b> fabricação e prototipagem.</li>
+          <li><b>Programação nativa:</b> código como linguagem, não ferramenta.</li>
+          <li><b>Resolução criativa de problemas:</b> metodologia aplicada a situações reais do cotidiano.</li>
+        </ul>
+        <p class="small" style="margin-top:8px;">Alinha-se estritamente às habilidades do mercado de trabalho do futuro.</p>
+      </div>
+      <div class="card" style="margin-top:10px;">
+        <h3>Arquitetura aberta — a escola como espaço de comunidade</h3>
+        <ul class="bullets">
+          <li>Arquitetura com transparência em vidro.</li>
+          <li>Fomenta cultura de comunidade aberta e vigilância passiva/positiva.</li>
+        </ul>
+        <div class="callout" style="border-color:rgba(11,122,98,.2);background:rgba(11,122,98,.07);color:var(--school);">Uso da Plataforma Eleva + integração futura com o Bacharelado Internacional (IB — programa de referência global)</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 20 · Eleva</div>
+  </div>
+</section>
 
-      let idx = 0;
+<!-- ─── SLIDE 21 — ELEVA: DESAFIOS E FILTRO ─── -->
+<section class="slide s-eleva" data-title="Eleva — Desafios e Filtro Econômico">
+  <div class="school-stripe"></div>
+  <div class="school-badge"><div class="dot2"></div>ESCOLA ELEVA BRASÍLIA</div>
+  <div>
+    <div class="kicker">G · Escola Eleva</div>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">O desafio do corpo docente e o filtro pelo preço</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Desafio do corpo docente internacional</h3>
+      <div class="split" style="margin-top:10px;">
+        <div class="split-pos">
+          <h4>✓ Positivo</h4>
+          <p class="small">Professores estrangeiros trazem excelência cultural e fluência nativa autêntica.</p>
+        </div>
+        <div class="split-neg">
+          <h4>⚠ Risco</h4>
+          <p class="small">Rotatividade natural de professores a cada 2–3 anos (contratos temporários). Exige atenção constante da escola à continuidade do ensino.</p>
+        </div>
+      </div>
+      <p class="small" style="margin-top:10px;">Equilíbrio entre qualidade nativa e estabilidade do corpo docente é o <b>principal desafio operacional</b> da Eleva.</p>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Autonomia neuroatípica — ressalva crítica</h3>
+        <p class="small" style="margin-top:6px;">O ritmo acadêmico do modelo internacional exige muita autonomia e capacidade de concentração desde os primeiros anos. Para crianças com TDAH ou TEA, esse ambiente pode se tornar muito estressante sem um acompanhamento externo intenso — como tutoria privada fora do horário escolar.</p>
+      </div>
+      <div class="school-card" style="margin-top:10px;">
+        <h3>O filtro pelo preço — quem define o teto do mercado</h3>
+        <p class="small" style="margin-top:6px;">Por cobrar a mensalidade mais alta do DF, a Eleva cria, na prática, um filtro de acesso quase exclusivo — garantindo que o ambiente escolar seja frequentado por colegas com perfil socioeconômico muito semelhante. Proposta: menos escola, mais investimento em capital social.</p>
+        <div class="callout" style="border-color:rgba(11,122,98,.2);background:rgba(11,122,98,.07);color:var(--school);margin-top:10px;">Eleva = máximo nível de mensalidade · laica · global · exige maturidade precoce</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 21 · Eleva</div>
+  </div>
+</section>
 
-      function render(){
-        slides.forEach((s,i)=>s.classList.toggle("active", i===idx));
-        counter.textContent = `${idx+1} / ${slides.length}`;
-        document.title = `EVEREST — ${slides[idx].dataset.title || ("Slide " + (idx+1))}`;
-      }
+<!-- ─── SLIDE 22 — GALOIS: IDENTIDADE E PERFORMANCE ─── -->
+<section class="slide s-galois" data-title="Galois — Alta Performance e Cultura">
+  <div class="school-stripe"></div>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    <div class="school-badge"><div class="dot2"></div>COLÉGIO GALOIS (L2 SUL)</div>
+    <span class="pill">Focado em conteúdo · Disciplinado · Orientado a resultados</span>
+    <span class="pill" style="background:rgba(139,30,36,.08);color:var(--red);">Alta Performance Acadêmica Consolidada</span>
+  </div>
+  <div>
+    <div class="kicker">H · Colégio Galois</div>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Resultados como identidade — e como negócio</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="grid2">
+    <div>
+      <div class="quote-block">
+        "A identidade central é a excelência métrica. Existe um esforço colossal de gestão de imagem para manter a percepção de rigor absoluto."
+        <cite>— Análise Q1–Q3</cite>
+      </div>
+      <div class="card" style="margin-top:10px;">
+        <h3>Cultura de testes (Q13)</h3>
+        <ul class="bullets">
+          <li>Testes frequentes simulando o ambiente de concorrência real desde os anos iniciais.</li>
+          <li>Não tenta agradar todas as metodologias: abraça o modelo tradicional de ensino por conteúdo com orgulho e eficácia comprovada.</li>
+          <li>Mapeamento de redes aponta relatos <b>polarizados</b>.</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="split">
+        <div class="split-pos">
+          <h4>👍 Percepção positiva</h4>
+          <p class="small">Pais elogiam efusivamente a disciplina e os resultados finais. Aprovações de alto calibre (Medicina, Direito) como prova social.</p>
+        </div>
+        <div class="split-neg">
+          <h4>⚠ Percepção crítica</h4>
+          <p class="small">Subtexto constante de ansiedade e pressão psicológica gerada pelo ambiente altamente competitivo.</p>
+        </div>
+      </div>
+      <div class="school-card" style="margin-top:10px;">
+        <h3>Cultura cívica e valores (Q16)</h3>
+        <ul class="bullets">
+          <li>Base judaico-cristã, mas destaque real na rotina é o apelo <b>cívico-militar implícito</b>.</li>
+          <li>Foco extremo em ordem, hierarquia e respeito à autoridade.</li>
+          <li>Atrai famílias que sentem falta de "limites" na educação contemporânea.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 22 · Galois</div>
+  </div>
+</section>
 
-      function next(){ idx = Math.min(slides.length-1, idx+1); render(); }
-      function prev(){ idx = Math.max(0, idx-1); render(); }
+<!-- ─── SLIDE 23 — GALOIS: INCLUSÃO, COMERCIAL E RISCO ─── -->
+<section class="slide s-galois" data-title="Galois — Inclusão, Comercial e Riscos">
+  <div class="school-stripe"></div>
+  <div class="school-badge"><div class="dot2"></div>COLÉGIO GALOIS (L2 SUL)</div>
+  <div>
+    <div class="kicker">H · Colégio Galois</div>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Sem flexibilidade — e sem precisar ter</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="grid3">
+    <div class="card">
+      <h3>Inclusão: o "Resolve" (Q15)</h3>
+      <p class="small" style="margin-top:6px;">A escola não adapta o currículo ao aluno — ela adiciona mais horas de monitoria para que o aluno alcance o nível exigido. A lógica é: todos precisam chegar ao mesmo lugar; quem está atrás precisa correr mais.</p>
+      <div class="split-neg" style="margin-top:8px;border-radius:10px;">
+        <p class="small"><b>Crianças com TDAH ou TEA:</b> o ambiente historicamente é muito desafiador. A metodologia exige atenção prolongada e quietude em sala. A própria cultura de alta exigência age como um filtro — alunos com dificuldades tendem a não permanecer.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Comercial inelástico (Q23)</h3>
+      <p class="small" style="margin-top:6px;">Política de descontos extremamente conservadora. A escola sabe que seu público não negocia preço — a família que tem como objetivo a Medicina ou o Direito na UnB está disposta a pagar o valor exigido. A reputação elimina a necessidade de desconto.</p>
+      <div style="margin:10px 0;text-align:center;">
+        <div class="stat-num">0%</div>
+        <div class="stat-label">descontos estruturais</div>
+        <p class="small" style="margin-top:6px;">Sem descontos por irmão ou volume — demandinelástica é a estratégia.</p>
+      </div>
+    </div>
+    <div class="school-card">
+      <h3>Bilinguismo e entrega futura</h3>
+      <div class="bili-track">
+        <div class="bili-seg" style="width:90%;background:var(--school);">🇧🇷 BNCC padrão</div>
+        <div class="bili-seg" style="width:10%;background:#bbb;">EN</div>
+      </div>
+      <p class="small" style="margin-top:8px;">O ponto mais vulnerável frente à Eleva e à Heavenly. O inglês segue o currículo nacional padrão, com acréscimos pontuais — sem imersão real no idioma.</p>
+      <div class="callout" style="border-color:var(--school-mid);background:var(--school-light);color:var(--school);margin-top:10px;">Projeto vendido: inserção objetiva no ensino superior de prestígio</div>
+      <p class="small" style="margin-top:8px;">Inabalável no nicho de famílias que encaram a escola como "esteira de aprovação" rumo ao sucesso financeiro e profissional tradicional.</p>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 23 · Galois</div>
+  </div>
+</section>
 
-      nextBtn.addEventListener("click", next);
-      prevBtn.addEventListener("click", prev);
+<!-- ─── SLIDE 24 — MATRIZ COMPARATIVA ─── -->
+<section class="slide" data-title="Matriz Comparativa Consolidada">
+  <div>
+    <div class="kicker">I · Matriz comparativa e oportunidades Everest</div>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">As 4 escolas lado a lado — onde cada uma para</h2>
+    <div class="rule"></div>
+    <p class="subtitle">A matriz mostra o que cada escola entrega bem — e as lacunas que deixa. Nenhuma delas combina bilinguismo real + inclusão com protocolo + resultados acadêmicos comprováveis + formação de valores.</p>
+  </div>
+  <div class="tablewrap scroll matrix">
+    <table>
+      <thead>
+        <tr>
+          <th>Dimensão</th>
+          <th style="background:rgba(99,68,160,.06);padding:8px 12px;">
+            <img src="https://hisbsb.com.br/wp-content/uploads/2025/06/heavenly-logo-header.png" alt="Heavenly" style="max-height:28px;width:auto;object-fit:contain;display:block;margin:0 auto;"/>
+          </th>
+          <th style="background:rgba(11,106,160,.06);padding:8px 12px;">
+            <img src="https://brasilia.colegiosmaristas.com.br/wp-content/uploads/sites/7/2023/05/logo-BSB.png" alt="Marista" style="max-height:28px;width:auto;object-fit:contain;display:block;margin:0 auto;"/>
+          </th>
+          <th style="background:rgba(11,122,98,.06);padding:8px 12px;">
+            <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/Escola-Eleva-Logo.svg" alt="Eleva" style="max-height:24px;width:auto;object-fit:contain;display:block;margin:0 auto;"/>
+          </th>
+          <th style="background:rgba(26,51,102,.06);padding:8px 12px;">
+            <img src="https://galois.com.br/wp-content/uploads/2019/07/Galois-Logo-Positivo-RGB.png" alt="Galois" style="max-height:28px;width:auto;object-fit:contain;display:block;margin:0 auto;"/>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><b>Perfil</b></td><td style="background:rgba(99,68,160,.04);">Confessional / Personalizado</td><td style="background:rgba(11,106,160,.04);">Confessional Social / Inclusivo</td><td style="background:rgba(11,122,98,.04);">Global / Inovador</td><td style="background:rgba(26,51,102,.04);">Focado em resultados / Disciplinar</td></tr>
+        <tr><td><b>Inglês</b></td><td style="background:rgba(99,68,160,.04);font-weight:600;color:#6344A0;">Bilíngue integrado 50/50 ✓</td><td style="background:rgba(11,106,160,.04);">Complementar certificado</td><td style="background:rgba(11,122,98,.04);font-weight:600;color:#0B7A62;">Imersão 80% ✓</td><td style="background:rgba(26,51,102,.04);color:#999;">Padrão + complementos leves</td></tr>
+        <tr><td><b>Inclusão</b></td><td style="background:rgba(99,68,160,.04);">Procedimental / Acolhedor</td><td style="background:rgba(11,106,160,.04);font-weight:600;color:#0B6AA0;">Institucionalizado c/ PDI ✓</td><td style="background:rgba(11,122,98,.04);">Personalização com ressalvas</td><td style="background:rgba(26,51,102,.04);color:#999;">Filtro de exigência</td></tr>
+        <tr><td><b>Turmas</b></td><td style="background:rgba(99,68,160,.04);font-weight:600;color:#6344A0;">18–20 alunos ✓</td><td style="background:rgba(11,106,160,.04);color:#999;">25–30 alunos</td><td style="background:rgba(11,122,98,.04);font-weight:600;color:#0B7A62;">Reduzidas ✓</td><td style="background:rgba(26,51,102,.04);">Padrão</td></tr>
+        <tr><td><b>Valores</b></td><td style="background:rgba(99,68,160,.04);">Católico / Dogmático</td><td style="background:rgba(11,106,160,.04);">Católico / Solidário</td><td style="background:rgba(11,122,98,.04);">Laico / Global</td><td style="background:rgba(26,51,102,.04);">Judaico-Cristão / Cívico</td></tr>
+        <tr><td><b>Foco de futuro</b></td><td style="background:rgba(99,68,160,.04);">Formação integral + blindagem</td><td style="background:rgba(11,106,160,.04);">Cidadão solidário</td><td style="background:rgba(11,122,98,.04);">Cidadania global</td><td style="background:rgba(26,51,102,.04);font-weight:600;color:#1A3366;">Aprovação no ensino superior ✓</td></tr>
+        <tr><td><b>Segurança</b></td><td style="background:rgba(99,68,160,.04);">Padrão premium</td><td style="background:rgba(11,106,160,.04);font-weight:600;color:#0B6AA0;">260 câmeras + reconhecimento facial ✓</td><td style="background:rgba(11,122,98,.04);">Arquitetura aberta</td><td style="background:rgba(26,51,102,.04);">Padrão + hierarquia</td></tr>
+        <tr><td><b>Comercial</b></td><td style="background:rgba(99,68,160,.04);font-weight:600;color:#6344A0;">Descontos por família ✓</td><td style="background:rgba(11,106,160,.04);">Flexível (rede)</td><td style="background:rgba(11,122,98,.04);color:#999;">Preço mais alto do DF</td><td style="background:rgba(26,51,102,.04);color:#999;">Sem descontos</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout" style="align-self:flex-start;margin-top:8px;">Nenhuma escola combina hoje: inglês real + inclusão com protocolo + resultados comprováveis + formação de valores</div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 24 · Matriz</div>
+  </div>
+</section>
 
-      window.addEventListener("keydown", (e)=>{
-        const k = e.key;
-        if(k === "ArrowRight" || k === "PageDown" || k === " "){ e.preventDefault(); next(); }
-        if(k === "ArrowLeft"  || k === "PageUp"){ e.preventDefault(); prev(); }
-        if(k === "Home"){ idx = 0; render(); }
-        if(k === "End"){ idx = slides.length-1; render(); }
-      });
+<!-- ─── SLIDE 25 — OPORTUNIDADES EVEREST ─── -->
+<section class="slide" data-title="Oportunidades Everest">
+  <div>
+    <div class="kicker">I · Matriz comparativa e oportunidades Everest</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">O espaço que nenhuma delas ocupa</h2>
+    <div class="rule"></div>
+    <p class="subtitle">A oportunidade não está em copiar o que as concorrentes fazem bem. Está em ser a única escola que combina, de forma comprovável, o que hoje só existe em partes separadas.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;flex:1;min-height:0;">
 
-      render();
-    })();
-  </script>
+    <div style="border-radius:16px;border:2px solid rgba(26,51,102,.2);background:rgba(26,51,102,.04);padding:16px 14px;display:flex;flex-direction:column;gap:8px;">
+      <img src="https://galois.com.br/wp-content/uploads/2019/07/Galois-Logo-Positivo-RGB.png" alt="Galois" style="max-height:28px;width:auto;object-fit:contain;"/>
+      <div style="height:1px;background:rgba(26,51,102,.15);"></div>
+      <p style="font-size:12px;color:var(--muted);margin:0;">O que o Everest pode absorver:</p>
+      <p style="font-size:13px;font-weight:600;color:#1A3366;line-height:1.4;margin:0;">Excelência acadêmica com resultados comprováveis — aprovações como prova de proposta de valor.</p>
+    </div>
+
+    <div style="border-radius:16px;border:2px solid rgba(11,106,160,.2);background:rgba(11,106,160,.04);padding:16px 14px;display:flex;flex-direction:column;gap:8px;">
+      <img src="https://brasilia.colegiosmaristas.com.br/wp-content/uploads/sites/7/2023/05/logo-BSB.png" alt="Marista" style="max-height:28px;width:auto;object-fit:contain;"/>
+      <div style="height:1px;background:rgba(11,106,160,.15);"></div>
+      <p style="font-size:12px;color:var(--muted);margin:0;">O que o Everest pode absorver:</p>
+      <p style="font-size:13px;font-weight:600;color:#0B6AA0;line-height:1.4;margin:0;">Inclusão com protocolo real e formação de valores — não como discurso, mas como processo.</p>
+    </div>
+
+    <div style="border-radius:16px;border:2px solid rgba(99,68,160,.2);background:rgba(99,68,160,.04);padding:16px 14px;display:flex;flex-direction:column;gap:8px;">
+      <img src="https://hisbsb.com.br/wp-content/uploads/2025/06/heavenly-logo-header.png" alt="Heavenly" style="max-height:28px;width:auto;object-fit:contain;"/>
+      <div style="height:1px;background:rgba(99,68,160,.15);"></div>
+      <p style="font-size:12px;color:var(--muted);margin:0;">O que o Everest pode absorver:</p>
+      <p style="font-size:13px;font-weight:600;color:#6344A0;line-height:1.4;margin:0;">Bilinguismo integrado ao currículo e formação confessional com identidade clara e aspiracional.</p>
+    </div>
+
+    <div style="border-radius:16px;border:2px solid rgba(11,122,98,.2);background:rgba(11,122,98,.04);padding:16px 14px;display:flex;flex-direction:column;gap:8px;">
+      <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/Escola-Eleva-Logo.svg" alt="Eleva" style="max-height:24px;width:auto;object-fit:contain;"/>
+      <div style="height:1px;background:rgba(11,122,98,.15);"></div>
+      <p style="font-size:12px;color:var(--muted);margin:0;">O que o Everest pode absorver:</p>
+      <p style="font-size:13px;font-weight:600;color:#0B7A62;line-height:1.4;margin:0;">Modelo pedagógico estruturado, rotina premium e operação de alto padrão como produto percebido.</p>
+    </div>
+
+  </div>
+  <div style="background:rgba(139,30,36,.06);border:1.5px solid rgba(139,30,36,.2);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:14px;">
+    <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Everest" style="height:32px;width:auto;flex-shrink:0;"/>
+    <p style="margin:0;font-size:13.5px;font-weight:600;color:var(--red);line-height:1.5;">Everest = o único que pode combinar: <b>inglês real + inclusão com protocolo + resultados comprováveis + formação de valores</b> — com uma marca que já tem história nesse mercado.</p>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 25 · Everest</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 26 — CONDIÇÕES DE VIABILIDADE ─── -->
+<!-- ─── TRANSIÇÃO BLOCO 3 ─── -->
+<section class="slide slide-chapter" data-title="Bloco 3 — Decisão">
+  <div class="ch-watermark">03</div>
+  <div class="ch-content">
+    <span class="ch-tag">Bloco 03 de 03</span>
+    <h2 class="ch-title">Decisão</h2>
+    <div class="ch-rule"></div>
+    <p class="ch-body">O que os dados e o campo revelam sobre as condições de viabilidade e os próximos passos estratégicos.</p>
+  </div>
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria" style="filter:brightness(0) invert(1);opacity:.38;"/></div>
+    <div class="meta">Bloco 03</div>
+  </div>
+</section>
+
+<section class="slide" data-title="Condições de viabilidade">
+  <div>
+    <div class="kicker">J · Condições de viabilidade</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">O que precisa estar verdadeiro</h2>
+    <div class="rule"></div>
+    <p class="subtitle">Existe mercado potencial — mas a implantação só vinga se três condições forem atendidas em simultâneo.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;min-height:0;">
+
+    <!-- Condição 1 -->
+    <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-10px;right:-10px;font-size:80px;font-weight:800;color:rgba(139,30,36,.06);line-height:1;user-select:none;">1</div>
+      <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      </div>
+      <div>
+        <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Condição 1</p>
+        <h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0 0 10px;">Micro-localização e acesso</h3>
+      </div>
+      <ul class="bullets" style="margin:0;">
+        <li>Terreno que minimize tempo e imprevisibilidade — especialmente para a Região Primária.</li>
+        <li>Validar nos horários de pico: filas, retornos, segurança e fluxo de saída.</li>
+      </ul>
+      <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">Critério: acesso previsível no horário de pico</div>
+    </div>
+
+    <!-- Condição 2 -->
+    <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-10px;right:-10px;font-size:80px;font-weight:800;color:rgba(139,30,36,.06);line-height:1;user-select:none;">2</div>
+      <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      </div>
+      <div>
+        <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Condição 2</p>
+        <h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0 0 10px;">Proposta com provas</h3>
+      </div>
+      <ul class="bullets" style="margin:0;">
+        <li>Tese clara: excelência acadêmica + bilinguismo real + inclusão com protocolo.</li>
+        <li>Narrativa simples: o que será entregue e como aparece na rotina do aluno.</li>
+      </ul>
+      <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">Critério: mensagem comprovável, não genérica</div>
+    </div>
+
+    <!-- Condição 3 -->
+    <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-10px;right:-10px;font-size:80px;font-weight:800;color:rgba(139,30,36,.06);line-height:1;user-select:none;">3</div>
+      <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <div>
+        <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Condição 3</p>
+        <h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0 0 10px;">Logística como produto</h3>
+      </div>
+      <ul class="bullets" style="margin:0;">
+        <li>Entrada e saída como experiência: fluxo, segurança, previsibilidade e comunicação.</li>
+        <li>Mitigadores de raio: janelas de horário, rotas e apoio de transporte.</li>
+      </ul>
+      <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">Critério: operação que reduz a fricção percebida</div>
+    </div>
+
+  </div>
+
+  <div style="background:var(--ink);border-radius:14px;padding:13px 20px;display:flex;align-items:center;gap:16px;">
+    <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">Viabilidade =</span>
+    <span style="font-size:13.5px;font-weight:700;color:#fff;">Localização certa &nbsp;+&nbsp; Proposta comprovável &nbsp;+&nbsp; Operação premium</span>
+  </div>
+
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 30</div>
+  </div>
+</section>
+
+<!-- ─── SLIDE 27 — PRÓXIMOS PASSOS ─── -->
+<section class="slide" data-title="Recomendações Estratégicas">
+  <div>
+    <div class="kicker">K · Recomendações Estratégicas</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Próximos passos</h2>
+    <div class="rule"></div>
+    <p class="subtitle">Reduzir risco antes de comprometer investimento — com testes curtos, simulações e desenho operacional.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;min-height:0;">
+
+    <!-- Agenda: 6 itens em grid 2x3 -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <p style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin:0;">Agenda objetiva</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;">
+
+        <div style="background:#f7f7f8;border:1.5px solid #e8e8ec;border-radius:14px;padding:12px 14px;">
+          <p style="font-size:10.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin:0 0 4px;">01</p>
+          <p style="font-size:12.5px;font-weight:700;margin:0 0 3px;color:var(--ink);">Fechar a tese</p>
+          <p style="font-size:11.5px;color:var(--muted);margin:0;">Proposta, evidências e materiais de captação.</p>
+        </div>
+
+        <div style="background:#f7f7f8;border:1.5px solid #e8e8ec;border-radius:14px;padding:12px 14px;">
+          <p style="font-size:10.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin:0 0 4px;">02</p>
+          <p style="font-size:12.5px;font-weight:700;margin:0 0 3px;color:var(--ink);">Shortlist de terrenos</p>
+          <p style="font-size:11.5px;color:var(--muted);margin:0;">3–5 opções avaliadas por critério de acesso.</p>
+        </div>
+
+        <div style="background:#f7f7f8;border:1.5px solid #e8e8ec;border-radius:14px;padding:12px 14px;">
+          <p style="font-size:10.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin:0 0 4px;">03</p>
+          <p style="font-size:12.5px;font-weight:700;margin:0 0 3px;color:var(--ink);">Teste de pico</p>
+          <p style="font-size:11.5px;color:var(--muted);margin:0;">Simular rotina real (manhã/tarde) e medir fluxos.</p>
+        </div>
+
+        <div style="background:#f7f7f8;border:1.5px solid #e8e8ec;border-radius:14px;padding:12px 14px;">
+          <p style="font-size:10.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin:0 0 4px;">04</p>
+          <p style="font-size:12.5px;font-weight:700;margin:0 0 3px;color:var(--ink);">Simulação financeira</p>
+          <p style="font-size:11.5px;color:var(--muted);margin:0;">Mensalidade × % de renda e impactos no funil.</p>
+        </div>
+
+        <div style="background:#f7f7f8;border:1.5px solid #e8e8ec;border-radius:14px;padding:12px 14px;">
+          <p style="font-size:10.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin:0 0 4px;">05</p>
+          <p style="font-size:12.5px;font-weight:700;margin:0 0 3px;color:var(--ink);">Desenho operacional</p>
+          <p style="font-size:11.5px;color:var(--muted);margin:0;">Entrada, saída, segurança, comunicação e mitigadores.</p>
+        </div>
+
+        <div style="background:#f7f7f8;border:1.5px solid #e8e8ec;border-radius:14px;padding:12px 14px;">
+          <p style="font-size:10.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin:0 0 4px;">06</p>
+          <p style="font-size:12.5px;font-weight:700;margin:0 0 3px;color:var(--ink);">Captação faseada</p>
+          <p style="font-size:11.5px;color:var(--muted);margin:0;">Primária → Secundária → Terciária, com metas por etapa.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Riscos -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <p style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin:0;">Riscos a monitorar</p>
+      <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
+
+        <div style="display:flex;align-items:flex-start;gap:12px;background:#fff5f5;border:1.5px solid rgba(139,30,36,.15);border-radius:14px;padding:12px 14px;">
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <p style="font-size:12.5px;font-weight:600;color:var(--ink);margin:0;line-height:1.45;">Diferenciação insuficiente frente às 4 escolas analisadas.</p>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:12px;background:#fff5f5;border:1.5px solid rgba(139,30,36,.15);border-radius:14px;padding:12px 14px;">
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <p style="font-size:12.5px;font-weight:600;color:var(--ink);margin:0;line-height:1.45;">Fricção logística não resolvida — acesso, fluxo e segurança.</p>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:12px;background:#fff5f5;border:1.5px solid rgba(139,30,36,.15);border-radius:14px;padding:12px 14px;">
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <p style="font-size:12.5px;font-weight:600;color:var(--ink);margin:0;line-height:1.45;">Competição local subestimada na análise inicial.</p>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:12px;background:#fff5f5;border:1.5px solid rgba(139,30,36,.15);border-radius:14px;padding:12px 14px;">
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <p style="font-size:12.5px;font-weight:600;color:var(--ink);margin:0;line-height:1.45;">Taxa de conversão menor do que o esperado fora da Primária.</p>
+        </div>
+
+        <div style="margin-top:auto;background:var(--ink);border-radius:12px;padding:12px 14px;">
+          <p style="font-size:12px;font-weight:700;color:rgba(255,255,255,.55);margin:0 0 2px;text-transform:uppercase;letter-spacing:.07em;font-size:10.5px;">Boa prática</p>
+          <p style="font-size:13px;font-weight:600;color:#fff;margin:0;">Definir métricas por território e por etapa — antes de começar a captar.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 31</div>
+  </div>
+</section>
+
+      </div><!-- /slides -->
+
+      <button class="btn-pdf" onclick="window.print()" title="Exportar PDF">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
+    <rect x="6" y="14" width="12" height="8"/>
+  </svg>
+  Exportar PDF
+</button>
+
+<div class="controls" role="group" aria-label="Navegação do deck">
+        <button class="btn" id="home" title="Voltar ao início" style="font-size:15px;padding:5px 8px;opacity:.6;" onclick="window._goHome&&window._goHome()">⌂</button>
+        <button class="btn" id="prev" title="Anterior (←)">←</button>
+        <div class="counter" id="counter">1 / 28</div>
+        <button class="btn" id="next" title="Próximo (→)">→</button>
+      </div>
+    </div><!-- /content -->
+  </div><!-- /deck -->
+</div><!-- /stage -->
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll(".slide"));
+  const counter = document.getElementById("counter");
+  const prevBtn = document.getElementById("prev");
+  const nextBtn = document.getElementById("next");
+  let idx = 0;
+  function render(){
+    slides.forEach((s,i)=>s.classList.toggle("active",i===idx));
+    counter.textContent = `${idx+1} / ${slides.length}`;
+    document.title = `EVEREST — ${slides[idx].dataset.title||("Slide "+(idx+1))}`;
+  }
+  function next(){ idx=Math.min(slides.length-1,idx+1); render(); }
+  function prev(){ idx=Math.max(0,idx-1); render(); }
+  window.goToSlide=function(title){ const i=Array.from(slides).findIndex(s=>s.dataset.title===title); if(i>=0){idx=i;render();} };
+  window._goHome=function(){ idx=0; render(); };
+  nextBtn.addEventListener("click",next);
+  prevBtn.addEventListener("click",prev);
+  window.addEventListener("keydown",(e)=>{
+    const k=e.key;
+    if(k==="ArrowRight"||k==="PageDown"||k===" "){ e.preventDefault(); next(); }
+    if(k==="ArrowLeft"||k==="PageUp"){ e.preventDefault(); prev(); }
+    if(k==="Home"){ idx=0; render(); }
+    if(k==="End"){ idx=slides.length-1; render(); }
+  });
+  render();
+})();
+</script>
 </body>
 </html>
