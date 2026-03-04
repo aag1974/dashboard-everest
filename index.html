@@ -116,8 +116,41 @@
     .counter{ font-size:11.5px; font-weight:800; color:rgba(17,19,22,.55); padding:0 5px; min-width:64px; text-align:center; }
 
 
-    /* ═══ PRINT / PDF ═══ */
-    .btn-pdf{
+    /* ═══ PRINT ═══ */
+    @media print {
+      @page { size: 297mm 210mm; margin: 0; }
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+      html, body {
+        margin: 0 !important; padding: 0 !important;
+        width: 297mm !important; background: white !important;
+      }
+      .topbar, .controls, .btn-pdf { display: none !important; }
+      #stage  { width: 297mm !important; height: auto !important; padding: 0 !important; background: white !important; display: block !important; }
+      #deck   { width: 297mm !important; height: auto !important; box-shadow: none !important; border-radius: 0 !important; background: white !important; overflow: visible !important; }
+      #slides { position: static !important; width: 297mm !important; height: auto !important; overflow: visible !important; }
+
+      .slide {
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 297mm !important;
+        height: 210mm !important;
+        max-height: 210mm !important;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: none !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      .slide:last-child { page-break-after: avoid !important; break-after: avoid !important; }
+    }
+
+    .btn-pdf {
       position:fixed; top:18px; right:18px; z-index:9999;
       display:flex; align-items:center; gap:7px;
       background:var(--red); color:#fff;
@@ -125,36 +158,10 @@
       padding:9px 18px 9px 14px;
       font:700 12px/1 inherit; cursor:pointer;
       box-shadow:0 4px 16px rgba(139,30,36,.35);
-      transition:opacity .15s;
+      transition:opacity .15s, transform .15s;
     }
-    .btn-pdf:hover{ opacity:.88; }
+    .btn-pdf:hover{ opacity:.88; transform:translateY(-1px); }
     .btn-pdf svg{ flex-shrink:0; }
-
-    @media print {
-      @page { size:A4 landscape; margin:0; }
-      html, body { margin:0; padding:0; background:#fff; }
-      .topbar, .controls, .btn-pdf { display:none !important; }
-      #stage { width:100%; height:auto; padding:0; background:#fff; }
-      #deck { width:100%; height:auto; background:none; box-shadow:none; border-radius:0; }
-      #slides { width:100%; height:auto; position:static; }
-      .slide {
-        display:flex !important;
-        position:relative !important;
-        width:100% !important;
-        height:auto !important;
-        min-height:0 !important;
-        page-break-after:always;
-        break-after:page;
-        padding:28px 36px !important;
-        box-sizing:border-box;
-        transform:none !important;
-        opacity:1 !important;
-        overflow:visible !important;
-      }
-      .slide:last-child { page-break-after:avoid; break-after:avoid; }
-      /* scale content to 85% */
-      .slide > * { zoom:0.85; }
-    }
 
     /* ═══ BENCHMARK SYSTEM ═══ */
     .s-heavenly{ --school:#6344A0; --school-light:rgba(99,68,160,.07); --school-mid:rgba(99,68,160,.15); }
@@ -1831,7 +1838,7 @@
 
       </div><!-- /slides -->
 
-      <button class="btn-pdf" onclick="window.print()" title="Exportar PDF">
+      <button class="btn-pdf" onclick="exportPDF()" title="Exportar PDF">
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
     <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
     <rect x="6" y="14" width="12" height="8"/>
@@ -1876,6 +1883,37 @@
   });
   render();
 })();
+
+// ── Reveal all slides for print, restore after ──────────────────
+function revealAllForPrint(){
+  const slides = document.querySelectorAll('.slide');
+  slides.forEach(function(s){
+    s.dataset.printOpacity  = s.style.opacity;
+    s.dataset.printPosition = s.style.position;
+    s.dataset.printTransform = s.style.transform;
+    s.dataset.printDisplay  = s.style.display;
+    s.style.opacity   = '1';
+    s.style.position  = 'relative';
+    s.style.transform = 'none';
+    s.style.display   = 'flex';
+  });
+}
+function restoreAfterPrint(){
+  const slides = document.querySelectorAll('.slide');
+  slides.forEach(function(s){
+    s.style.opacity   = s.dataset.printOpacity   || '';
+    s.style.position  = s.dataset.printPosition  || '';
+    s.style.transform = s.dataset.printTransform || '';
+    s.style.display   = s.dataset.printDisplay   || '';
+  });
+}
+
+window.addEventListener('beforeprint', revealAllForPrint);
+window.addEventListener('afterprint',  restoreAfterPrint);
+
+// Keep Ctrl+P shortcut working natively — no button needed
+// Button kept as convenience alias
+function exportPDF(){ window.print(); }
+
 </script>
 </body>
-</html>
