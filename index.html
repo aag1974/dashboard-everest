@@ -314,55 +314,43 @@
       .controls-logo img {
         height: 28px !important;
         width: auto !important;
-        opacity: .7 !important;
       }
       .btn { padding: 10px 16px !important; font-size: 20px !important; }
       .counter { font-size: 13px !important; min-width: 56px !important; text-align: center !important; }
       /* Hide home button on mobile — save space */
       #home { display: none !important; }
 
-      /* ── Slide chapter: centre content ── */
-      .slide.slide-chapter { justify-content: flex-start !important; padding-top: 40px !important; }
-
-      /* ── Cover ── */
       /* ── Cover slide mobile ── */
       .slide.cover {
-        justify-content: center !important;
-        min-height: 70svh !important;
+        justify-content: flex-start !important;
+        min-height: 72svh !important;
         padding-top: 48px !important;
-        padding-bottom: 32px !important;
-        gap: 0 !important;
+        padding-bottom: 24px !important;
+        gap: 14px !important;
       }
       .slide.cover .cover-watermark {
-        font-size: clamp(70px, 20vw, 110px) !important;
-        top: 6% !important;
-        right: -5px !important;
-      }
-      .slide.cover .cover-content {
-        position: relative !important;
-        z-index: 2 !important;
-        padding-bottom: 0 !important;
+        font-size: clamp(60px, 18vw, 90px) !important;
+        top: 4% !important;
+        right: -4px !important;
+        transform: none !important;
       }
 
       /* ── Chapter slides mobile ── */
       .slide.slide-chapter {
-        justify-content: center !important;
-        min-height: 50svh !important;
-        padding-top: 40px !important;
+        justify-content: flex-start !important;
+        min-height: 52svh !important;
+        padding-top: 48px !important;
         padding-bottom: 24px !important;
         overflow: hidden !important;
-        gap: 0 !important;
+        gap: 10px !important;
       }
       .ch-watermark {
-        font-size: clamp(80px, 24vw, 130px) !important;
-        top: 6% !important;
-        right: -5px !important;
+        font-size: clamp(70px, 22vw, 120px) !important;
+        top: 4% !important;
+        right: -4px !important;
+        transform: none !important;
       }
-      .ch-content {
-        position: relative !important;
-        z-index: 2 !important;
-      }
-      .ch-title { font-size: clamp(30px, 8vw, 48px) !important; }
+      .ch-title { font-size: clamp(28px, 7.5vw, 46px) !important; }
 
       /* ── School stripe: horizontal top bar on mobile ── */
       .school-stripe {
@@ -373,165 +361,9 @@
     }
 
     /* ═══ PRINT ═══ */
-    @media print {
-      @page { size: A4 landscape; margin: 10mm; }
-      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    
 
-      body > * { display: none !important; }
 
-      #print-root { display: block !important; margin: 0; padding: 0; }
-
-      /* A4 landscape content area after 10mm margins: ~277×190mm */
-      .print-page {
-        display: block !important;
-        position: relative !important;
-        width: 277mm !important;
-        height: 190mm !important;
-        overflow: hidden !important;
-        clip-path: inset(0) !important;
-        box-sizing: border-box !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        page-break-after: always !important;
-        break-after: page !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-      }
-      .print-page:last-child {
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-      }
-
-      /*
-        .print-wrap: native 1280×720, absolutely positioned, scaled to fit A4.
-        Uses position:relative so the cloned slide's position:absolute;inset:0 works
-        exactly as it does on screen.
-      */
-      .print-wrap {
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 1280px !important;
-        height: 720px !important;
-        transform-origin: top left !important;
-        overflow: hidden !important;
-      }
-
-      /*
-        Slide clone keeps its screen behaviour: position:absolute fills the wrap.
-        No overrides needed — the CSS classes already define the layout correctly.
-      */
-      .print-wrap .slide {
-        position: absolute !important;
-        inset: 0 !important;
-        opacity: 1 !important;
-        transform: none !important;
-        pointer-events: none !important;
-        border-radius: 0 !important;
-        border: none !important;
-        box-shadow: none !important;
-      }
-    }
-
-      /*
-        .print-page   — A4 page boundary (explicit h/w, overflow:hidden, position:relative)
-        .print-wrap   — absolutely positioned inside, native 1280×720, scaled via transform
-        .slide clone  — fills wrap, all inline styles reset
-      */
-      .print-page {
-        display: block !important;
-        position: relative !important;
-        width: 277mm !important;
-        height: 190mm !important;
-        overflow: hidden !important;
-        clip-path: inset(0) !important;
-        box-sizing: border-box !important;
-        margin: 0 !important; padding: 0 !important;
-        page-break-after: always !important;
-        break-after: page !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-      }
-      .print-page:last-child {
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-      }
-
-      /* Scale container: absolute so it doesn't affect block flow */
-      .print-wrap {
-        position: absolute !important;
-        top: 0 !important; left: 0 !important;
-        width: 1280px !important;
-        height: 720px !important;
-        transform-origin: top left !important;
-        overflow: hidden !important;
-      }
-
-      /* Slide clone resets — position:relative so ::before inset:0 is contained within the slide */
-      .print-wrap .slide {
-        position: relative !important;
-        inset: unset !important;
-        display: flex !important;
-        flex-direction: column !important;
-        width: 1280px !important;
-        height: 720px !important;
-        min-height: unset !important;
-        max-height: 720px !important;
-        opacity: 1 !important;
-        transform: none !important;
-        overflow: hidden !important;
-        isolation: isolate !important;
-        box-sizing: border-box !important;
-        margin: 0 !important;
-        border-radius: 0 !important;
-        border: none !important;
-        box-shadow: none !important;
-        pointer-events: none !important;
-        padding: var(--padY) var(--padX) !important;
-        flex: 0 0 auto !important;
-        scroll-snap-align: none !important;
-      }
-
-      /* Fix slide-chapter: justify flex-end to match desktop */
-      .print-wrap .slide.slide-chapter {
-        justify-content: flex-end !important;
-        padding-bottom: clamp(28px, 4vw, 56px) !important;
-      }
-
-      /* Fix cover: ensure cover-content is visible */
-      .print-wrap .slide.cover {
-        justify-content: flex-end !important;
-      }
-      .print-wrap .slide.cover .cover-content,
-      .print-wrap .slide.slide-chapter .ch-content {
-        position: relative !important;
-        z-index: 2 !important;
-      }
-
-      /* Fix absolute-positioned elements inside slides */
-      .print-wrap .school-stripe {
-        position: absolute !important;
-      }
-
-      /* Footer: keep it compact and contained */
-      .print-wrap .footer {
-        margin-top: auto !important;
-        flex-shrink: 0 !important;
-        padding-top: 4px !important;
-        padding-bottom: 0 !important;
-      }
-      .print-wrap .footer .logos img {
-        height: 28px !important;
-        width: auto !important;
-      }
-      /* Prevent any element inside slide from overflowing the wrap */
-      .print-wrap * {
-        max-width: 100% !important;
-      }
-      .print-wrap .slide > * {
-        flex-shrink: 1 !important;
-      }
-      /* Grids stay as-is (they scale with the slide) */
     }
 
 
@@ -664,6 +496,7 @@
       background: #0e0f11 !important;
       justify-content: flex-end;
       overflow: hidden;
+      isolation: isolate;
     }
     .slide.cover::before{
       content: '';
@@ -729,6 +562,7 @@
       justify-content: flex-end;
       gap: 0;
       overflow: hidden;
+      isolation: isolate;
     }
     .slide.slide-chapter::before{
       content: '';
@@ -817,7 +651,92 @@
       .topbar{ height:72px; }
       .content{ height:calc(100% - 72px); }
     }
-  </style>
+  
+    /* ═══ PRINT — Ctrl+P → A4 landscape, 1 slide per page ═══ */
+    
+
+    
+    /* ═══ PRINT — Ctrl+P → A4 landscape, 1 slide per page ═══ */
+    
+
+    
+    /* ═══ PRINT — Ctrl+P → A4 landscape, 1 slide per page ═══ */
+    
+
+    
+    /* ═══ PRINT — Ctrl+P → A4 landscape, 1 slide per page ═══ */
+    @media print {
+      @page { size: A4 landscape; margin: 10mm; }
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+      body > *:not(#print-root) { display: none !important; }
+      #print-root { display: block !important; }
+
+      /* Page: column — header on top, slide centred below */
+      .print-page {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        width: 277mm !important;
+        height: 190mm !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      .print-page:last-child {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+
+      /* Header */
+      .print-header {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        background: var(--red, #8b1e24) !important;
+        padding: 0 28px !important;
+        width: 100% !important;
+        height: 44px !important;
+        flex-shrink: 0 !important;
+        box-sizing: border-box !important;
+      }
+      .print-header .ph-left  { height: 26px !important; width: auto !important; filter: brightness(0) invert(1) !important; }
+      .print-header .ph-right { height: 22px !important; width: auto !important; filter: brightness(0) invert(1) !important; opacity:.85 !important; }
+
+      /* Wrap: centres the zoomed clone in remaining vertical space */
+      .print-wrap {
+        display: flex !important;
+        flex: 1 !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        overflow: hidden !important;
+      }
+
+      /* Clone: zoom reduces layout footprint to 1047×589px */
+      .print-clone {
+        zoom: 0.8179 !important;
+        transform: none !important;
+        padding: var(--padY, 36px) var(--padX, 48px) !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+      .print-clone.slide-chapter,
+      .print-clone.cover {
+        justify-content: flex-end !important;
+      }
+      .print-clone .footer { display: none !important; }
+      .print-clone .school-stripe { position: absolute !important; }
+    }
+
+    </style>
 </head>
 <body>
 <div class="stage" id="stage">
@@ -831,7 +750,9 @@
         <i class="dot"></i>
         <a href="Relatorio_Desk_Research.pdf" target="_blank" rel="noopener">Desk Research</a>
         <i class="dot"></i>
-        <a href="Relatorio_Benchmark.pdf" target="_blank" rel="noopener">Benchmark</a>
+        <a href="Relatorio_Benchmarking.pdf" target="_blank" rel="noopener">Benchmark</a>
+        <i class="dot"></i>
+        <a href="apresentacao_executiva.pdf" target="_blank" rel="noopener">Apresentação</a>
         <i class="dot"></i>
         <a href="dashboard_everest.html" target="_blank" rel="noopener">Dashboard</a>
       </div>
@@ -1381,7 +1302,7 @@
     <div>
       <div class="quote-block">
         "A escola anteriormente fazia parte da rede Colégio Everest. Atua em Brasília desde 2013. Passou por transição para rede própria — para permitir maior autonomia nas decisões pedagógicas e administrativas."
-        <cite>— Auditoria Q1 (cliente secreto)</cite>
+        
       </div>
       <div class="card" style="margin-top:10px;">
         <h3>DNA preservado</h3>
@@ -1523,7 +1444,7 @@
         </div>
       </div>
       <p class="small">Estratégia de fidelização de famílias numerosas: quanto mais filhos, menor o custo por aluno — e maior o vínculo com a escola.</p>
-      <div class="quote-block" style="margin-top:8px;">"A escola adota abordagem que valoriza o desenvolvimento de habilidades interpessoais e socioemocionais. Os alunos são inseridos em projetos colaborativos. Introdução gradual de tecnologia: atividades sem telas têm prioridade."<cite>— Auditoria Q31</cite></div>
+      <div class="quote-block" style="margin-top:8px;">"A escola adota abordagem que valoriza o desenvolvimento de habilidades interpessoais e socioemocionais. Os alunos são inseridos em projetos colaborativos. Introdução gradual de tecnologia: atividades sem telas têm prioridade."</div>
     </div>
   </div>
   <div class="footer">
@@ -1632,7 +1553,7 @@
       </div>
       <div class="quote-block" style="margin-top:10px;">
         "O Marista não atua apenas com 'boa vontade' na inclusão; o processo é institucionalizado."
-        <cite>— Análise de Campo Q30</cite>
+        
       </div>
     </div>
   </div>
@@ -1764,26 +1685,26 @@
           <svg viewBox="0 0 36 36">
             <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e8e8e8" stroke-width="3.8"/>
             <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0B7A62" stroke-width="3.8"
-              stroke-dasharray="80 20" stroke-linecap="round"/>
+              stroke-dasharray="60 40" stroke-linecap="round"/>
           </svg>
-          <div class="donut-label"><b>80%</b><span>Inglês</span></div>
+          <div class="donut-label"><b>60%</b><span>Inglês</span></div>
         </div>
         <div>
           <ul class="bullets" style="padding-left:14px;">
-            <li><b>80%</b> do tempo de instrução no EF1 em língua inglesa.</li>
-            <li><b>20%</b> componentes curriculares nacionais obrigatórios.</li>
+            <li><b>60%</b> do tempo de instrução no EF1 em língua inglesa.</li>
+            <li><b>40%</b> componentes curriculares nacionais obrigatórios.</li>
             <li>Única instituição analisada que alfabetiza a criança <em>pensando</em> na segunda língua, ultrapassando a lógica da tradução mental.</li>
           </ul>
         </div>
       </div>
       <div class="quote-block">
-        "Aproximadamente 80% do tempo de instrução no Fundamental 1 ocorre em língua inglesa."
-        <cite>— Auditoria Q6</cite>
+        "Aproximadamente 60% do tempo de instrução no Fundamental 1 ocorre em língua inglesa."
+        
       </div>
     </div>
     <div>
       <div class="card">
-        <h3>Cultura de inovação — além do laboratório de informática</h3>
+        <h3>Cultura de inovação — Creative Tech além do laboratório</h3>
         <ul class="bullets">
           <li><b>Cultura maker:</b> fabricação e prototipagem.</li>
           <li><b>Programação nativa:</b> código como linguagem, não ferramenta.</li>
@@ -1792,9 +1713,9 @@
         <p class="small" style="margin-top:8px;">Alinha-se estritamente às habilidades do mercado de trabalho do futuro.</p>
       </div>
       <div class="card" style="margin-top:10px;">
-        <h3>Arquitetura aberta — a escola como espaço de comunidade</h3>
+        <h3>Arquitetura aberta — a escola sem muros</h3>
         <ul class="bullets">
-          <li>Arquitetura com transparência em vidro.</li>
+          <li>Arquitetura sem muros: transparência em vidro, espaços abertos.</li>
           <li>Fomenta cultura de comunidade aberta e vigilância passiva/positiva.</li>
         </ul>
         <div class="callout" style="border-color:rgba(11,122,98,.2);background:rgba(11,122,98,.07);color:var(--school);">Uso da Plataforma Eleva + integração futura com o Bacharelado Internacional (IB — programa de referência global)</div>
@@ -1866,7 +1787,7 @@
     <div>
       <div class="quote-block">
         "A identidade central é a excelência métrica. Existe um esforço colossal de gestão de imagem para manter a percepção de rigor absoluto."
-        <cite>— Análise Q1–Q3</cite>
+        
       </div>
       <div class="card" style="margin-top:10px;">
         <h3>Cultura de testes (Q13)</h3>
@@ -2284,8 +2205,8 @@
 
   window.addEventListener('keydown', function(e){
     var k = e.key;
-    if(k==='ArrowRight'||k==='PageDown'||k===' '){ e.preventDefault(); window._next(); }
-    if(k==='ArrowLeft' ||k==='PageUp'           ){ e.preventDefault(); window._prev(); }
+    if(k==='ArrowRight'||k==='ArrowDown'||k==='PageDown'||k===' '){ e.preventDefault(); window._next(); }
+    if(k==='ArrowLeft' ||k==='ArrowUp'  ||k==='PageUp'           ){ e.preventDefault(); window._prev(); }
     if(k==='Home'){ idx=0; render(); }
     if(k==='End' ){ idx=slides.length-1; render(); }
   });
@@ -2314,43 +2235,51 @@ function revealAllForPrint(){
   _printRoot = document.createElement('div');
   _printRoot.id = 'print-root';
 
-  var A4W    = 277 / 25.4 * 96;
-  var A4H    = 190 / 25.4 * 96;
-  var SW = 1280, SH = 720;
-  var scale   = Math.min(A4W / SW, A4H / SH);
-  var offsetX = Math.round((A4W - SW * scale) / 2);
-  var offsetY = Math.round((A4H - SH * scale) / 2);
+  var everestLogo = 'https://colegioeverest.com.br/images/logo-Everest.svg';
+  var opinLogo    = 'https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png';
 
   document.querySelectorAll('.slide').forEach(function(s){
     var page = document.createElement('div');
     page.className = 'print-page';
 
+    // Header bar
+    var header = document.createElement('div');
+    header.className = 'print-header';
+    header.innerHTML =
+      '<img class="ph-left"  src="' + everestLogo + '" alt="Colégio Everest"/>' +
+      '<img class="ph-right" src="' + opinLogo   + '" alt="Opinião Consultoria"/>';
+    page.appendChild(header);
+
+    // Slide area
     var wrap = document.createElement('div');
     wrap.className = 'print-wrap';
-    wrap.style.transform       = 'scale(' + scale + ')';
-    wrap.style.transformOrigin = 'top left';
-    wrap.style.top  = offsetY + 'px';
-    wrap.style.left = offsetX + 'px';
 
     var clone = s.cloneNode(true);
-    // Force desktop layout on clone — undo any mobile overrides
-    clone.classList.add('active');
+    clone.classList.add('active', 'print-clone');
+    // zoom reduces layout size — 1280×720 becomes 1047×589 in document flow
     clone.style.cssText = [
-      'position: absolute',
-      'inset: 0',
-      'width: 1280px',
-      'height: 720px',
-      'opacity: 1',
-      'transform: none',
-      'overflow: hidden',
-      'padding: var(--padY, 36px) var(--padX, 48px)',
-      'display: flex',
-      'flex-direction: column',
-      'gap: 14px',
-      'pointer-events: none',
-      'border: none',
-      'box-sizing: border-box'
+      'position:relative',
+      'width:1280px',
+      'height:720px',
+      'min-height:unset',
+      'max-height:720px',
+      'zoom:0.8179',
+      'opacity:1',
+      'transform:none',
+      'overflow:hidden',
+      'isolation:isolate',
+      'display:flex',
+      'flex-direction:column',
+      'gap:14px',
+      'box-sizing:border-box',
+      'pointer-events:none',
+      'border:none',
+      'flex:0 0 auto',
+      'scroll-snap-align:none'
     ].join(';');
+
+    var footer = clone.querySelector('.footer');
+    if(footer) footer.parentNode.removeChild(footer);
 
     wrap.appendChild(clone);
     page.appendChild(wrap);
@@ -2397,14 +2326,15 @@ window.addEventListener('afterprint',  restoreAfterPrint);
       var item = document.createElement('div');
       item.style.cssText = 'border-bottom:1px solid #eee;';
       var link = document.createElement('a');
-      link.href = a.href || '#';
+      link.href = a.getAttribute('href') || '#';
+      link.target = a.getAttribute('target') || '';
+      link.rel = a.getAttribute('rel') || '';
       link.textContent = a.textContent;
       link.style.cssText = 'display:block;padding:14px 0;font-size:14px;font-weight:700;color:#111316;text-decoration:none;letter-spacing:.04em;text-transform:uppercase;';
-      link.onclick = function(){
-        if(a.onclick) a.onclick.call(a);
+      link.addEventListener('click', function(){
         closeDrawer();
-        return false;
-      };
+        // allow default href navigation to proceed
+      });
       item.appendChild(link);
       panel.appendChild(item);
     });
@@ -2444,7 +2374,11 @@ window.addEventListener('afterprint',  restoreAfterPrint);
   }
   function scrollToIdx(i){
     var t = allSlides[Math.max(0, Math.min(allSlides.length-1, i))];
-    if(t) slidesEl.scrollTo({ left: t.offsetLeft, behavior: 'smooth' });
+    if(!t) return;
+    // Scroll horizontal to the slide
+    slidesEl.scrollTo({ left: t.offsetLeft, behavior: 'smooth' });
+    // Scroll vertical to page top so the topbar and slide header are visible
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   var _dn = window._next, _dp = window._prev;
@@ -2466,45 +2400,8 @@ window.addEventListener('afterprint',  restoreAfterPrint);
     document.title = 'EVEREST — ' + (allSlides[i] && allSlides[i].dataset.title || 'Slide '+(i+1));
   }
 
-  // ── Mobile cover + chapter: force content visible via inline styles ──────
-  function forceMobileDarkSlides(){
-    if(!isMobile()) return;
-
-    // Cover slide
-    var cover = document.querySelector('.slide.cover');
-    if(cover){
-      cover.style.cssText += ';display:flex!important;flex-direction:column!important;justify-content:center!important;min-height:70svh!important;position:relative!important;overflow:hidden!important;isolation:isolate!important;padding-top:48px!important;padding-bottom:32px!important;';
-      var cw = cover.querySelector('.cover-watermark');
-      if(cw) cw.style.cssText += ';position:absolute!important;z-index:1!important;font-size:clamp(60px,18vw,100px)!important;top:15%!important;right:-5px!important;transform:none!important;';
-      var cc = cover.querySelector('.cover-content');
-      if(cc) cc.style.cssText += ';position:relative!important;z-index:3!important;display:block!important;visibility:visible!important;';
-      var title = cover.querySelector('.title');
-      if(title) title.style.cssText += ';color:#ffffff!important;visibility:visible!important;opacity:1!important;display:block!important;';
-      var sub = cover.querySelector('.subtitle');
-      if(sub) sub.style.cssText += ';color:rgba(255,255,255,.6)!important;visibility:visible!important;opacity:1!important;display:block!important;';
-      var kicker = cover.querySelector('.kicker');
-      if(kicker) kicker.style.cssText += ';color:rgba(255,255,255,.5)!important;visibility:visible!important;';
-      var rule = cover.querySelector('.rule');
-      if(rule) rule.style.cssText += ';visibility:visible!important;opacity:1!important;';
-      var footer = cover.querySelector('.footer');
-      if(footer) footer.style.cssText += ';position:relative!important;z-index:3!important;';
-    }
-
-    // Chapter slides
-    document.querySelectorAll('.slide.slide-chapter').forEach(function(ch){
-      ch.style.cssText += ';display:flex!important;flex-direction:column!important;justify-content:center!important;min-height:50svh!important;position:relative!important;overflow:hidden!important;isolation:isolate!important;padding-top:40px!important;padding-bottom:24px!important;';
-      var cw = ch.querySelector('.ch-watermark');
-      if(cw) cw.style.cssText += ';position:absolute!important;z-index:1!important;font-size:clamp(80px,22vw,130px)!important;top:10%!important;right:-5px!important;transform:none!important;';
-      var cc = ch.querySelector('.ch-content');
-      if(cc) cc.style.cssText += ';position:relative!important;z-index:3!important;display:block!important;visibility:visible!important;';
-      var title = ch.querySelector('.ch-title');
-      if(title) title.style.cssText += ';color:#ffffff!important;visibility:visible!important;opacity:1!important;';
-      var body = ch.querySelector('.ch-body');
-      if(body) body.style.cssText += ';color:rgba(255,255,255,.55)!important;visibility:visible!important;';
-      var footer = ch.querySelector('.footer');
-      if(footer) footer.style.cssText += ';position:relative!important;z-index:3!important;';
-    });
-  }
+  // forceMobileDarkSlides removed — isolation:isolate on .slide.cover and
+  // .slide.slide-chapter ensures correct stacking context on all viewports.
 
   if(slidesEl){
     var _t;
@@ -2517,7 +2414,6 @@ window.addEventListener('afterprint',  restoreAfterPrint);
     // Sync counter + fix dark slides as soon as mobile layout is active
     if(isMobile()){
       setTimeout(syncCounter, 50);
-      forceMobileDarkSlides();
       // Logo already embedded in controls HTML
     }
   }
