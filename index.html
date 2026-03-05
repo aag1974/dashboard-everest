@@ -104,6 +104,9 @@
     .toc .tocitem b{ display:block; font-size:11.5px; letter-spacing:-.01em; }
     .toc .tocitem span{ display:block; margin-top:2px; color:var(--muted); font-size:10.5px; line-height:1.3; }
     .small{ font-size:11.5px; color:var(--muted); line-height:1.4; }
+    /* Logo in controls bar — hidden on desktop, shown on mobile via media query */
+    .controls-logo { display: none; }
+
     .controls{
       position:absolute; right:14px; bottom:14px;
       display:flex; align-items:center; gap:8px;
@@ -116,58 +119,428 @@
     .counter{ font-size:11.5px; font-weight:800; color:rgba(17,19,22,.55); padding:0 5px; min-width:64px; text-align:center; }
 
 
-    /* ═══ PRINT ═══ */
-    @media print {
-      @page { size: 297mm 210mm; margin: 0; }
-      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
-      html, body {
-        margin: 0 !important; padding: 0 !important;
-        width: 297mm !important; background: white !important;
+    /* ═══ MOBILE ═══ */
+    @media (max-width: 768px) {
+      /* ── Layout reset ── */
+      html, body { height: auto; overflow: auto; }
+
+      body {
+        background:
+          radial-gradient(600px 400px at 50% 0%, rgba(139,30,36,.07), transparent 60%),
+          var(--bg-soft);
       }
-      .topbar, .controls, .btn-pdf { display: none !important; }
-      #stage  { width: 297mm !important; height: auto !important; padding: 0 !important; background: white !important; display: block !important; }
-      #deck   { width: 297mm !important; height: auto !important; box-shadow: none !important; border-radius: 0 !important; background: white !important; overflow: visible !important; }
-      #slides { position: static !important; width: 297mm !important; height: auto !important; overflow: visible !important; }
 
-      .slide {
-        position: relative !important;
+      /* Stage: vertical stack, no flex centering */
+      #stage {
+        display: block !important;
+        height: auto !important;
+        padding: 0 !important;
+      }
+
+      /* Deck: full width, auto height, no aspect-ratio */
+      #deck {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: unset !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        overflow: visible !important;
+      }
+
+      /* Topbar: compact */
+      .topbar { height: 56px !important; padding: 0 16px !important; flex-wrap: nowrap !important; }
+      .brand img { height: 28px; }
+      .brand { min-width: unset; gap: 10px; }
+      /* nav hidden on mobile — hamburger drawer used instead */
+      .nav { display: none !important; }
+
+      /* Hamburger button */
+      #burger { display: flex !important; align-items: center; }
+
+      /* Nav drawer panel */
+      #nav-drawer a:hover { color: var(--red) !important; }
+
+      /* Content: auto height */
+      #content {
+        height: auto !important;
+        min-height: unset !important;
+        overflow: visible !important;
+      }
+
+      /* Slides container: horizontal snap scroll */
+      #slides {
         display: flex !important;
-        flex-direction: column !important;
-        width: 297mm !important;
-        height: 210mm !important;
-        max-height: 210mm !important;
+        flex-direction: row !important;
+        overflow-x: scroll !important;
+        overflow-y: hidden !important;
+        scroll-snap-type: x mandatory !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        height: auto !important;
+        position: static !important;
+        width: 100% !important;
+      }
+      #slides::-webkit-scrollbar { display: none; }
+
+      /* Each slide: full-width snap unit, auto height, scrollable vertically */
+      .slide {
+        flex: 0 0 100vw !important;
+        width: 100vw !important;
+        height: auto !important;
+        min-height: unset !important;
+        max-height: unset !important;
+        position: relative !important; /* keep relative so absolute children (school-stripe) work */
+        inset: unset !important;
         opacity: 1 !important;
         transform: none !important;
-        pointer-events: none !important;
-        overflow: hidden !important;
+        pointer-events: auto !important;
+        overflow-y: visible !important;
+        overflow-x: hidden !important;
+        scroll-snap-align: start !important;
+        padding: 20px 16px 80px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
         box-sizing: border-box !important;
+        border-right: 1px solid var(--line) !important;
+      }
+
+      /* Active state irrelevant now — all slides visible via scroll */
+      .slide.active { opacity: 1 !important; transform: none !important; }
+
+      /* ── Typography ── */
+      .title  { font-size: clamp(22px, 6vw, 32px) !important; }
+      .subtitle { font-size: 14px !important; }
+      .kicker { font-size: 10px !important; }
+
+      /* ── Grid reflow ── */
+      .grid2, .grid3 {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        flex: none !important;
+        min-height: unset !important;
+        align-items: start !important;
+        align-content: start !important;
+      }
+      /* grid children: don't stretch vertically */
+      .grid2 > *, .grid3 > * {
+        flex: none !important;
+        min-height: unset !important;
+        height: auto !important;
+      }
+      .span2 { grid-column: 1 !important; }
+
+      /* ── Inline grid4 (school cards slide) — 2 col on mobile ── */
+      [style*="grid-template-columns:1fr 1fr 1fr 1fr"],
+      [style*="grid-template-columns: 1fr 1fr 1fr 1fr"] {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+        flex: none !important;
+        min-height: unset !important;
+      }
+      /* Inline grid3 — 1 col on mobile */
+      [style*="grid-template-columns:1fr 1fr 1fr"],
+      [style*="grid-template-columns: 1fr 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+        flex: none !important;
+        min-height: unset !important;
+      }
+
+      /* slide gap tight */
+      .slide { gap: 10px !important; }
+
+      /* ── Cards ── */
+      .card { padding: 12px 14px !important; }
+      .card h3 { font-size: 13px !important; }
+      .bullets { font-size: 12px !important; }
+
+      /* ── Tables: horizontal scroll ── */
+      .tablewrap { overflow-x: auto !important; border-radius: 12px !important; }
+      table { font-size: 11px !important; }
+      th, td { padding: 7px 8px !important; white-space: nowrap !important; }
+
+      /* ── Footer ── */
+      .footer { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
+      .footer .logos img { height: 32px !important; }
+      /* Oculta footer interno — logo e número já estão na barra de controles */
+      .footer .meta  { display: none !important; }
+      .footer .logos { display: none !important; }
+      .footer { display: none !important; }
+
+      /* ── TOC ── */
+      .toc .toclist { grid-template-columns: 1fr !important; }
+
+      /* ── Slide 31: outer 2-col → empilha agenda em cima + riscos embaixo ── */
+      .slide31-outer {
+        grid-template-columns: 1fr !important;
+        flex: none !important;
+        min-height: unset !important;
+        gap: 14px !important;
+      }
+      /* Inner agenda: mantém 2 colunas (os cards são pequenos e cabem) */
+      .slide31-agenda {
+        flex: none !important;
+        min-height: unset !important;
+      }
+      /* "Boa prática" — tira margin-top:auto pois não há mais flex-grow */
+      .slide31-outer [style*="margin-top:auto"][style*="background:var(--ink)"] {
+        margin-top: 0 !important;
+      }
+
+      /* ── Controls: fixed bottom bar ── */
+      .controls {
+        position: fixed !important;
+        bottom: 0 !important; left: 0 !important; right: 0 !important;
+        width: 100% !important;
+        border-radius: 0 !important;
+        justify-content: flex-end !important;
+        padding: 8px 16px 8px 12px !important;
+        gap: 4px !important;
+        background: rgba(255,255,255,.97) !important;
+        border: none !important;
+        border-top: 1px solid var(--line) !important;
+        box-shadow: 0 -4px 20px rgba(0,0,0,.08) !important;
+        z-index: 100 !important;
+      }
+      /* Logo on the left, grows to push arrows right */
+      .controls-logo {
+        display: flex !important;
+        align-items: center !important;
+        flex: 1 !important;
+        padding-left: 4px !important;
+      }
+      .controls-logo img {
+        height: 28px !important;
+        width: auto !important;
+        opacity: .7 !important;
+      }
+      .btn { padding: 10px 16px !important; font-size: 20px !important; }
+      .counter { font-size: 13px !important; min-width: 56px !important; text-align: center !important; }
+      /* Hide home button on mobile — save space */
+      #home { display: none !important; }
+
+      /* ── Slide chapter: centre content ── */
+      .slide.slide-chapter { justify-content: flex-start !important; padding-top: 40px !important; }
+
+      /* ── Cover ── */
+      /* ── Cover slide mobile ── */
+      .slide.cover {
+        justify-content: center !important;
+        min-height: 70svh !important;
+        padding-top: 48px !important;
+        padding-bottom: 32px !important;
+        gap: 0 !important;
+      }
+      .slide.cover .cover-watermark {
+        font-size: clamp(70px, 20vw, 110px) !important;
+        top: 6% !important;
+        right: -5px !important;
+      }
+      .slide.cover .cover-content {
+        position: relative !important;
+        z-index: 2 !important;
+        padding-bottom: 0 !important;
+      }
+
+      /* ── Chapter slides mobile ── */
+      .slide.slide-chapter {
+        justify-content: center !important;
+        min-height: 50svh !important;
+        padding-top: 40px !important;
+        padding-bottom: 24px !important;
+        overflow: hidden !important;
+        gap: 0 !important;
+      }
+      .ch-watermark {
+        font-size: clamp(80px, 24vw, 130px) !important;
+        top: 6% !important;
+        right: -5px !important;
+      }
+      .ch-content {
+        position: relative !important;
+        z-index: 2 !important;
+      }
+      .ch-title { font-size: clamp(30px, 8vw, 48px) !important; }
+
+      /* ── School stripe: horizontal top bar on mobile ── */
+      .school-stripe {
+        position: absolute !important;
+        top: 0 !important; left: 0 !important; right: 0 !important; bottom: unset !important;
+        width: 100% !important; height: 5px !important;
+      }
+    }
+
+    /* ═══ PRINT ═══ */
+    @media print {
+      @page { size: A4 landscape; margin: 10mm; }
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+      body > * { display: none !important; }
+
+      #print-root { display: block !important; margin: 0; padding: 0; }
+
+      /* A4 landscape content area after 10mm margins: ~277×190mm */
+      .print-page {
+        display: block !important;
+        position: relative !important;
+        width: 277mm !important;
+        height: 190mm !important;
+        overflow: hidden !important;
+        clip-path: inset(0) !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        padding: 0 !important;
         page-break-after: always !important;
         break-after: page !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
       }
-      .slide:last-child { page-break-after: avoid !important; break-after: avoid !important; }
+      .print-page:last-child {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+
+      /*
+        .print-wrap: native 1280×720, absolutely positioned, scaled to fit A4.
+        Uses position:relative so the cloned slide's position:absolute;inset:0 works
+        exactly as it does on screen.
+      */
+      .print-wrap {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 1280px !important;
+        height: 720px !important;
+        transform-origin: top left !important;
+        overflow: hidden !important;
+      }
+
+      /*
+        Slide clone keeps its screen behaviour: position:absolute fills the wrap.
+        No overrides needed — the CSS classes already define the layout correctly.
+      */
+      .print-wrap .slide {
+        position: absolute !important;
+        inset: 0 !important;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: none !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
     }
 
-    .btn-pdf {
-      position:fixed; top:18px; right:18px; z-index:9999;
-      display:flex; align-items:center; gap:7px;
-      background:var(--red); color:#fff;
-      border:0; border-radius:999px;
-      padding:9px 18px 9px 14px;
-      font:700 12px/1 inherit; cursor:pointer;
-      box-shadow:0 4px 16px rgba(139,30,36,.35);
-      transition:opacity .15s, transform .15s;
+      /*
+        .print-page   — A4 page boundary (explicit h/w, overflow:hidden, position:relative)
+        .print-wrap   — absolutely positioned inside, native 1280×720, scaled via transform
+        .slide clone  — fills wrap, all inline styles reset
+      */
+      .print-page {
+        display: block !important;
+        position: relative !important;
+        width: 277mm !important;
+        height: 190mm !important;
+        overflow: hidden !important;
+        clip-path: inset(0) !important;
+        box-sizing: border-box !important;
+        margin: 0 !important; padding: 0 !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      .print-page:last-child {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+
+      /* Scale container: absolute so it doesn't affect block flow */
+      .print-wrap {
+        position: absolute !important;
+        top: 0 !important; left: 0 !important;
+        width: 1280px !important;
+        height: 720px !important;
+        transform-origin: top left !important;
+        overflow: hidden !important;
+      }
+
+      /* Slide clone resets — position:relative so ::before inset:0 is contained within the slide */
+      .print-wrap .slide {
+        position: relative !important;
+        inset: unset !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 1280px !important;
+        height: 720px !important;
+        min-height: unset !important;
+        max-height: 720px !important;
+        opacity: 1 !important;
+        transform: none !important;
+        overflow: hidden !important;
+        isolation: isolate !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        pointer-events: none !important;
+        padding: var(--padY) var(--padX) !important;
+        flex: 0 0 auto !important;
+        scroll-snap-align: none !important;
+      }
+
+      /* Fix slide-chapter: justify flex-end to match desktop */
+      .print-wrap .slide.slide-chapter {
+        justify-content: flex-end !important;
+        padding-bottom: clamp(28px, 4vw, 56px) !important;
+      }
+
+      /* Fix cover: ensure cover-content is visible */
+      .print-wrap .slide.cover {
+        justify-content: flex-end !important;
+      }
+      .print-wrap .slide.cover .cover-content,
+      .print-wrap .slide.slide-chapter .ch-content {
+        position: relative !important;
+        z-index: 2 !important;
+      }
+
+      /* Fix absolute-positioned elements inside slides */
+      .print-wrap .school-stripe {
+        position: absolute !important;
+      }
+
+      /* Footer: keep it compact and contained */
+      .print-wrap .footer {
+        margin-top: auto !important;
+        flex-shrink: 0 !important;
+        padding-top: 4px !important;
+        padding-bottom: 0 !important;
+      }
+      .print-wrap .footer .logos img {
+        height: 28px !important;
+        width: auto !important;
+      }
+      /* Prevent any element inside slide from overflowing the wrap */
+      .print-wrap * {
+        max-width: 100% !important;
+      }
+      .print-wrap .slide > * {
+        flex-shrink: 1 !important;
+      }
+      /* Grids stay as-is (they scale with the slide) */
     }
-    .btn-pdf:hover{ opacity:.88; transform:translateY(-1px); }
-    .btn-pdf svg{ flex-shrink:0; }
+
+
 
     /* ═══ BENCHMARK SYSTEM ═══ */
-    .s-heavenly{ --school:#6344A0; --school-light:rgba(99,68,160,.07); --school-mid:rgba(99,68,160,.15); }
-    .s-marista  { --school:#0B6AA0; --school-light:rgba(11,106,160,.07); --school-mid:rgba(11,106,160,.15); }
-    .s-eleva    { --school:#0B7A62; --school-light:rgba(11,122,98,.07); --school-mid:rgba(11,122,98,.15); }
-    .s-galois   { --school:#1A3366; --school-light:rgba(26,51,102,.07); --school-mid:rgba(26,51,102,.15); }
+    .s-heavenly{ --school:#6344A0; --school-light:rgba(99,68,160,.10); --school-mid:rgba(99,68,160,.22); }
+    .s-marista  { --school:#0B6AA0; --school-light:rgba(11,106,160,.10); --school-mid:rgba(11,106,160,.22); }
+    .s-eleva    { --school:#0B7A62; --school-light:rgba(11,122,98,.10);  --school-mid:rgba(11,122,98,.22);  }
+    .s-galois   { --school:#1A3366; --school-light:rgba(26,51,102,.10);  --school-mid:rgba(26,51,102,.22);  }
 
     .school-stripe{
       position:absolute; left:0; top:0; bottom:0; width:5px;
@@ -190,6 +563,12 @@
       border-radius:16px; padding:14px 16px;
     }
     .school-card h3{ color:var(--school); font-size:14px; font-weight:700; margin-bottom:8px; }
+
+    /* Reinforce CSS vars on every descendant so inline styles always resolve */
+    .s-heavenly * { --school:#6344A0; --school-light:rgba(99,68,160,.10); --school-mid:rgba(99,68,160,.22); }
+    .s-marista  * { --school:#0B6AA0; --school-light:rgba(11,106,160,.10); --school-mid:rgba(11,106,160,.22); }
+    .s-eleva    * { --school:#0B7A62; --school-light:rgba(11,122,98,.10);  --school-mid:rgba(11,122,98,.22);  }
+    .s-galois   * { --school:#1A3366; --school-light:rgba(26,51,102,.10);  --school-mid:rgba(26,51,102,.22);  }
 
     .pill{
       display:inline-block; padding:3px 9px; border-radius:999px;
@@ -257,6 +636,27 @@
     /* Matrix table overrides */
     .matrix th:first-child, .matrix td:first-child{ font-weight:700; background:rgba(139,30,36,.04); }
     .matrix .hl{ background:rgba(139,30,36,.08); font-weight:700; }
+
+    /* Sticky first column on mobile horizontal scroll */
+    @media (max-width: 768px) {
+      .matrix th:first-child,
+      .matrix td:first-child {
+        position: sticky !important;
+        left: 0 !important;
+        z-index: 2 !important;
+        background: rgba(255,250,250,.97) !important;
+        min-width: 80px !important;
+        max-width: 80px !important;
+        width: 80px !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        box-shadow: 2px 0 6px rgba(0,0,0,.08) !important;
+      }
+      .matrix thead th:first-child {
+        background: #f2e8e8 !important;
+        z-index: 3 !important;
+      }
+    }
 
 
     /* ═══ COVER SLIDE ═══ */
@@ -420,24 +820,24 @@
   </style>
 </head>
 <body>
-<div class="stage">
+<div class="stage" id="stage">
   <div class="deck" id="deck">
     <div class="topbar">
       <div class="brand">
         <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Colégio Everest" loading="eager"/>
       </div>
       <div class="nav">
-        <a href="Relatorio_Consolidado.pdf" target="_blank" rel="noopener">Relatório</a>
+        <a href="Relatorio_Consolidado_v2.docx" target="_blank" rel="noopener">Relatório</a>
         <i class="dot"></i>
-        <a href="Relatorio_Desk_Research.pdf" target="_blank" rel="noopener">Deskresearch</a>
+        <a href="Relatorio_Desk_Research_v2.docx" target="_blank" rel="noopener">Deskresearch</a>
         <i class="dot"></i>
-        <a href="Relatorio_Benchmarking.pdf" target="_blank" rel="noopener">Benchmarking</a>
+        <a href="Relatorio_Benchmarking_v2.docx" target="_blank" rel="noopener">Benchmarking</a>
         <i class="dot"></i>
         <a href="dashboard_everest.html" target="_blank" rel="noopener">Dashboard</a>
       </div>
     </div>
 
-    <div class="content">
+    <div class="content" id="content">
       <div class="slides" id="slides">
 
 
@@ -1741,12 +2141,12 @@
     <p class="subtitle">Reduzir risco antes de comprometer investimento — com testes curtos, simulações e desenho operacional.</p>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;min-height:0;">
+  <div class="slide31-outer" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;min-height:0;">
 
     <!-- Agenda: 6 itens em grid 2x3 -->
     <div style="display:flex;flex-direction:column;gap:10px;">
       <p style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin:0;">Agenda objetiva</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;">
+      <div class="slide31-agenda" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;">
 
         <div style="background:#f7f7f8;border:1.5px solid #e8e8ec;border-radius:14px;padding:12px 14px;">
           <p style="font-size:10.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin:0 0 4px;">01</p>
@@ -1838,15 +2238,12 @@
 
       </div><!-- /slides -->
 
-      <button class="btn-pdf" onclick="exportPDF()" title="Exportar PDF">
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
-    <rect x="6" y="14" width="12" height="8"/>
-  </svg>
-  Exportar PDF
-</button>
+
 
 <div class="controls" role="group" aria-label="Navegação do deck">
+        <div class="controls-logo">
+          <img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/>
+        </div>
         <button class="btn" id="home" title="Voltar ao início" style="font-size:15px;padding:5px 8px;opacity:.6;" onclick="window._goHome&&window._goHome()">⌂</button>
         <button class="btn" id="prev" title="Anterior (←)">←</button>
         <div class="counter" id="counter">1 / 28</div>
@@ -1857,63 +2254,294 @@
 </div><!-- /stage -->
 
 <script>
+// ── Core navigation ──────────────────────────────────────────────────────────
 (function(){
-  const slides = Array.from(document.querySelectorAll(".slide"));
-  const counter = document.getElementById("counter");
-  const prevBtn = document.getElementById("prev");
-  const nextBtn = document.getElementById("next");
-  let idx = 0;
+  var slides  = Array.from(document.querySelectorAll('.slide'));
+  var counter = document.getElementById('counter');
+  var idx = 0;
+
   function render(){
-    slides.forEach((s,i)=>s.classList.toggle("active",i===idx));
-    counter.textContent = `${idx+1} / ${slides.length}`;
-    document.title = `EVEREST — ${slides[idx].dataset.title||("Slide "+(idx+1))}`;
+    slides.forEach(function(s,i){ s.classList.toggle('active', i===idx); });
+    counter.textContent = (idx+1) + ' / ' + slides.length;
+    document.title = 'EVEREST — ' + (slides[idx].dataset.title || ('Slide '+(idx+1)));
   }
-  function next(){ idx=Math.min(slides.length-1,idx+1); render(); }
-  function prev(){ idx=Math.max(0,idx-1); render(); }
-  window.goToSlide=function(title){ const i=Array.from(slides).findIndex(s=>s.dataset.title===title); if(i>=0){idx=i;render();} };
-  window._goHome=function(){ idx=0; render(); };
-  nextBtn.addEventListener("click",next);
-  prevBtn.addEventListener("click",prev);
-  window.addEventListener("keydown",(e)=>{
-    const k=e.key;
-    if(k==="ArrowRight"||k==="PageDown"||k===" "){ e.preventDefault(); next(); }
-    if(k==="ArrowLeft"||k==="PageUp"){ e.preventDefault(); prev(); }
-    if(k==="Home"){ idx=0; render(); }
-    if(k==="End"){ idx=slides.length-1; render(); }
+
+  function next(){ idx = Math.min(slides.length-1, idx+1); render(); }
+  function prev(){ idx = Math.max(0, idx-1); render(); }
+
+  window.goToSlide = function(title){
+    var i = slides.findIndex(function(s){ return s.dataset.title === title; });
+    if(i >= 0){ idx = i; render(); }
+  };
+  window._goHome = function(){ idx = 0; render(); };
+
+  // Exposed so mobile can override
+  window._next = next;
+  window._prev = prev;
+
+  document.getElementById('next').addEventListener('click', function(){ window._next(); });
+  document.getElementById('prev').addEventListener('click', function(){ window._prev(); });
+
+  window.addEventListener('keydown', function(e){
+    var k = e.key;
+    if(k==='ArrowRight'||k==='PageDown'||k===' '){ e.preventDefault(); window._next(); }
+    if(k==='ArrowLeft' ||k==='PageUp'           ){ e.preventDefault(); window._prev(); }
+    if(k==='Home'){ idx=0; render(); }
+    if(k==='End' ){ idx=slides.length-1; render(); }
   });
+
   render();
 })();
 
-// ── Reveal all slides for print, restore after ──────────────────
+// ── Auto-number slides ────────────────────────────────────────────────────────
+(function(){
+  var n = 0;
+  document.querySelectorAll('.slide').forEach(function(s){
+    var meta = s.querySelector('.footer .meta');
+    if(!meta) return;
+    if(s.classList.contains('cover') || s.classList.contains('toc') || s.classList.contains('slide-chapter')) return;
+    n++;
+    var parts  = meta.textContent.split('·');
+    var suffix = parts.slice(1).join('·').trim();
+    meta.textContent = suffix ? 'Slide ' + n + ' · ' + suffix : 'Slide ' + n;
+  });
+})();
+
+// ── Print ─────────────────────────────────────────────────────────────────────
+var _printRoot = null;
+
 function revealAllForPrint(){
-  const slides = document.querySelectorAll('.slide');
-  slides.forEach(function(s){
-    s.dataset.printOpacity  = s.style.opacity;
-    s.dataset.printPosition = s.style.position;
-    s.dataset.printTransform = s.style.transform;
-    s.dataset.printDisplay  = s.style.display;
-    s.style.opacity   = '1';
-    s.style.position  = 'relative';
-    s.style.transform = 'none';
-    s.style.display   = 'flex';
+  _printRoot = document.createElement('div');
+  _printRoot.id = 'print-root';
+
+  var A4W    = 277 / 25.4 * 96;
+  var A4H    = 190 / 25.4 * 96;
+  var SW = 1280, SH = 720;
+  var scale   = Math.min(A4W / SW, A4H / SH);
+  var offsetX = Math.round((A4W - SW * scale) / 2);
+  var offsetY = Math.round((A4H - SH * scale) / 2);
+
+  document.querySelectorAll('.slide').forEach(function(s){
+    var page = document.createElement('div');
+    page.className = 'print-page';
+
+    var wrap = document.createElement('div');
+    wrap.className = 'print-wrap';
+    wrap.style.transform       = 'scale(' + scale + ')';
+    wrap.style.transformOrigin = 'top left';
+    wrap.style.top  = offsetY + 'px';
+    wrap.style.left = offsetX + 'px';
+
+    var clone = s.cloneNode(true);
+    // Force desktop layout on clone — undo any mobile overrides
+    clone.classList.add('active');
+    clone.style.cssText = [
+      'position: absolute',
+      'inset: 0',
+      'width: 1280px',
+      'height: 720px',
+      'opacity: 1',
+      'transform: none',
+      'overflow: hidden',
+      'padding: var(--padY, 36px) var(--padX, 48px)',
+      'display: flex',
+      'flex-direction: column',
+      'gap: 14px',
+      'pointer-events: none',
+      'border: none',
+      'box-sizing: border-box'
+    ].join(';');
+
+    wrap.appendChild(clone);
+    page.appendChild(wrap);
+    _printRoot.appendChild(page);
   });
+
+  document.body.appendChild(_printRoot);
 }
+
 function restoreAfterPrint(){
-  const slides = document.querySelectorAll('.slide');
-  slides.forEach(function(s){
-    s.style.opacity   = s.dataset.printOpacity   || '';
-    s.style.position  = s.dataset.printPosition  || '';
-    s.style.transform = s.dataset.printTransform || '';
-    s.style.display   = s.dataset.printDisplay   || '';
-  });
+  if(_printRoot){ document.body.removeChild(_printRoot); _printRoot = null; }
 }
 
 window.addEventListener('beforeprint', revealAllForPrint);
 window.addEventListener('afterprint',  restoreAfterPrint);
 
-// Keep Ctrl+P shortcut working natively — no button needed
-// Button kept as convenience alias
-function exportPDF(){ window.print(); }
+// ── Mobile: scroll-snap + hamburger menu ──────────────────────────────────────
+(function(){
+  var isMobile = function(){ return window.innerWidth <= 768; };
+  var slidesEl = document.getElementById('slides');
+  var allSlides = Array.from(document.querySelectorAll('.slide'));
 
+  // ── Hamburger menu ──
+  var topbar = document.querySelector('.topbar');
+  var nav    = document.querySelector('.nav');
+
+  if(topbar && nav){
+    // Build hamburger button
+    var burger = document.createElement('button');
+    burger.id = 'burger';
+    burger.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+    burger.style.cssText = 'display:none;background:none;border:none;color:#fff;cursor:pointer;padding:6px;margin-left:auto;';
+    topbar.appendChild(burger);
+
+    // Build drawer
+    var drawer = document.createElement('div');
+    drawer.id = 'nav-drawer';
+    drawer.style.cssText = 'display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:999;';
+    var panel = document.createElement('div');
+    panel.style.cssText = 'position:absolute;top:0;left:0;bottom:0;width:80vw;max-width:300px;background:#fff;overflow-y:auto;padding:24px 20px;';
+
+    // Clone nav links into drawer as a vertical list
+    Array.from(nav.querySelectorAll('a')).forEach(function(a){
+      var item = document.createElement('div');
+      item.style.cssText = 'border-bottom:1px solid #eee;';
+      var link = document.createElement('a');
+      link.href = a.href || '#';
+      link.textContent = a.textContent;
+      link.style.cssText = 'display:block;padding:14px 0;font-size:14px;font-weight:700;color:#111316;text-decoration:none;letter-spacing:.04em;text-transform:uppercase;';
+      link.onclick = function(){
+        if(a.onclick) a.onclick.call(a);
+        closeDrawer();
+        return false;
+      };
+      item.appendChild(link);
+      panel.appendChild(item);
+    });
+
+    drawer.appendChild(panel);
+    document.body.appendChild(drawer);
+
+    function openDrawer(){ drawer.style.display = 'block'; }
+    function closeDrawer(){ drawer.style.display = 'none'; }
+    drawer.addEventListener('click', function(e){ if(e.target === drawer) closeDrawer(); });
+    burger.addEventListener('click', openDrawer);
+
+    function applyMobileNav(){
+      if(isMobile()){
+        burger.style.display = 'flex';
+        nav.style.display    = 'none';
+      } else {
+        burger.style.display = 'none';
+        nav.style.display    = '';
+        closeDrawer();
+      }
+    }
+    applyMobileNav();
+    window.addEventListener('resize', applyMobileNav);
+  }
+
+  // ── Scroll-snap navigation ──
+  function currentIdx(){
+    // Use offsetLeft comparison — immune to border widths and rounding errors
+    var cx = slidesEl.scrollLeft + window.innerWidth * 0.5;
+    var best = 0, bestDist = Infinity;
+    for(var j = 0; j < allSlides.length; j++){
+      var d = Math.abs(allSlides[j].offsetLeft - (cx - window.innerWidth * 0.5));
+      if(d < bestDist){ bestDist = d; best = j; }
+    }
+    return best;
+  }
+  function scrollToIdx(i){
+    var t = allSlides[Math.max(0, Math.min(allSlides.length-1, i))];
+    if(t) slidesEl.scrollTo({ left: t.offsetLeft, behavior: 'smooth' });
+  }
+
+  var _dn = window._next, _dp = window._prev;
+  window._next = function(){ if(isMobile()) scrollToIdx(currentIdx()+1); else _dn && _dn(); };
+  window._prev = function(){ if(isMobile()) scrollToIdx(currentIdx()-1); else _dp && _dp(); };
+
+  var _og = window.goToSlide;
+  window.goToSlide = function(title){
+    _og && _og(title);
+    if(isMobile()){
+      var i = allSlides.findIndex(function(s){ return s.dataset.title === title; });
+      if(i >= 0) setTimeout(function(){ scrollToIdx(i); }, 30);
+    }
+  };
+
+  function syncCounter(){
+    var i = currentIdx();
+    document.getElementById('counter').textContent = (i+1) + ' / ' + allSlides.length;
+    document.title = 'EVEREST — ' + (allSlides[i] && allSlides[i].dataset.title || 'Slide '+(i+1));
+  }
+
+  // ── Mobile cover + chapter: force content visible via inline styles ──────
+  function forceMobileDarkSlides(){
+    if(!isMobile()) return;
+
+    // Cover slide
+    var cover = document.querySelector('.slide.cover');
+    if(cover){
+      cover.style.cssText += ';display:flex!important;flex-direction:column!important;justify-content:center!important;min-height:70svh!important;position:relative!important;overflow:hidden!important;isolation:isolate!important;padding-top:48px!important;padding-bottom:32px!important;';
+      var cw = cover.querySelector('.cover-watermark');
+      if(cw) cw.style.cssText += ';position:absolute!important;z-index:1!important;font-size:clamp(60px,18vw,100px)!important;top:15%!important;right:-5px!important;transform:none!important;';
+      var cc = cover.querySelector('.cover-content');
+      if(cc) cc.style.cssText += ';position:relative!important;z-index:3!important;display:block!important;visibility:visible!important;';
+      var title = cover.querySelector('.title');
+      if(title) title.style.cssText += ';color:#ffffff!important;visibility:visible!important;opacity:1!important;display:block!important;';
+      var sub = cover.querySelector('.subtitle');
+      if(sub) sub.style.cssText += ';color:rgba(255,255,255,.6)!important;visibility:visible!important;opacity:1!important;display:block!important;';
+      var kicker = cover.querySelector('.kicker');
+      if(kicker) kicker.style.cssText += ';color:rgba(255,255,255,.5)!important;visibility:visible!important;';
+      var rule = cover.querySelector('.rule');
+      if(rule) rule.style.cssText += ';visibility:visible!important;opacity:1!important;';
+      var footer = cover.querySelector('.footer');
+      if(footer) footer.style.cssText += ';position:relative!important;z-index:3!important;';
+    }
+
+    // Chapter slides
+    document.querySelectorAll('.slide.slide-chapter').forEach(function(ch){
+      ch.style.cssText += ';display:flex!important;flex-direction:column!important;justify-content:center!important;min-height:50svh!important;position:relative!important;overflow:hidden!important;isolation:isolate!important;padding-top:40px!important;padding-bottom:24px!important;';
+      var cw = ch.querySelector('.ch-watermark');
+      if(cw) cw.style.cssText += ';position:absolute!important;z-index:1!important;font-size:clamp(80px,22vw,130px)!important;top:10%!important;right:-5px!important;transform:none!important;';
+      var cc = ch.querySelector('.ch-content');
+      if(cc) cc.style.cssText += ';position:relative!important;z-index:3!important;display:block!important;visibility:visible!important;';
+      var title = ch.querySelector('.ch-title');
+      if(title) title.style.cssText += ';color:#ffffff!important;visibility:visible!important;opacity:1!important;';
+      var body = ch.querySelector('.ch-body');
+      if(body) body.style.cssText += ';color:rgba(255,255,255,.55)!important;visibility:visible!important;';
+      var footer = ch.querySelector('.footer');
+      if(footer) footer.style.cssText += ';position:relative!important;z-index:3!important;';
+    });
+  }
+
+  if(slidesEl){
+    var _t;
+    slidesEl.addEventListener('scroll', function(){
+      if(!isMobile()) return;
+      clearTimeout(_t);
+      _t = setTimeout(syncCounter, 80);
+    }, { passive: true });
+
+    // Sync counter + fix dark slides as soon as mobile layout is active
+    if(isMobile()){
+      setTimeout(syncCounter, 50);
+      forceMobileDarkSlides();
+      // Logo already embedded in controls HTML
+    }
+  }
+
+  // Re-snap to current slide after resize / orientation change
+  function reSnap(){
+    if(!isMobile() || !slidesEl) return;
+    var i = currentIdx();
+    // Use offsetLeft so the measurement is always fresh after layout reflow
+    var target = allSlides[Math.max(0, Math.min(allSlides.length-1, i))];
+    if(target) slidesEl.scrollLeft = target.offsetLeft;
+  }
+
+  window.addEventListener('resize', function(){
+    clearTimeout(window._rsTimer);
+    window._rsTimer = setTimeout(reSnap, 120);
+  });
+
+  if(screen.orientation){
+    screen.orientation.addEventListener('change', function(){
+      setTimeout(reSnap, 200);
+    });
+  }
+})();
 </script>
+
 </body>
