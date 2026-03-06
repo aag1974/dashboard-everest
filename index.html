@@ -99,8 +99,8 @@
     .footer .logos img{ height:48px; width:auto; opacity:.88; }
     .footer .meta{ text-align:right; color:rgba(17,19,22,.5); font-size:11px; font-weight:700; }
     .cover{ justify-content:center; }
-    .toc .toclist{ margin-top:4px; display:grid; grid-template-columns:1fr 1fr; gap:5px 12px; flex:1; min-height:0; align-content:start; overflow:hidden; }
-    .toc .tocitem{ border:1px solid var(--line); border-radius:10px; padding:7px 11px; background:rgba(255,255,255,.85); }
+    .toc .toclist{ margin-top:4px; display:grid; grid-template-columns:1fr 1fr; gap:4px 12px; flex:1; min-height:0; align-content:start; overflow:visible; }
+    .toc .tocitem{ border:1px solid var(--line); border-radius:10px; padding:5px 11px; background:rgba(255,255,255,.85); }
     .toc .tocitem b{ display:block; font-size:11.5px; letter-spacing:-.01em; }
     .toc .tocitem span{ display:block; margin-top:2px; color:var(--muted); font-size:10.5px; line-height:1.3; }
     .small{ font-size:11.5px; color:var(--muted); line-height:1.4; }
@@ -237,6 +237,13 @@
       [style*="grid-template-columns: 1fr 1fr 1fr 1fr"] {
         grid-template-columns: 1fr 1fr !important;
         gap: 8px !important;
+        flex: none !important;
+        min-height: unset !important;
+      }
+      /* Inline grid2 — 1 col on mobile */
+      [style*="grid-template-columns:1fr 1fr"],
+      [style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
         flex: none !important;
         min-height: unset !important;
       }
@@ -736,6 +743,29 @@
       .print-clone .school-stripe { position: absolute !important; }
     }
 
+    
+      details.tooltip-details summary::-webkit-details-marker { display:none; }
+      details.tooltip-details summary { outline:none; }
+      details.tooltip-details > div { position:absolute; }
+      @media (max-width: 768px) {
+        details.tooltip-details > div {
+          position:fixed !important;
+          right:16px !important;
+          top:auto !important;
+          bottom:80px !important;
+          width:calc(100vw - 32px) !important;
+          max-width:340px !important;
+        }
+      }
+
+    
+      .sintese-mobile { display: none; }
+      .sintese-desktop { display: block; }
+      @media (max-width: 768px) {
+        .sintese-mobile { display: block; }
+        .sintese-desktop { display: none; }
+      }
+
     </style>
 </head>
 <body>
@@ -750,7 +780,7 @@
         <i class="dot"></i>
         <a href="Relatorio_Desk_Research.pdf" target="_blank" rel="noopener">Desk Research</a>
         <i class="dot"></i>
-        <a href="Relatorio_Benchmark.pdf" target="_blank" rel="noopener">Benchmark</a>
+        <a href="Relatorio_Benchmarking.pdf" target="_blank" rel="noopener">Benchmark</a>
         <i class="dot"></i>
         <a href="apresentacao_executiva.pdf" target="_blank" rel="noopener">Apresentação</a>
         <i class="dot"></i>
@@ -830,8 +860,9 @@
     <div class="tocitem" onclick="goToSlide('Galois — Alta Performance e Cultura')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>H · Colégio Galois</b><span>Alta performance · Disciplina · Fábrica de aprovações.</span></div>
     <div class="tocitem" onclick="goToSlide('Matriz Comparativa Consolidada')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>I · Matriz comparativa e oportunidades Everest</b><span>As 4 escolas lado a lado + combinação rara.</span></div>
     <div class="tocitem" style="grid-column:1/-1;background:rgba(139,30,36,.04);border-color:rgba(139,30,36,.15);"><b style="color:var(--red);letter-spacing:.04em;text-transform:uppercase;font-size:11px;">Bloco 3 — Decisão</b></div>
-    <div class="tocitem" onclick="goToSlide('Condições de viabilidade')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>J · Condições de viabilidade</b><span>O que precisa estar verdadeiro.</span></div>
-    <div class="tocitem" onclick="goToSlide('Recomendações Estratégicas')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>K · Recomendações Estratégicas</b><span>Próximos passos.</span></div>
+    <div class="tocitem" onclick="goToSlide('Proposta de valor')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>J · Proposta de valor</b><span>A proposta que o mercado ainda não tem.</span></div>
+    <div class="tocitem" onclick="goToSlide('Reflexão Estratégica — IA')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>K · Reflexão Estratégica</b><span>O que uma escola ensina quando a IA já pensa?</span></div>
+    <div class="tocitem" onclick="goToSlide('Recomendações Estratégicas')" style="cursor:pointer;" onmouseover="this.style.borderColor='rgba(139,30,36,.35)'" onmouseout="this.style.borderColor=''"><b>L · Recomendações Estratégicas</b><span>Próximos passos.</span></div>
   </div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
@@ -860,7 +891,7 @@
     <div class="kicker">A · Premissas e funil de mercado</div>
     <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Ticket e regra de elegibilidade</h2>
     <div class="rule"></div>
-    <p class="subtitle"><b>Mensagem-chave:</b> o corte de renda vem de uma regra simples, transparente e auditável — não define "quem vai comprar", mas aproxima o universo pagável e permite simulações.</p>
+    <p class="subtitle">O mercado de educação básica privada no Brasil movimenta R$ 110 bilhões/ano — e apenas 20% dos alunos estão na rede privada.<sup style="color:var(--red);font-size:10px;">¹</sup> O segmento premium é o mais resiliente: famílias com menos filhos tendem a investir mais por criança,<sup style="color:var(--red);font-size:10px;">²</sup> e educação é um dos últimos gastos cortados em crises. A pergunta não é se o mercado existe — é quem, dentro dele, pode pagar pelo Everest.</p>
   </div>
   <div class="grid2">
     <div class="card">
@@ -876,10 +907,14 @@
       <h3>Como ler</h3>
       <ul class="bullets">
         <li>O corte não define quem compra — aproxima o universo pagável e reduz superestimação.</li>
-        <li>Permite simular cenários: se o ticket subir ou o % comprometimento mudar, o SAM se recalcula diretamente.</li>
-        <li>Quanto mais alto o comprometimento aceito, maior o SAM — mas menor a sustentabilidade financeira das famílias.</li>
+        <li>Permite simular cenários: se o ticket subir ou o % comprometimento mudar, o número de famílias elegíveis se recalcula diretamente — é possível testar diferentes hipóteses antes de fechar o ticket.</li>
+        <li>Quanto mais alto o comprometimento aceito, mais famílias entram no universo elegível — mas menor a sustentabilidade financeira real de cada uma delas.</li>
       </ul>
     </div>
+  </div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:8px;display:flex;flex-wrap:wrap;gap:6px 20px;">
+    <span style="font-size:10px;color:#aaa;line-height:1.5;"><sup style="color:var(--red);">¹</sup> Estudos de mercado citados em Grupo Investor, <i>Setor de educação vive nova onda de M&A</i>, mai/2025; e Censo Escolar 2023, INEP/MEC.</span>
+    <span style="font-size:10px;color:#aaa;line-height:1.5;"><sup style="color:var(--red);">²</sup> Pedro Scharam, RGS Partners, in Portal Fusões & Aquisições, nov/2024.</span>
   </div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
@@ -891,17 +926,17 @@
 <section class="slide" data-title="Funil e definições — TAM/SAM/Núcleo">
   <div>
     <div class="kicker">A · Premissas e funil de mercado</div>
-    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">TAM ≠ SAM ≠ Núcleo — separar evita superestimação</h2>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Do território ao núcleo</h2>
     <div class="rule"></div>
-    <p class="subtitle"><b>Mensagem-chave:</b> TAM (território) ≠ SAM (pagável) ≠ Núcleo (pagável + filhos). Cada camada tem uma função diferente na decisão.</p>
+    <p class="subtitle">O erro mais frequente em análise de mercado é confundir território com oportunidade. TAM mede o tamanho do campo — não o tamanho do jogo. Cada camada do funil tem uma função diferente na decisão.</p>
   </div>
   <div class="grid2">
     <div class="card">
       <h3>Definições operacionais</h3>
       <ul class="bullets">
-        <li><b>TAM:</b> todos os domicílios no recorte territorial, sem filtro de renda. Informa alcance.</li>
-        <li><b>SAM:</b> domicílios com renda elegível ao ticket (mensalidade como % da renda). Aproxima pagabilidade.</li>
-        <li><b>Núcleo:</b> parte do SAM com presença de 0–17 anos. Aproxima conversão inicial.</li>
+        <li><b>TAM</b> (Total Addressable Market): todos os domicílios no recorte territorial, sem filtro de renda. Informa o tamanho do campo — não o tamanho da oportunidade.</li>
+        <li><b>SAM</b> (Serviceable Available Market): domicílios com renda suficiente para arcar com o ticket — é o recorte do território que realmente pode pagar. Aproxima pagabilidade.</li>
+        <li><b>Núcleo:</b> parte do SAM com presença de filhos de 0–17 anos. Aproxima conversão inicial — quem pode pagar <i>e</i> tem crianças em idade escolar.</li>
       </ul>
       <div class="callout">TAM 155.019 → SAM 7.424 → Núcleo 2.665 → 0–17: 4.683</div>
     </div>
@@ -911,10 +946,13 @@
         <li>TAM grande não é sinônimo de matrículas — só indica o território coberto.</li>
         <li>SAM é o universo "pagável" dentro desse território.</li>
         <li>Núcleo é a demanda mais imediata: famílias elegíveis que já têm filhos em idade escolar.</li>
-        <li>O dado relevante para decisão não é o maior número, mas onde o Núcleo é <b>denso e a fricção é baixa</b>.</li>
+        <li>O dado relevante para decisão não é o maior número, mas onde o Núcleo é mais <b>concentrado e a fricção é baixa</b>.</li>
       </ul>
       <p class="small" style="margin-top:10px;padding:8px 10px;background:rgba(17,19,22,.04);border-radius:10px;border-left:3px solid rgba(17,19,22,.15);"><b>Fricção</b> = tudo que torna o deslocamento mais difícil, imprevisível ou demorado no dia a dia — trânsito, tempo de trajeto, falta de rota direta, dificuldade de estacionamento.</p>
     </div>
+  </div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:8px;">
+    <span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021 (Pesquisa Distrital por Amostra de Domicílios), CODEPLAN/GDF. Processamento e modelagem: Opinião Informação Estratégica, 2026.</span>
   </div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
@@ -926,29 +964,30 @@
 <section class="slide" data-title="Implicações do funil">
   <div>
     <div class="kicker">A · Premissas e funil de mercado</div>
-    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">O que muda na decisão</h2>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">O mercado acionável é menor do que parece</h2>
     <div class="rule"></div>
-    <p class="subtitle"><b>Mensagem-chave:</b> o mercado acionável é uma fração do território. A conversão premium depende de quatro variáveis simultâneas — renda, filhos, conveniência e proposta de valor.</p>
+    <p class="subtitle">1,7% do território se converte em núcleo prioritário. Não é fraqueza do mercado — é a natureza do premium. Escolas de alto ticket operam sempre em mercados pequenos e profundos, não grandes e rasos.</p>
   </div>
   <div class="grid2">
     <div class="card">
       <h3>Por que "tamanho do território" engana</h3>
       <ul class="bullets">
-        <li>TAM 155.019 domicílios → Núcleo 2.665 → <b>razão de conversão ≈ 1,7%</b> do total.</li>
         <li>O funil explica por que tamanho de território não é sinônimo de matrícula.</li>
-        <li>Conversão premium tende a depender de: <b>renda + filhos + conveniência + proposta de valor</b>.</li>
+        <li>Conversão premium depende de quatro variáveis simultâneas: <b>renda + filhos + conveniência + proposta de valor</b>.</li>
+        <li>Remover qualquer uma dessas variáveis superestima o mercado real.</li>
       </ul>
     </div>
     <div class="card">
       <h3>Como usar na decisão</h3>
       <ul class="bullets">
-        <li><b>Onde sustentar tração (prioridade):</b> onde o Núcleo é mais denso e a fricção logística é menor.</li>
+        <li><b>Onde sustentar tração (prioridade):</b> onde o Núcleo é mais concentrado e a fricção logística é menor.</li>
         <li><b>Onde escalar (condicional):</b> regiões com volume maior mas maior dependência de mitigadores de fricção.</li>
         <li>A proposta premium precisa ser <b>comprovável</b> (evidências tangíveis), não apenas declarada.</li>
       </ul>
-      <div class="callout">Núcleo denso + fricção baixa + proposta de valor = máxima conversão</div>
+      <div class="callout">Alta concentração de famílias elegíveis + fricção baixa + proposta de valor = máxima conversão</div>
     </div>
   </div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 4</div>
@@ -959,9 +998,9 @@
 <section class="slide" data-title="Regiões de influência">
   <div>
     <div class="kicker">B · Regiões de influência e densidade</div>
-    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Propensão, fricção e como captar</h2>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Onde esse núcleo vive</h2>
     <div class="rule"></div>
-    <p class="subtitle"><b>Mensagem-chave:</b> regiões de influência representam propensão de escolha e fricção logística (distância/tempo e previsibilidade). Não são "melhor/pior" — são mecanismos diferentes de aquisição.</p>
+    <p class="subtitle">O núcleo de 2.665 domicílios não está distribuído uniformemente. A distância e a previsibilidade do trajeto criam três zonas com mecanismos de captação completamente diferentes — não são "melhor/pior", são estratégias distintas.</p>
   </div>
   <div class="grid3">
     <div class="card">
@@ -992,6 +1031,7 @@
       </ul>
     </div>
   </div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 5</div>
@@ -1002,9 +1042,9 @@
 <section class="slide" data-title="Funil por região e densidade do núcleo">
   <div>
     <div class="kicker">B · Regiões de influência e densidade</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Tamanho e aderência — onde atuar</h2>
+    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Tamanho e aderência por região</h2>
     <div class="rule"></div>
-    <p class="subtitle"><b>Mensagem-chave:</b> além do tamanho (TAM/SAM/Núcleo), precisamos de um indicador de "aderência": <b>densidade do núcleo = Núcleo ÷ SAM</b>. Indica qual fração do universo pagável já tem filhos 0–17.</p>
+    <p class="subtitle">Tamanho absoluto engana. O que importa é a concentração de famílias elegíveis com filhos em cada região. Essa concentração tem um nome técnico: <b>densidade do núcleo = Núcleo ÷ SAM</b> — o indicador que separa mercado disponível de mercado pronto.</p>
   </div>
   <div class="grid2">
     <div class="tablewrap">
@@ -1030,6 +1070,7 @@
       <div class="callout">Usar: onde Densidade é alta + fricção é baixa = prioridade</div>
     </div>
   </div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 6</div>
@@ -1040,9 +1081,9 @@
 <section class="slide" data-title="Concentração do núcleo por RA">
   <div>
     <div class="kicker">B · Regiões de influência e densidade</div>
-    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Onde está o Núcleo (por Região Administrativa)</h2>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Onde exatamente</h2>
     <div class="rule"></div>
-    <p class="subtitle"><b>Mensagem-chave:</b> o ranking por RA mostra onde estão as famílias pagáveis com filhos. Orienta micro-localização e captação faseada — volume absoluto e propensão não são a mesma coisa.</p>
+    <p class="subtitle">Plano Piloto tem o maior volume absoluto — mas Lago Sul e Jardim Botânico têm o menor atrito logístico. São públicos diferentes que exigem estratégias diferentes. Volume ≠ propensão ≠ prioridade de entrada.</p>
   </div>
   <div class="grid2">
     <div class="tablewrap">
@@ -1062,11 +1103,12 @@
       <ul class="bullets">
         <li>Plano Piloto tem o maior volume absoluto (30,5%), mas está na região Secundária: maior concorrência e maior sensibilidade a fricções.</li>
         <li>Lago Sul + Jardim Botânico juntos = <b>42,0% do Núcleo</b>, com menor fricção logística e maior propensão.</li>
-        <li>A implantação equilibra onde o Núcleo é denso + onde o acesso é previsível.</li>
+        <li>A implantação equilibra onde o Núcleo é mais concentrado — maior densidade — + onde o acesso é previsível.</li>
       </ul>
       <div class="callout">Captação faseada: Primária (★) → Secundária → Terciária</div>
     </div>
   </div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 7</div>
@@ -1077,9 +1119,9 @@
 <section class="slide" data-title="Tempo casa–escola">
   <div>
     <div class="kicker">C · Mobilidade e síntese territorial</div>
-    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Tempo de deslocamento por região</h2>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Quanto tempo levam para deixar os filhos na escola</h2>
     <div class="rule"></div>
-    <p class="subtitle"><b>Mensagem-chave:</b> tempo é proxy de conveniência. ≤30 min define a zona primária de captação; até 45 min é zona secundária condicionada. No núcleo, trajetos curtos e previsíveis pesam mais — especialmente nos ciclos iniciais.</p>
+    <p class="subtitle">Conveniência não é conforto — é tempo. E no premium, tempo previsível vale mais que tempo curto. ≤30 min define a zona primária de captação; até 45 min é zona secundária condicionada. No núcleo, essa previsibilidade pesa ainda mais — especialmente nos ciclos iniciais.</p>
   </div>
   <div class="grid2">
     <div class="tablewrap">
@@ -1109,6 +1151,7 @@
       <div class="callout">Raio funcional de referência: ≤ 30 minutos</div>
     </div>
   </div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 8</div>
@@ -1119,9 +1162,9 @@
 <section class="slide" data-title="Modal de deslocamento">
   <div>
     <div class="kicker">C · Mobilidade e síntese territorial</div>
-    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Como as famílias se deslocam</h2>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Como levam os filhos até a escola</h2>
     <div class="rule"></div>
-    <p class="subtitle"><b>Mensagem-chave:</b> modal define o desenho da operação. No premium, chegada/saída é parte do produto percebido. Automóvel dominante exige fluxo interno, segurança e previsibilidade como serviço.</p>
+    <p class="subtitle">O modal não é detalhe operacional — é o desenho do produto. Automóvel dominante no núcleo significa que chegada e saída são parte da experiência percebida: fluxo, segurança e previsibilidade não são infraestrutura — são serviço.</p>
   </div>
   <div class="grid2">
     <div class="tablewrap">
@@ -1151,6 +1194,7 @@
       <div class="callout">Premium percebido = previsibilidade + segurança + tempo</div>
     </div>
   </div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 9</div>
@@ -1161,39 +1205,61 @@
 <section class="slide" data-title="Síntese por região">
   <div>
     <div class="kicker">C · Mobilidade e síntese territorial</div>
-    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Como capturar o núcleo por região</h2>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">O mercado está mapeado. A estratégia começa aqui.</h2>
     <div class="rule"></div>
-    <p class="subtitle"><b>Mensagem-chave:</b> Primária sustenta; Secundária/Terciária escalam com mitigadores e prova de valor. Cada região exige um mecanismo de aquisição diferente.</p>
+    <p class="subtitle">A Primária sustenta. A Secundária escala. A Terciária confirma. Tentar as três ao mesmo tempo é o caminho mais rápido para não vencer em nenhuma.</p>
   </div>
-  <div class="grid3">
-    <div class="card">
-      <h3>Primária</h3>
-      <div style="margin:6px 0;"><span class="pill" style="background:rgba(139,30,36,.1);color:var(--red);">Lago Sul · Jardim Botânico</span></div>
+
+  <div class="grid3" style="flex:1;min-height:0;">
+
+    <div class="card" style="border-top:3px solid var(--red);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <div>
+          <h3 style="margin:0;">Primária</h3>
+          <span style="font-size:11px;color:#888;">Lago Sul · Jardim Botânico</span>
+        </div>
+        <span style="font-size:10px;font-weight:700;color:var(--red);background:rgba(139,30,36,.08);padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;">Motor de reputação</span>
+      </div>
       <ul class="bullets">
-        <li>Maior densidade do Núcleo (40,1%) e menor fricção logística.</li>
-        <li>Território natural para os primeiros alunos — onde a escola constrói reputação antes de escalar.</li>
-        <li>Exige micro-localização precisa e operação premium desde o primeiro dia.</li>
+        <li>Densidade de 40,1% — mercado mais pronto e menor fricção logística.</li>
+        <li>Onde os primeiros alunos constroem a prova de valor.</li>
+        <li>Micro-localização e operação premium desde o dia 1 — sem condicional.</li>
       </ul>
     </div>
-    <div class="card">
-      <h3>Secundária</h3>
-      <div style="margin:6px 0;"><span class="pill" style="background:rgba(17,19,22,.06);color:var(--ink);">Plano Piloto</span></div>
+
+    <div class="card" style="border-top:3px solid #888;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <div>
+          <h3 style="margin:0;">Secundária</h3>
+          <span style="font-size:11px;color:#888;">Plano Piloto</span>
+        </div>
+        <span style="font-size:10px;font-weight:700;color:#555;background:rgba(17,19,22,.07);padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;">Escala controlada</span>
+      </div>
       <ul class="bullets">
-        <li>Volume + concorrência local.</li>
-        <li>Depende de diferenciação crível e rotina previsível.</li>
-        <li>Escala quando há prova de valor consolidada na Primária.</li>
+        <li>Maior volume absoluto (813 domicílios no núcleo) — mas concorrência mais intensa.</li>
+        <li>Exige diferenciação clara de proposta para converter.</li>
+        <li>Entra após consolidar reputação na Primária.</li>
       </ul>
     </div>
-    <div class="card">
-      <h3>Terciária</h3>
-      <div style="margin:6px 0;"><span class="pill" style="background:rgba(17,19,22,.06);color:var(--ink);">Sudoeste · Lago Norte</span></div>
+
+    <div class="card" style="border-top:3px solid #ccc;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+        <div>
+          <h3 style="margin:0;">Terciária</h3>
+          <span style="font-size:11px;color:#888;">Sudoeste · Lago Norte</span>
+        </div>
+        <span style="font-size:10px;font-weight:700;color:#777;background:rgba(17,19,22,.05);padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;">Confirmação de mercado</span>
+      </div>
       <ul class="bullets">
-        <li>Potencial complementar, não prioritário.</li>
-        <li>Só faz sentido ativar quando a Primária está consolidada e a Secundária em curso.</li>
-        <li>Depende de mitigadores concretos — transporte, comunicação segmentada e subáreas com maior propensão identificadas.</li>
+        <li>100% do núcleo usa automóvel — logística é pré-requisito, não diferencial.</li>
+        <li>Potencial real, mas acesso condicionado a mitigadores operacionais.</li>
+        <li>Fase 3 — após marca, prova de valor e operação estabelecidas.</li>
       </ul>
     </div>
+
   </div>
+
+  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 10</div>
@@ -1238,7 +1304,7 @@
       </div>
       <div style="height:1px;background:rgba(99,68,160,.15);"></div>
       <div style="font-size:11px;font-weight:700;color:#6344A0;letter-spacing:.04em;text-transform:uppercase;">Tese central</div>
-      <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Confessional + Bilinguismo Equilibrado + Turmas Reduzidas</p>
+      <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Confessional + bilinguismo equilibrado + turmas reduzidas</p>
       <div style="margin-top:auto;padding:7px 10px;border-radius:10px;background:rgba(99,68,160,.1);font-size:11px;font-weight:700;color:#6344A0;">Trade-off: marca em consolidação</div>
     </div>
 
@@ -1248,7 +1314,7 @@
       </div>
       <div style="height:1px;background:rgba(11,106,160,.15);"></div>
       <div style="font-size:11px;font-weight:700;color:#0B6AA0;letter-spacing:.04em;text-transform:uppercase;">Tese central</div>
-      <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Robustez Institucional + Inclusão Estruturada + Segurança como Diferencial</p>
+      <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Robustez institucional + inclusão estruturada + segurança como diferencial</p>
       <div style="margin-top:auto;padding:7px 10px;border-radius:10px;background:rgba(11,106,160,.1);font-size:11px;font-weight:700;color:#0B6AA0;">Trade-off: turmas maiores (25–30)</div>
     </div>
 
@@ -1258,7 +1324,7 @@
       </div>
       <div style="height:1px;background:rgba(11,122,98,.15);"></div>
       <div style="font-size:11px;font-weight:700;color:#0B7A62;letter-spacing:.04em;text-transform:uppercase;">Tese central</div>
-      <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Premium Internacional + Rede Inspired + Imersão 60% em Inglês</p>
+      <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Premium internacional + rede Inspired + imersão 80% em inglês</p>
       <div style="margin-top:auto;padding:7px 10px;border-radius:10px;background:rgba(11,122,98,.1);font-size:11px;font-weight:700;color:#0B7A62;">Trade-off: rotatividade de professores a cada 2–3 anos</div>
     </div>
 
@@ -1268,7 +1334,7 @@
       </div>
       <div style="height:1px;background:rgba(26,51,102,.15);"></div>
       <div style="font-size:11px;font-weight:700;color:#1A3366;letter-spacing:.04em;text-transform:uppercase;">Tese central</div>
-      <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Alta Performance Acadêmica + Cultura de Testes + Aprovação no Ensino Superior</p>
+      <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Alta performance acadêmica + cultura de testes + aprovação no ensino superior</p>
       <div style="margin-top:auto;padding:7px 10px;border-radius:10px;background:rgba(26,51,102,.1);font-size:11px;font-weight:700;color:#1A3366;">Trade-off: pressão e ansiedade</div>
     </div>
 
@@ -1669,7 +1735,7 @@
 </section>
 
 <!-- ─── SLIDE 20 — ELEVA: IMERSÃO E INOVAÇÃO ─── -->
-<section class="slide s-eleva" data-title="Eleva — Imersão 80% e Inovação">
+<section class="slide s-eleva" data-title="Eleva — Imersão 60% e Inovação">
   <div class="school-stripe"></div>
   <div class="school-badge"><div class="dot2"></div>ESCOLA ELEVA BRASÍLIA</div>
   <div>
@@ -1897,7 +1963,7 @@
       </thead>
       <tbody>
         <tr><td><b>Perfil</b></td><td style="background:rgba(99,68,160,.04);">Confessional / Personalizado</td><td style="background:rgba(11,106,160,.04);">Confessional Social / Inclusivo</td><td style="background:rgba(11,122,98,.04);">Global / Inovador</td><td style="background:rgba(26,51,102,.04);">Focado em resultados / Disciplinar</td></tr>
-        <tr><td><b>Inglês</b></td><td style="background:rgba(99,68,160,.04);font-weight:600;color:#6344A0;">Bilíngue integrado 50/50 ✓</td><td style="background:rgba(11,106,160,.04);">Complementar certificado</td><td style="background:rgba(11,122,98,.04);font-weight:600;color:#0B7A62;">Imersão 80% ✓</td><td style="background:rgba(26,51,102,.04);color:#999;">Padrão + complementos leves</td></tr>
+        <tr><td><b>Inglês</b></td><td style="background:rgba(99,68,160,.04);font-weight:600;color:#6344A0;">Bilíngue integrado 50/50 ✓</td><td style="background:rgba(11,106,160,.04);">Complementar certificado</td><td style="background:rgba(11,122,98,.04);font-weight:600;color:#0B7A62;">Imersão 60% ✓</td><td style="background:rgba(26,51,102,.04);color:#999;">Padrão + complementos leves</td></tr>
         <tr><td><b>Inclusão</b></td><td style="background:rgba(99,68,160,.04);">Procedimental / Acolhedor</td><td style="background:rgba(11,106,160,.04);font-weight:600;color:#0B6AA0;">Institucionalizado c/ PDI ✓</td><td style="background:rgba(11,122,98,.04);">Personalização com ressalvas</td><td style="background:rgba(26,51,102,.04);color:#999;">Filtro de exigência</td></tr>
         <tr><td><b>Turmas</b></td><td style="background:rgba(99,68,160,.04);font-weight:600;color:#6344A0;">18–20 alunos ✓</td><td style="background:rgba(11,106,160,.04);color:#999;">25–30 alunos</td><td style="background:rgba(11,122,98,.04);font-weight:600;color:#0B7A62;">Reduzidas ✓</td><td style="background:rgba(26,51,102,.04);">Padrão</td></tr>
         <tr><td><b>Valores</b></td><td style="background:rgba(99,68,160,.04);">Católico / Dogmático</td><td style="background:rgba(11,106,160,.04);">Católico / Solidário</td><td style="background:rgba(11,122,98,.04);">Laico / Global</td><td style="background:rgba(26,51,102,.04);">Judaico-Cristão / Cívico</td></tr>
@@ -1928,7 +1994,7 @@
       <img src="https://galois.com.br/wp-content/uploads/2019/07/Galois-Logo-Positivo-RGB.png" alt="Galois" style="max-height:28px;width:auto;object-fit:contain;"/>
       <div style="height:1px;background:rgba(26,51,102,.15);"></div>
       <p style="font-size:12px;color:var(--muted);margin:0;">O que o Everest pode absorver:</p>
-      <p style="font-size:13px;font-weight:600;color:#1A3366;line-height:1.4;margin:0;">Excelência acadêmica com resultados comprováveis — aprovações como prova de proposta de valor.</p>
+      <p style="font-size:13px;font-weight:600;color:#1A3366;line-height:1.4;margin:0;">Referências acadêmicas comprováveis — aprovações, olimpíadas e resultados verificáveis como evidências comprobatórias da proposta de valor.</p>
     </div>
 
     <div style="border-radius:16px;border:2px solid rgba(11,106,160,.2);background:rgba(11,106,160,.04);padding:16px 14px;display:flex;flex-direction:column;gap:8px;">
@@ -1979,72 +2045,93 @@
   </div>
 </section>
 
-<section class="slide" data-title="Condições de viabilidade">
+<section class="slide" data-title="Proposta de valor">
   <div>
-    <div class="kicker">J · Condições de viabilidade</div>
-    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">O que precisa estar verdadeiro</h2>
+    <div class="kicker">J · Proposta de Valor</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">A proposta que o mercado ainda não tem</h2>
     <div class="rule"></div>
-    <p class="subtitle">Existe mercado potencial — mas a implantação só vinga se três condições forem atendidas em simultâneo.</p>
+    <p class="subtitle">O que é básico no premium já deveria ser padrão. Esta é a proposta que o Everest tem condições únicas de construir — e que nenhuma concorrente entrega de forma integrada.</p>
   </div>
 
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;min-height:0;">
 
-    <!-- Condição 1 -->
+    <!-- Pilar 1 -->
     <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;">
       <div style="position:absolute;top:-10px;right:-10px;font-size:80px;font-weight:800;color:rgba(139,30,36,.06);line-height:1;user-select:none;">1</div>
       <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
       </div>
-      <div>
-        <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Condição 1</p>
-        <h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0 0 10px;">Micro-localização e acesso</h3>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div>
+          <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Pilar 1</p>
+          <h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0;">Conveniência como produto</h3>
+        </div>
+        <details class="tooltip-details" style="margin-left:auto;position:relative;">
+          <summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary>
+          <div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25);">72% dos respondentes usam carro para levar os filhos à escola. Tempo médio aceitável: até 20 minutos. A Região Primária concentra 67% do núcleo elegível — majoritariamente Lago Sul, Park Way e Jardim Botânico. Rotas de transporte coletivo escolar podem ampliar o raio funcional em até 30%.</div>
+        </details>
       </div>
       <ul class="bullets" style="margin:0;">
-        <li>Terreno que minimize tempo e imprevisibilidade — especialmente para a Região Primária.</li>
-        <li>Validar nos horários de pico: filas, retornos, segurança e fluxo de saída.</li>
+        <li>Localização que minimize tempo e imprevisibilidade para a Região Primária.</li>
+        <li>Entrada e saída como experiência: fluxo, segurança e previsibilidade.</li>
+        <li>Mitigadores de raio: rotas e apoio de transporte (van própria, janelas de horário, pontos coletivos por RA).</li>
       </ul>
-      <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">Critério: acesso previsível no horário de pico</div>
+      <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">A jornada começa antes do portão.</div>
     </div>
 
-    <!-- Condição 2 -->
+    <!-- Pilar 2 -->
     <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;">
       <div style="position:absolute;top:-10px;right:-10px;font-size:80px;font-weight:800;color:rgba(139,30,36,.06);line-height:1;user-select:none;">2</div>
       <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
       </div>
-      <div>
-        <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Condição 2</p>
-        <h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0 0 10px;">Proposta com provas</h3>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div>
+          <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Pilar 2</p>
+          <h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0;">Tese comprovável</h3>
+        </div>
+        <details class="tooltip-details" style="margin-left:auto;position:relative;">
+          <summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary>
+          <div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25);">Nenhuma das 4 escolas analisadas combina bilinguismo real + inclusão com protocolo + referências acadêmicas comprováveis. Galois e Marista não têm bilinguismo estrutural. Eleva filtra pelo preço. Heavenly ainda está em consolidação de marca. O espaço está vazio.</div>
+        </details>
       </div>
       <ul class="bullets" style="margin:0;">
-        <li>Tese clara: excelência acadêmica + bilinguismo real + inclusão com protocolo.</li>
+        <li>Referências acadêmicas comprováveis + bilinguismo real + inclusão com protocolo.</li>
         <li>Narrativa simples: o que será entregue e como aparece na rotina do aluno.</li>
+        <li>Evidências comprobatórias visíveis desde o primeiro contato comercial.</li>
       </ul>
-      <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">Critério: mensagem comprovável, não genérica</div>
+      <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">Promessa é dívida. Experiência gera confiança.</div>
     </div>
 
-    <!-- Condição 3 -->
+    <!-- Pilar 3 -->
     <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;">
       <div style="position:absolute;top:-10px;right:-10px;font-size:80px;font-weight:800;color:rgba(139,30,36,.06);line-height:1;user-select:none;">3</div>
       <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
       </div>
-      <div>
-        <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Condição 3</p>
-        <h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0 0 10px;">Logística como produto</h3>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div>
+          <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Pilar 3</p>
+          <h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0;">Educação personalizada</h3>
+        </div>
+        <details class="tooltip-details" style="margin-left:auto;position:relative;">
+          <summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary>
+          <div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25);">Marista atende turmas de 25–30 alunos — escala incompatível com personalização real. Galois não adapta o currículo ao aluno. Eleva exige maturidade precoce — critério excludente para perfis neurodivergentes. Nenhuma escola posiciona o professor como orientador de trajetória individual.</div>
+        </details>
       </div>
       <ul class="bullets" style="margin:0;">
-        <li>Entrada e saída como experiência: fluxo, segurança, previsibilidade e comunicação.</li>
-        <li>Mitigadores de raio: janelas de horário, rotas e apoio de transporte.</li>
+        <li>Currículo que se adapta ao ritmo, perfil e contexto de cada aluno — não o aluno que se adapta ao currículo.</li>
+        <li>Identificação precoce de potenciais e necessidades: não espera o problema aparecer.</li>
+        <li>O professor como orientador de trajetória, não apenas transmissor de conteúdo.</li>
       </ul>
-      <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">Critério: operação que reduz a fricção percebida</div>
+      <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">Cada aluno é um projeto único.</div>
     </div>
 
   </div>
 
   <div style="background:var(--ink);border-radius:14px;padding:13px 20px;display:flex;align-items:center;gap:16px;">
-    <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">Viabilidade =</span>
-    <span style="font-size:13.5px;font-weight:700;color:#fff;">Localização certa &nbsp;+&nbsp; Proposta comprovável &nbsp;+&nbsp; Operação premium</span>
+    <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">Proposta de Valor =</span>
+    <span style="font-size:13.5px;font-weight:700;color:#fff;">Conveniência &nbsp;+&nbsp; Tese Comprovável &nbsp;+&nbsp; Educação Personalizada</span>
   </div>
 
   <div class="footer">
@@ -2054,98 +2141,125 @@
 </section>
 
 <!-- ─── SLIDE 27 — PRÓXIMOS PASSOS ─── -->
+<section class="slide" data-title="Reflexão Estratégica — IA">
+  <div>
+    <div class="kicker">K · Reflexão Estratégica · Horizonte de Futuro</div>
+    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">O que uma escola ensina quando a IA já pensa?</h2>
+    <div class="rule"></div>
+    <p class="subtitle">A pergunta que as melhores escolas do mundo já estão respondendo — e que define quem será premium na próxima década.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1;min-height:0;">
+
+    <!-- Esquerda — pergunta central -->
+    <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:24px;display:flex;flex-direction:column;gap:16px;">
+      <p style="font-size:13px;font-style:italic;color:var(--ink);line-height:1.7;border-left:3px solid var(--red);padding-left:14px;margin:0;">"Se a IA executa o trabalho cognitivo mecânico — memorização, resolução algorítmica, pesquisa básica — o que sobra para a escola ensinar?"</p>
+      <p style="font-size:13px;color:#555;line-height:1.7;margin:0;">A resposta não está na tecnologia. Está nos atributos que a IA não replica:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span style="padding:6px 14px;border-radius:20px;background:rgba(139,30,36,.08);font-size:12px;font-weight:700;color:var(--red);">Julgamento ético</span>
+        <span style="padding:6px 14px;border-radius:20px;background:rgba(139,30,36,.08);font-size:12px;font-weight:700;color:var(--red);">Criatividade</span>
+        <span style="padding:6px 14px;border-radius:20px;background:rgba(139,30,36,.08);font-size:12px;font-weight:700;color:var(--red);">Empatia</span>
+        <span style="padding:6px 14px;border-radius:20px;background:rgba(139,30,36,.08);font-size:12px;font-weight:700;color:var(--red);">Autonomia</span>
+        <span style="padding:6px 14px;border-radius:20px;background:rgba(139,30,36,.08);font-size:12px;font-weight:700;color:var(--red);">Identidade</span>
+        <span style="padding:6px 14px;border-radius:20px;background:rgba(139,30,36,.08);font-size:12px;font-weight:700;color:var(--red);">Formação de caráter</span>
+      </div>
+      <p style="font-size:12.5px;color:#555;line-height:1.7;margin:0;">Esses são exatamente os pilares que o Everest já quer defender — e que nenhuma concorrente de Brasília está articulando com clareza.</p>
+    </div>
+
+    <!-- Direita — benchmarks globais -->
+    <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:24px;display:flex;flex-direction:column;gap:14px;">
+      <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0;">Como o mundo está respondendo</p>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:20px;flex-shrink:0;">🇸🇬</span>
+          <div style="font-size:12.5px;color:var(--ink);line-height:1.6;"><b>Singapura</b> — <a href="https://www.moe.gov.sg/edutech-masterplan" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline;">EdTech Masterplan 2030</a>: IA como tutor adaptativo, com centro de pesquisa dedicado à ética da IA na educação.</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:20px;flex-shrink:0;">🇫🇮</span>
+          <div style="font-size:12.5px;color:var(--ink);line-height:1.6;"><b>Finlândia</b> — <a href="https://www.aifinland.fi/" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline;">AI in Learning</a>: compromisso nacional de alfabetização em IA. Foco em equidade e bem-estar, não apenas performance.</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:20px;flex-shrink:0;">🇰🇷</span>
+          <div style="font-size:12.5px;color:var(--ink);line-height:1.6;"><b>Coreia do Sul</b> — <a href="https://www.keris.or.kr/" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline;">Ministry of Education / KERIS</a>: IA no currículo nacional em todos os anos escolares desde 2025.</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="font-size:20px;flex-shrink:0;">🇺🇸</span>
+          <div style="font-size:12.5px;color:var(--ink);line-height:1.6;"><b>EUA</b> — <a href="https://alpha.school/" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline;">Alpha School</a>: 2h de conteúdo com tutor de IA + 4h de desenvolvimento de habilidades humanas. Alunos no top 1% nacional.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="background:var(--ink);border-radius:14px;padding:13px 20px;display:flex;align-items:center;gap:16px;">
+    <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">Oportunidade =</span>
+    <span style="font-size:13.5px;font-weight:700;color:#fff;">A escola que responde essa pergunta antes das concorrentes não compete no mesmo mercado — ela define o mercado.</span>
+  </div>
+
+  <div class="footer">
+    <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
+    <div class="meta">Slide 30b</div>
+  </div>
+</section>
+
 <section class="slide" data-title="Recomendações Estratégicas">
   <div>
     <div class="kicker">K · Recomendações Estratégicas</div>
     <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Próximos passos</h2>
     <div class="rule"></div>
-    <p class="subtitle">Reduzir risco antes de comprometer investimento — com testes curtos, simulações e desenho operacional.</p>
+    <p class="subtitle">Reduzir risco antes de comprometer investimento — testar antes de escalar.</p>
   </div>
 
-  <div class="slide31-outer" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;min-height:0;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;min-height:0;">
 
-    <!-- Agenda: 6 itens em grid 2x3 -->
+    <!-- Agenda -->
     <div style="display:flex;flex-direction:column;gap:10px;">
-      <p style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin:0;">Agenda objetiva</p>
-      <div class="slide31-agenda" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;">
+      <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0;">Agenda objetiva</p>
 
-        <div style="background:#f7f7f8;border:1.5px solid #e8e8ec;border-radius:14px;padding:12px 14px;">
-          <p style="font-size:10.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin:0 0 4px;">01</p>
-          <p style="font-size:12.5px;font-weight:700;margin:0 0 3px;color:var(--ink);">Fechar a tese</p>
-          <p style="font-size:11.5px;color:var(--muted);margin:0;">Proposta, evidências e materiais de captação.</p>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;">
+          <span style="font-size:11px;font-weight:800;color:var(--red);background:rgba(139,30,36,.1);border-radius:6px;padding:3px 7px;flex-shrink:0;">01</span>
+          <div><b style="font-size:13px;color:var(--ink);">Pesquisa de mercado</b><br/><span style="font-size:12px;color:#666;line-height:1.5;">Diagnóstico de percepção atual, teste de conceito da tese nos três pilares, validação do posicionamento, teste de localização por região de interesse e simulação de intenção de matrícula.</span></div>
         </div>
-
-        <div style="background:#f7f7f8;border:1.5px solid #e8e8ec;border-radius:14px;padding:12px 14px;">
-          <p style="font-size:10.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin:0 0 4px;">02</p>
-          <p style="font-size:12.5px;font-weight:700;margin:0 0 3px;color:var(--ink);">Shortlist de terrenos</p>
-          <p style="font-size:11.5px;color:var(--muted);margin:0;">3–5 opções avaliadas por critério de acesso.</p>
+        <div style="display:flex;gap:12px;align-items:flex-start;background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;">
+          <span style="font-size:11px;font-weight:800;color:var(--red);background:rgba(139,30,36,.1);border-radius:6px;padding:3px 7px;flex-shrink:0;">02</span>
+          <div><b style="font-size:13px;color:var(--ink);">Fechar a proposta</b><br/><span style="font-size:12px;color:#666;line-height:1.5;">Com os aprendizados da pesquisa: refinar os pilares, prototipar o modelo de educação personalizada e definir a narrativa da escola frente à IA.</span></div>
         </div>
-
-        <div style="background:#f7f7f8;border:1.5px solid #e8e8ec;border-radius:14px;padding:12px 14px;">
-          <p style="font-size:10.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin:0 0 4px;">03</p>
-          <p style="font-size:12.5px;font-weight:700;margin:0 0 3px;color:var(--ink);">Teste de pico</p>
-          <p style="font-size:11.5px;color:var(--muted);margin:0;">Simular rotina real (manhã/tarde) e medir fluxos.</p>
+        <div style="display:flex;gap:12px;align-items:flex-start;background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;">
+          <span style="font-size:11px;font-weight:800;color:var(--red);background:rgba(139,30,36,.1);border-radius:6px;padding:3px 7px;flex-shrink:0;">03</span>
+          <div><b style="font-size:13px;color:var(--ink);">Validar a operação</b><br/><span style="font-size:12px;color:#666;line-height:1.5;">Com as regiões priorizadas pela pesquisa: shortlist de espaços e imóveis por critério de acesso + simulação financeira + desenho operacional de logística.</span></div>
         </div>
-
-        <div style="background:#f7f7f8;border:1.5px solid #e8e8ec;border-radius:14px;padding:12px 14px;">
-          <p style="font-size:10.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin:0 0 4px;">04</p>
-          <p style="font-size:12.5px;font-weight:700;margin:0 0 3px;color:var(--ink);">Simulação financeira</p>
-          <p style="font-size:11.5px;color:var(--muted);margin:0;">Mensalidade × % de renda e impactos no funil.</p>
+        <div style="display:flex;gap:12px;align-items:flex-start;background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;">
+          <span style="font-size:11px;font-weight:800;color:var(--red);background:rgba(139,30,36,.1);border-radius:6px;padding:3px 7px;flex-shrink:0;">04</span>
+          <div><b style="font-size:13px;color:var(--ink);">Ir ao mercado</b><br/><span style="font-size:12px;color:#666;line-height:1.5;">Captação faseada — Primária → Secundária → Terciária — com métricas por pilar e por território antes de escalar.</span></div>
         </div>
+      </div>
 
-        <div style="background:#f7f7f8;border:1.5px solid #e8e8ec;border-radius:14px;padding:12px 14px;">
-          <p style="font-size:10.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin:0 0 4px;">05</p>
-          <p style="font-size:12.5px;font-weight:700;margin:0 0 3px;color:var(--ink);">Desenho operacional</p>
-          <p style="font-size:11.5px;color:var(--muted);margin:0;">Entrada, saída, segurança, comunicação e mitigadores.</p>
-        </div>
-
-        <div style="background:#f7f7f8;border:1.5px solid #e8e8ec;border-radius:14px;padding:12px 14px;">
-          <p style="font-size:10.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin:0 0 4px;">06</p>
-          <p style="font-size:12.5px;font-weight:700;margin:0 0 3px;color:var(--ink);">Captação faseada</p>
-          <p style="font-size:11.5px;color:var(--muted);margin:0;">Primária → Secundária → Terciária, com metas por etapa.</p>
-        </div>
-
+      <div style="margin-top:auto;background:rgba(139,30,36,.07);border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;color:var(--red);">
+        ⚠ Os blocos 02, 03 e 04 só avançam com os aprendizados do bloco 01 em mãos.
       </div>
     </div>
 
     <!-- Riscos -->
     <div style="display:flex;flex-direction:column;gap:10px;">
-      <p style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin:0;">Riscos a monitorar</p>
+      <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0;">Riscos a monitorar</p>
       <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
-
-        <div style="display:flex;align-items:flex-start;gap:12px;background:#fff5f5;border:1.5px solid rgba(139,30,36,.15);border-radius:14px;padding:12px 14px;">
-          <div style="width:28px;height:28px;border-radius:8px;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          </div>
-          <p style="font-size:12.5px;font-weight:600;color:var(--ink);margin:0;line-height:1.45;">Diferenciação insuficiente frente às 4 escolas analisadas.</p>
+        <div style="background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;border-left:3px solid var(--red);">
+          <p style="font-size:12.5px;color:var(--ink);margin:0;line-height:1.5;">🔍 Tese não ressoa com o mercado esperado — a pesquisa deve mapear isso antes de qualquer investimento.</p>
         </div>
-
-        <div style="display:flex;align-items:flex-start;gap:12px;background:#fff5f5;border:1.5px solid rgba(139,30,36,.15);border-radius:14px;padding:12px 14px;">
-          <div style="width:28px;height:28px;border-radius:8px;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          </div>
-          <p style="font-size:12.5px;font-weight:600;color:var(--ink);margin:0;line-height:1.45;">Fricção logística não resolvida — acesso, fluxo e segurança.</p>
+        <div style="background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;border-left:3px solid var(--red);">
+          <p style="font-size:12.5px;color:var(--ink);margin:0;line-height:1.5;">⚡ Concorrente ocupa primeiro o espaço da IA no premium de Brasília.</p>
         </div>
-
-        <div style="display:flex;align-items:flex-start;gap:12px;background:#fff5f5;border:1.5px solid rgba(139,30,36,.15);border-radius:14px;padding:12px 14px;">
-          <div style="width:28px;height:28px;border-radius:8px;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          </div>
-          <p style="font-size:12.5px;font-weight:600;color:var(--ink);margin:0;line-height:1.45;">Competição local subestimada na análise inicial.</p>
+        <div style="background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;border-left:3px solid var(--red);">
+          <p style="font-size:12.5px;color:var(--ink);margin:0;line-height:1.5;">🚧 Fricção logística não resolvida compromete a percepção premium.</p>
         </div>
-
-        <div style="display:flex;align-items:flex-start;gap:12px;background:#fff5f5;border:1.5px solid rgba(139,30,36,.15);border-radius:14px;padding:12px 14px;">
-          <div style="width:28px;height:28px;border-radius:8px;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          </div>
-          <p style="font-size:12.5px;font-weight:600;color:var(--ink);margin:0;line-height:1.45;">Taxa de conversão menor do que o esperado fora da Primária.</p>
+        <div style="background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;border-left:3px solid var(--red);">
+          <p style="font-size:12.5px;color:var(--ink);margin:0;line-height:1.5;">🔄 Confusão de marca residual com a Heavenly na Região Primária.</p>
         </div>
-
-        <div style="margin-top:auto;background:var(--ink);border-radius:12px;padding:12px 14px;">
-          <p style="font-size:12px;font-weight:700;color:rgba(255,255,255,.55);margin:0 0 2px;text-transform:uppercase;letter-spacing:.07em;font-size:10.5px;">Boa prática</p>
-          <p style="font-size:13px;font-weight:600;color:#fff;margin:0;">Definir métricas por território e por etapa — antes de começar a captar.</p>
+        <div style="background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;border-left:3px solid var(--red);">
+          <p style="font-size:12.5px;color:var(--ink);margin:0;line-height:1.5;">⚠️ Execução inconsistente dos pilares — proposta forte no discurso, fraca na entrega.</p>
         </div>
-
       </div>
     </div>
 
@@ -2167,7 +2281,7 @@
         </div>
         <button class="btn" id="home" title="Voltar ao início" style="font-size:15px;padding:5px 8px;opacity:.6;" onclick="window._goHome&&window._goHome()">⌂</button>
         <button class="btn" id="prev" title="Anterior (←)">←</button>
-        <div class="counter" id="counter">1 / 28</div>
+        <div class="counter" id="counter">1 / 32</div>
         <button class="btn" id="next" title="Próximo (→)">→</button>
       </div>
     </div><!-- /content -->
@@ -2439,5 +2553,78 @@ window.addEventListener('afterprint',  restoreAfterPrint);
   }
 })();
 </script>
+
+
+<!-- ── Password Gate ─────────────────────────────────────── -->
+<div id="pw-gate" style="
+  position:fixed;inset:0;z-index:99999;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Montserrat',sans-serif;
+">
+  <div style="
+    background:#fff;border-radius:20px;padding:48px 40px;
+    width:100%;max-width:400px;margin:20px;
+    box-shadow:0 24px 80px rgba(0,0,0,.35);
+    text-align:center;
+  ">
+    <img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png"
+         style="height:48px;margin-bottom:28px;object-fit:contain;" alt="Opinião"/>
+    <h2 style="font-size:18px;font-weight:800;color:#111316;margin:0 0 6px;">Acesso restrito</h2>
+    <p style="font-size:13px;color:#888;margin:0 0 28px;line-height:1.5;">
+      Este documento é confidencial.<br/>Insira a senha para continuar.
+    </p>
+    <input id="pw-input" type="password" placeholder="Senha"
+      style="
+        width:100%;padding:13px 16px;border:1.5px solid #e8e8ec;
+        border-radius:10px;font-size:14px;font-family:inherit;
+        outline:none;margin-bottom:12px;box-sizing:border-box;
+        transition:border .2s;
+      "
+      onkeydown="if(event.key==='Enter')checkPw()"
+      onfocus="this.style.borderColor='#8b1e24'"
+      onblur="this.style.borderColor='#e8e8ec'"
+    />
+    <p id="pw-error" style="font-size:12px;color:#8b1e24;min-height:18px;margin:0 0 12px;"></p>
+    <button onclick="checkPw()" style="
+      width:100%;padding:13px;background:#8b1e24;color:#fff;
+      border:none;border-radius:10px;font-size:14px;font-weight:700;
+      font-family:inherit;cursor:pointer;
+      transition:background .2s;
+    "
+    onmouseover="this.style.background='#6e1720'"
+    onmouseout="this.style.background='#8b1e24'"
+    >Entrar</button>
+    <p style="font-size:11px;color:#ccc;margin:20px 0 0;">
+      Elaborado por Opinião Informação Estratégica · Reprodução Proibida
+    </p>
+  </div>
+</div>
+
+<script>
+  (function(){
+    // Check session
+    if(sessionStorage.getItem('everest_auth')==='1'){
+      document.getElementById('pw-gate').style.display='none';
+    }
+  })();
+
+  async function checkPw(){
+    var val = document.getElementById('pw-input').value;
+    var err = document.getElementById('pw-error');
+    if(!val){ err.textContent='Digite a senha.'; return; }
+    var buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(val));
+    var hash = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    if(hash==='59179d9d8acb7ec100cb74093e9df546e6c697057601bf5afdd7db162b90ba45'){
+      sessionStorage.setItem('everest_auth','1');
+      document.getElementById('pw-gate').style.display='none';
+    } else {
+      err.textContent='Senha incorreta. Tente novamente.';
+      document.getElementById('pw-input').value='';
+      document.getElementById('pw-input').focus();
+    }
+  }
+</script>
+<!-- ── /Password Gate ─────────────────────────────────────── -->
 
 </body>
