@@ -54,29 +54,36 @@
     .slide{
       position:absolute; inset:0;
       padding:var(--padY) var(--padX);
-      display:flex; flex-direction:column; gap:14px;
+      display:flex; flex-direction:column; gap:10px;
       opacity:0; transform:translateX(18px);
       transition:opacity .32s ease,transform .32s ease;
       pointer-events:none; overflow:hidden;
     }
     .slide.active{ opacity:1; transform:translateX(0); pointer-events:auto; }
     h1,h2,h3,h4,p{ margin:0; }
-    .kicker{ color:var(--red); font-weight:700; letter-spacing:.09em; text-transform:uppercase; font-size:11px; }
+    .kicker{ color:var(--red); font-weight:700; letter-spacing:.09em; text-transform:uppercase; font-size:10.5px; margin-bottom:1px; }
     .title{ font-size:clamp(28px,3.8vw,52px); line-height:1.04; letter-spacing:-0.022em; font-weight:800; }
-    .subtitle{ color:var(--muted); font-size:clamp(14px,1.45vw,20px); line-height:1.45; max-width:80ch; }
-    .rule{ height:2px; width:60px; background:rgba(17,19,22,.13); border-radius:999px; margin-top:4px; }
-    .grid2{ display:grid; grid-template-columns:1.05fr .95fr; gap:14px; align-items:start; flex:1; min-height:0; }
-    .grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; align-items:start; flex:1; min-height:0; }
+    .subtitle{ color:var(--muted); font-size:clamp(13px,1.28vw,17px); line-height:1.4; max-width:80ch; }
+    .rule{ height:2px; width:60px; background:rgba(17,19,22,.13); border-radius:999px; margin-top:3px; }
+    .grid2{ display:grid; grid-template-columns:1.05fr .95fr; gap:14px; align-items:stretch; flex:1; min-height:0; overflow:hidden; }
+    .grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; align-items:stretch; flex:1; min-height:0; overflow:hidden; }
+    .grid3 > *{ min-height:0; height:100%; }
+    .grid3 > .card{ height:auto; min-height:100%; }
     .span2{ grid-column:1/-1; }
+    /* grid children must not blow past their container */
+    .grid2 > *{ min-height:0; height:100%; box-sizing:border-box; }
+    .grid2 > .card{ height:auto; min-height:100%; }
+    .grid2 > .tablewrap{ height:100%; overflow-y:auto; }
     .card{
       background:rgba(255,255,255,.88); border:1px solid var(--line);
-      border-radius:16px; padding:14px 16px;
+      border-radius:16px; padding:12px 14px;
       box-shadow:0 8px 24px rgba(0,0,0,.055);
+      display:flex; flex-direction:column;
     }
-    .card h3{ font-size:14px; letter-spacing:-.01em; font-weight:700; margin-bottom:8px; }
-    .card h4{ font-size:12px; font-weight:700; color:var(--muted); letter-spacing:.04em; text-transform:uppercase; margin-bottom:6px; }
-    .bullets{ margin:8px 0 0 0; padding:0 0 0 16px; color:var(--ink); font-weight:500; line-height:1.5; font-size:13px; }
-    .bullets li{ margin:6px 0; }
+    .card h3{ font-size:13px; letter-spacing:-.01em; font-weight:700; margin-bottom:6px; }
+    .card h4{ font-size:11px; font-weight:700; color:var(--muted); letter-spacing:.04em; text-transform:uppercase; margin-bottom:5px; }
+    .bullets{ margin:6px 0 0 0; padding:0 0 0 14px; color:var(--ink); font-weight:500; line-height:1.45; font-size:12px; }
+    .bullets li{ margin:4px 0; }
     .bullets li b,
     .bullets li span{ color:var(--muted); font-weight:600; }
     .callout{
@@ -85,18 +92,27 @@
       border:1px solid rgba(139,30,36,.18); background:rgba(139,30,36,.06);
       color:rgba(17,19,22,.88); font-weight:700; font-size:12px; width:fit-content;
     }
-    .tablewrap{ border:1px solid var(--line); border-radius:16px; overflow:hidden; background:rgba(255,255,255,.92); box-shadow:0 8px 24px rgba(0,0,0,.055); }
+    /* tablewrap scrolls vertically when content is taller than the grid cell */
+    .tablewrap{ border:1px solid var(--line); border-radius:16px; overflow:auto; background:rgba(255,255,255,.92); box-shadow:0 8px 24px rgba(0,0,0,.055); min-height:0; }
+    .tablewrap.scroll{ overflow:auto; }
     .tablewrap.scroll{ overflow:auto; }
     table{ width:100%; border-collapse:collapse; font-size:12px; line-height:1.35; }
-    th,td{ padding:9px 10px; border-bottom:1px solid rgba(17,19,22,.08); vertical-align:top; text-align:left; white-space:nowrap; }
+    .matrix td,.matrix th{ font-size:11px; }
+    .tablewrap.matrix table{ height:100%; }
+    .tablewrap.matrix tbody tr{ height:1%; } /* distributes evenly */
+    .tablewrap.matrix td, .tablewrap.matrix th{ vertical-align:middle; }
+    th,td{ padding:6px 9px; border-bottom:1px solid rgba(17,19,22,.08); vertical-align:top; text-align:left; white-space:nowrap; }
     th{ background:rgba(139,30,36,.06); font-weight:800; letter-spacing:-.01em; }
     tr:last-child td{ border-bottom:0; }
+    /* footnote source line — compact */
+    .fonte{ border-top:1px solid #e8e8ec; padding-top:6px; flex-shrink:0; }
+    .fonte span{ font-size:10px; color:#aaa; line-height:1.4; }
     .footer{
       margin-top:auto; display:flex; align-items:flex-end; justify-content:space-between;
-      gap:14px; padding-top:8px; border-top:1px solid rgba(17,19,22,.08); flex-shrink:0;
+      gap:10px; padding-top:6px; border-top:1px solid rgba(17,19,22,.08); flex-shrink:0;
     }
     .footer .logos{ display:flex; align-items:center; gap:12px; }
-    .footer .logos img{ height:48px; width:auto; opacity:.88; }
+    .footer .logos img{ height:36px; width:auto; opacity:.88; }
     .footer .meta{ text-align:right; color:rgba(17,19,22,.5); font-size:11px; font-weight:700; }
     .cover{ justify-content:center; }
     .toc .toclist{ margin-top:4px; display:grid; grid-template-columns:1fr 1fr; gap:4px 12px; flex:1; min-height:0; align-content:start; overflow:visible; }
@@ -366,14 +382,6 @@
         width: 100% !important; height: 5px !important;
       }
     }
-
-    /* ═══ PRINT ═══ */
-    
-
-
-    }
-
-
 
     /* ═══ BENCHMARK SYSTEM ═══ */
     .s-heavenly{ --school:#6344A0; --school-light:rgba(99,68,160,.10); --school-mid:rgba(99,68,160,.22); }
@@ -657,20 +665,17 @@
       .grid2,.grid3{ grid-template-columns:1fr; }
       .topbar{ height:72px; }
       .content{ height:calc(100% - 72px); }
+      /* Slide 32 pipeline: steps empilhados */
+      .pipeline-steps{ flex-direction:column !important; gap:0 !important; }
+      .pipeline-steps > .pipeline-step{ border-radius:10px !important; margin-bottom:6px; }
+      .pipeline-arrow{ display:none !important; }
+      /* Slide 32 riscos: 2 colunas */
+      .risks-row{ display:grid !important; grid-template-columns:1fr 1fr !important; gap:8px !important; }
+    }
+    @media(max-width:500px){
+      .risks-row{ grid-template-columns:1fr !important; }
     }
   
-    /* ═══ PRINT — Ctrl+P → A4 landscape, 1 slide per page ═══ */
-    
-
-    
-    /* ═══ PRINT — Ctrl+P → A4 landscape, 1 slide per page ═══ */
-    
-
-    
-    /* ═══ PRINT — Ctrl+P → A4 landscape, 1 slide per page ═══ */
-    
-
-    
     /* ═══ PRINT — Ctrl+P → A4 landscape, 1 slide per page ═══ */
     @media print {
       @page { size: A4 landscape; margin: 10mm; }
@@ -870,7 +875,6 @@
   </div>
 </section>
 
-<!-- ─── SLIDE 2 — PREMISSAS ESTRATÉGICAS ─── -->
 <!-- ─── TRANSIÇÃO BLOCO 1 ─── -->
 <section class="slide slide-chapter" data-title="Bloco 1 — Mercado e Território">
   <div class="ch-watermark">01</div>
@@ -912,7 +916,7 @@
       </ul>
     </div>
   </div>
-  <div style="border-top:1px solid #e8e8ec;padding-top:8px;display:flex;flex-wrap:wrap;gap:6px 20px;">
+  <div style="border-top:1px solid #e8e8ec;padding-top:5px;display:flex;flex-wrap:wrap;gap:6px 20px;">
     <span style="font-size:10px;color:#aaa;line-height:1.5;"><sup style="color:var(--red);">¹</sup> Estudos de mercado citados em Grupo Investor, <i>Setor de educação vive nova onda de M&A</i>, mai/2025; e Censo Escolar 2023, INEP/MEC.</span>
     <span style="font-size:10px;color:#aaa;line-height:1.5;"><sup style="color:var(--red);">²</sup> Pedro Scharam, RGS Partners, in Portal Fusões & Aquisições, nov/2024.</span>
   </div>
@@ -951,7 +955,7 @@
       <p class="small" style="margin-top:10px;padding:8px 10px;background:rgba(17,19,22,.04);border-radius:10px;border-left:3px solid rgba(17,19,22,.15);"><b>Fricção</b> = tudo que torna o deslocamento mais difícil, imprevisível ou demorado no dia a dia — trânsito, tempo de trajeto, falta de rota direta, dificuldade de estacionamento.</p>
     </div>
   </div>
-  <div style="border-top:1px solid #e8e8ec;padding-top:8px;">
+  <div style="border-top:1px solid #e8e8ec;padding-top:5px;">
     <span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021 (Pesquisa Distrital por Amostra de Domicílios), CODEPLAN/GDF. Processamento e modelagem: Opinião Informação Estratégica, 2026.</span>
   </div>
   <div class="footer">
@@ -966,7 +970,7 @@
     <div class="kicker">A · Premissas e funil de mercado</div>
     <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">O mercado acionável é menor do que parece</h2>
     <div class="rule"></div>
-    <p class="subtitle">1,7% do território se converte em núcleo prioritário. Não é fraqueza do mercado — é a natureza do premium. Escolas de alto ticket operam sempre em mercados pequenos e profundos, não grandes e rasos.</p>
+    <p class="subtitle" style="font-size:12.5px;line-height:1.35;">1,7% do território se converte em núcleo prioritário — a natureza do premium. Escolas de alto ticket operam em mercados pequenos e profundos, não grandes e rasos.</p>
   </div>
   <div class="grid2">
     <div class="card">
@@ -987,7 +991,7 @@
       <div class="callout">Alta concentração de famílias elegíveis + fricção baixa + proposta de valor = máxima conversão</div>
     </div>
   </div>
-  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:5px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 4</div>
@@ -1031,7 +1035,7 @@
       </ul>
     </div>
   </div>
-  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:5px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 5</div>
@@ -1042,12 +1046,12 @@
 <section class="slide" data-title="Funil por região e densidade do núcleo">
   <div>
     <div class="kicker">B · Regiões de influência e densidade</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Tamanho e aderência por região</h2>
+    <h2 class="title" style="font-size:clamp(18px,2.4vw,30px);">Tamanho e aderência por região</h2>
     <div class="rule"></div>
-    <p class="subtitle">Tamanho absoluto engana. O que importa é a concentração de famílias elegíveis com filhos em cada região. Essa concentração tem um nome técnico: <b>densidade do núcleo = Núcleo ÷ SAM</b> — o indicador que separa mercado disponível de mercado pronto.</p>
+    <p class="subtitle" style="font-size:12.5px;line-height:1.35;">Tamanho absoluto engana. <b>Densidade do núcleo = Núcleo ÷ SAM</b> — o indicador que separa mercado disponível de mercado pronto.</p>
   </div>
-  <div class="grid2">
-    <div class="tablewrap">
+  <div class="grid2" style="flex:1;min-height:0;">
+    <div class="tablewrap" style="overflow-y:auto;flex:1;min-height:0;">
       <table>
         <thead>
           <tr><th>Região</th><th>TAM</th><th>SAM</th><th>Núcleo</th><th>0–17</th><th>Densidade (N÷S)</th></tr>
@@ -1070,7 +1074,7 @@
       <div class="callout">Usar: onde Densidade é alta + fricção é baixa = prioridade</div>
     </div>
   </div>
-  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:5px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 6</div>
@@ -1083,10 +1087,10 @@
     <div class="kicker">B · Regiões de influência e densidade</div>
     <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Onde exatamente</h2>
     <div class="rule"></div>
-    <p class="subtitle">Plano Piloto tem o maior volume absoluto — mas Lago Sul e Jardim Botânico têm o menor atrito logístico. São públicos diferentes que exigem estratégias diferentes. Volume ≠ propensão ≠ prioridade de entrada.</p>
+    <p class="subtitle" style="font-size:12.5px;line-height:1.35;">Volume ≠ propensão ≠ prioridade de entrada. Lago Sul + Jardim Botânico têm menor atrito logístico; Plano Piloto tem maior volume mas maior concorrência.</p>
   </div>
-  <div class="grid2">
-    <div class="tablewrap">
+  <div class="grid2" style="flex:1;min-height:0;">
+    <div class="tablewrap" style="overflow-y:auto;flex:1;min-height:0;">
       <table>
         <thead><tr><th>Região Administrativa</th><th>Núcleo</th><th>% do total</th><th>Região de influência</th></tr></thead>
         <tbody>
@@ -1108,7 +1112,7 @@
       <div class="callout">Captação faseada: Primária (★) → Secundária → Terciária</div>
     </div>
   </div>
-  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:5px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 7</div>
@@ -1121,11 +1125,11 @@
     <div class="kicker">C · Mobilidade e síntese territorial</div>
     <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Quanto tempo levam para deixar os filhos na escola</h2>
     <div class="rule"></div>
-    <p class="subtitle">Conveniência não é conforto — é tempo. E no premium, tempo previsível vale mais que tempo curto. ≤30 min define a zona primária de captação; até 45 min é zona secundária condicionada. No núcleo, essa previsibilidade pesa ainda mais — especialmente nos ciclos iniciais.</p>
+    <p class="subtitle" style="font-size:12.5px;line-height:1.35;">No premium, tempo previsível vale mais que tempo curto. ≤30 min = zona primária; até 45 min = zona secundária condicionada.</p>
   </div>
-  <div class="grid2">
-    <div class="tablewrap">
-      <table>
+  <div class="grid2" style="flex:1;min-height:0;">
+    <div class="tablewrap" style="overflow-y:auto;flex:1;min-height:0;">
+      <table style="font-size:11px;">
         <thead>
           <tr><th>Região</th><th>≤15 min</th><th>15–30 min</th><th><b>≤30 min (∑)</b></th><th>30–45 min</th><th>≥45 min</th></tr>
         </thead>
@@ -1151,7 +1155,7 @@
       <div class="callout">Raio funcional de referência: ≤ 30 minutos</div>
     </div>
   </div>
-  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:5px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 8</div>
@@ -1164,11 +1168,11 @@
     <div class="kicker">C · Mobilidade e síntese territorial</div>
     <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Como levam os filhos até a escola</h2>
     <div class="rule"></div>
-    <p class="subtitle">O modal não é detalhe operacional — é o desenho do produto. Automóvel dominante no núcleo significa que chegada e saída são parte da experiência percebida: fluxo, segurança e previsibilidade não são infraestrutura — são serviço.</p>
+    <p class="subtitle" style="font-size:12.5px;line-height:1.35;">O modal não é detalhe operacional — é o desenho do produto. Fluxo, segurança e previsibilidade não são infraestrutura — são serviço.</p>
   </div>
-  <div class="grid2">
-    <div class="tablewrap">
-      <table>
+  <div class="grid2" style="flex:1;min-height:0;">
+    <div class="tablewrap" style="overflow-y:auto;flex:1;min-height:0;">
+      <table style="font-size:11px;">
         <thead>
           <tr><th>Região</th><th>Automóvel</th><th>Esc. privado</th><th>Ônibus</th><th>Outros</th></tr>
         </thead>
@@ -1194,7 +1198,7 @@
       <div class="callout">Premium percebido = previsibilidade + segurança + tempo</div>
     </div>
   </div>
-  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:5px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 9</div>
@@ -1207,17 +1211,12 @@
     <div class="kicker">C · Mobilidade e síntese territorial</div>
     <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">O mercado está mapeado. A estratégia começa aqui.</h2>
     <div class="rule"></div>
-    <p class="subtitle">A Primária sustenta. A Secundária escala. A Terciária confirma. Tentar as três ao mesmo tempo é o caminho mais rápido para não vencer em nenhuma.</p>
+    <p class="subtitle" style="font-size:12.5px;line-height:1.35;">A Primária sustenta. A Secundária escala. A Terciária confirma. Tentar as três ao mesmo tempo é o caminho mais rápido para não vencer em nenhuma.</p>
   </div>
-
-  <div class="grid3" style="flex:1;min-height:0;">
-
+  <div class="grid3" style="flex:1;min-height:0;align-items:stretch;">
     <div class="card" style="border-top:3px solid var(--red);">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
-        <div>
-          <h3 style="margin:0;">Primária</h3>
-          <span style="font-size:11px;color:#888;">Lago Sul · Jardim Botânico</span>
-        </div>
+        <div><h3 style="margin:0;">Primária</h3><span style="font-size:11px;color:#888;">Lago Sul · Jardim Botânico</span></div>
         <span style="font-size:10px;font-weight:700;color:var(--red);background:rgba(139,30,36,.08);padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;">Motor de reputação</span>
       </div>
       <ul class="bullets">
@@ -1226,13 +1225,9 @@
         <li>Micro-localização e operação premium desde o dia 1 — sem condicional.</li>
       </ul>
     </div>
-
     <div class="card" style="border-top:3px solid #888;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
-        <div>
-          <h3 style="margin:0;">Secundária</h3>
-          <span style="font-size:11px;color:#888;">Plano Piloto</span>
-        </div>
+        <div><h3 style="margin:0;">Secundária</h3><span style="font-size:11px;color:#888;">Plano Piloto</span></div>
         <span style="font-size:10px;font-weight:700;color:#555;background:rgba(17,19,22,.07);padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;">Escala controlada</span>
       </div>
       <ul class="bullets">
@@ -1241,13 +1236,9 @@
         <li>Entra após consolidar reputação na Primária.</li>
       </ul>
     </div>
-
     <div class="card" style="border-top:3px solid #ccc;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
-        <div>
-          <h3 style="margin:0;">Terciária</h3>
-          <span style="font-size:11px;color:#888;">Sudoeste · Lago Norte</span>
-        </div>
+        <div><h3 style="margin:0;">Terciária</h3><span style="font-size:11px;color:#888;">Sudoeste · Lago Norte</span></div>
         <span style="font-size:10px;font-weight:700;color:#777;background:rgba(17,19,22,.05);padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;">Confirmação de mercado</span>
       </div>
       <ul class="bullets">
@@ -1256,22 +1247,14 @@
         <li>Fase 3 — após marca, prova de valor e operação estabelecidas.</li>
       </ul>
     </div>
-
   </div>
-
-  <div style="border-top:1px solid #e8e8ec;padding-top:8px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
+  <div style="border-top:1px solid #e8e8ec;padding-top:5px;"><span style="font-size:10px;color:#aaa;line-height:1.5;">Fonte: PDAD 2021, CODEPLAN/GDF. Processamento: Opinião Informação Estratégica, 2026.</span></div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 10</div>
   </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════════════════════ -->
-<!-- ─── BLOCO F — BENCHMARK COMPETITIVO ─── -->
-<!-- ═══════════════════════════════════════════════════════ -->
-
-<!-- ─── SLIDE 12 — BENCHMARK INTRO ─── -->
 <!-- ─── TRANSIÇÃO BLOCO 2 ─── -->
 <section class="slide slide-chapter" data-title="Bloco 2 — Benchmark Competitivo">
   <div class="ch-watermark">02</div>
@@ -1294,54 +1277,37 @@
     <div class="rule"></div>
     <p class="subtitle">Cada escola domina uma tese e, por isso, assume lacunas concretas — documentadas nas visitas. As famílias que não se identificam com essas lacunas estão disponíveis.</p>
   </div>
-
-  <!-- 4 school cards with logos -->
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;flex:1;min-height:0;">
-
     <div style="border-radius:16px;border:1px solid rgba(99,68,160,.2);background:rgba(99,68,160,.05);padding:16px 14px;display:flex;flex-direction:column;gap:10px;">
-      <div style="height:44px;display:flex;align-items:center;">
-        <img src="https://hisbsb.com.br/wp-content/uploads/2025/06/heavenly-logo-header.png" alt="Heavenly" style="max-height:40px;max-width:100%;width:auto;object-fit:contain;"/>
-      </div>
+      <div style="height:44px;display:flex;align-items:center;"><img src="https://hisbsb.com.br/wp-content/uploads/2025/06/heavenly-logo-header.png" alt="Heavenly" style="max-height:40px;max-width:100%;width:auto;object-fit:contain;"/></div>
       <div style="height:1px;background:rgba(99,68,160,.15);"></div>
       <div style="font-size:11px;font-weight:700;color:#6344A0;letter-spacing:.04em;text-transform:uppercase;">Tese central</div>
       <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Confessional + bilinguismo equilibrado + turmas reduzidas</p>
       <div style="margin-top:auto;padding:7px 10px;border-radius:10px;background:rgba(99,68,160,.1);font-size:11px;font-weight:700;color:#6344A0;">Trade-off: marca em consolidação</div>
     </div>
-
     <div style="border-radius:16px;border:1px solid rgba(11,106,160,.2);background:rgba(11,106,160,.05);padding:16px 14px;display:flex;flex-direction:column;gap:10px;">
-      <div style="height:44px;display:flex;align-items:center;">
-        <img src="https://brasilia.colegiosmaristas.com.br/wp-content/uploads/sites/7/2023/05/logo-BSB.png" alt="Marista" style="max-height:40px;max-width:100%;width:auto;object-fit:contain;"/>
-      </div>
+      <div style="height:44px;display:flex;align-items:center;"><img src="https://brasilia.colegiosmaristas.com.br/wp-content/uploads/sites/7/2023/05/logo-BSB.png" alt="Marista" style="max-height:40px;max-width:100%;width:auto;object-fit:contain;"/></div>
       <div style="height:1px;background:rgba(11,106,160,.15);"></div>
       <div style="font-size:11px;font-weight:700;color:#0B6AA0;letter-spacing:.04em;text-transform:uppercase;">Tese central</div>
       <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Robustez institucional + inclusão estruturada + segurança como diferencial</p>
       <div style="margin-top:auto;padding:7px 10px;border-radius:10px;background:rgba(11,106,160,.1);font-size:11px;font-weight:700;color:#0B6AA0;">Trade-off: turmas maiores (25–30)</div>
     </div>
-
     <div style="border-radius:16px;border:1px solid rgba(11,122,98,.2);background:rgba(11,122,98,.05);padding:16px 14px;display:flex;flex-direction:column;gap:10px;">
-      <div style="height:44px;display:flex;align-items:center;">
-        <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/Escola-Eleva-Logo.svg" alt="Eleva" style="max-height:36px;max-width:100%;width:auto;object-fit:contain;"/>
-      </div>
+      <div style="height:44px;display:flex;align-items:center;"><img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/Escola-Eleva-Logo.svg" alt="Eleva" style="max-height:36px;max-width:100%;width:auto;object-fit:contain;"/></div>
       <div style="height:1px;background:rgba(11,122,98,.15);"></div>
       <div style="font-size:11px;font-weight:700;color:#0B7A62;letter-spacing:.04em;text-transform:uppercase;">Tese central</div>
       <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Premium internacional + rede Inspired + imersão 80% em inglês</p>
       <div style="margin-top:auto;padding:7px 10px;border-radius:10px;background:rgba(11,122,98,.1);font-size:11px;font-weight:700;color:#0B7A62;">Trade-off: rotatividade de professores a cada 2–3 anos</div>
     </div>
-
     <div style="border-radius:16px;border:1px solid rgba(26,51,102,.2);background:rgba(26,51,102,.05);padding:16px 14px;display:flex;flex-direction:column;gap:10px;">
-      <div style="height:44px;display:flex;align-items:center;">
-        <img src="https://galois.com.br/wp-content/uploads/2019/07/Galois-Logo-Positivo-RGB.png" alt="Galois" style="max-height:40px;max-width:100%;width:auto;object-fit:contain;"/>
-      </div>
+      <div style="height:44px;display:flex;align-items:center;"><img src="https://galois.com.br/wp-content/uploads/2019/07/Galois-Logo-Positivo-RGB.png" alt="Galois" style="max-height:40px;max-width:100%;width:auto;object-fit:contain;"/></div>
       <div style="height:1px;background:rgba(26,51,102,.15);"></div>
       <div style="font-size:11px;font-weight:700;color:#1A3366;letter-spacing:.04em;text-transform:uppercase;">Tese central</div>
       <p style="font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;margin:0;">Alta performance acadêmica + cultura de testes + aprovação no ensino superior</p>
       <div style="margin-top:auto;padding:7px 10px;border-radius:10px;background:rgba(26,51,102,.1);font-size:11px;font-weight:700;color:#1A3366;">Trade-off: pressão e ansiedade</div>
     </div>
-
   </div>
-
   <div class="callout" style="align-self:flex-start;">Trade-off = o que a escola abre mão para ser forte onde escolheu ser forte</div>
-
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 13</div>
@@ -1351,25 +1317,19 @@
 <!-- ─── SLIDE 13 — HEAVENLY: IDENTIDADE ─── -->
 <section class="slide s-heavenly" data-title="Heavenly — Identidade e Proposta">
   <div class="school-stripe"></div>
-  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-    <div class="school-badge">
-      <div class="dot2"></div>
-      HEAVENLY INTERNATIONAL SCHOOL
-    </div>
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex-shrink:0;">
+    <div class="school-badge"><div class="dot2"></div>HEAVENLY INTERNATIONAL SCHOOL</div>
     <span class="pill">Confessional · Personalizado · Acolhedor</span>
     <span class="pill" style="background:rgba(139,30,36,.08);color:var(--red);">Em consolidação de marca</span>
   </div>
-  <div>
+  <div style="flex-shrink:0;">
     <div class="kicker">E · Heavenly International School</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Do Everest à Heavenly — o rebranding e o que ficou</h2>
+    <h2 class="title" style="font-size:clamp(18px,2.4vw,30px);">Do Everest à Heavenly — o rebranding e o que ficou</h2>
     <div class="rule"></div>
   </div>
   <div class="grid2">
     <div>
-      <div class="quote-block">
-        "A escola anteriormente fazia parte da rede Colégio Everest. Atua em Brasília desde 2013. Passou por transição para rede própria — para permitir maior autonomia nas decisões pedagógicas e administrativas."
-        
-      </div>
+      <div class="quote-block">"A escola anteriormente fazia parte da rede Colégio Everest. Atua em Brasília desde 2013. Passou por transição para rede própria — para permitir maior autonomia nas decisões pedagógicas e administrativas."</div>
       <div class="card" style="margin-top:10px;">
         <h3>DNA preservado</h3>
         <ul class="bullets">
@@ -1382,22 +1342,10 @@
     <div class="school-card">
       <h3>Formação Integral — 4 eixos</h3>
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:10px;background:var(--school);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0;">I</div>
-          <span style="font-size:13px;font-weight:600;">Intelectual</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:10px;background:var(--school);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0;">H</div>
-          <span style="font-size:13px;font-weight:600;">Humana</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:10px;background:var(--school);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0;">E</div>
-          <span style="font-size:13px;font-weight:600;">Espiritual</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:32px;height:32px;border-radius:10px;background:var(--school);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0;">A</div>
-          <span style="font-size:13px;font-weight:600;">Apostólica</span>
-        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:10px;background:var(--school);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0;">I</div><span style="font-size:13px;font-weight:600;">Intelectual</span></div>
+        <div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:10px;background:var(--school);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0;">H</div><span style="font-size:13px;font-weight:600;">Humana</span></div>
+        <div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:10px;background:var(--school);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0;">E</div><span style="font-size:13px;font-weight:600;">Espiritual</span></div>
+        <div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:10px;background:var(--school);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0;">A</div><span style="font-size:13px;font-weight:600;">Apostólica</span></div>
       </div>
       <div class="callout" style="margin-top:12px;border-color:var(--school-mid);background:var(--school-light);color:var(--school);">Material próprio (legado Integra) — alinhamento ideológico total</div>
     </div>
@@ -1412,9 +1360,9 @@
 <section class="slide s-heavenly" data-title="Heavenly — Pedagogia e Bilinguismo">
   <div class="school-stripe"></div>
   <div class="school-badge"><div class="dot2"></div>HEAVENLY INTERNATIONAL SCHOOL</div>
-  <div>
+  <div style="flex-shrink:0;">
     <div class="kicker">E · Heavenly International School</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Como ensina e como o inglês entra no currículo</h2>
+    <h2 class="title" style="font-size:clamp(18px,2.4vw,30px);">Como ensina e como o inglês entra no currículo</h2>
     <div class="rule"></div>
   </div>
   <div class="grid2">
@@ -1442,13 +1390,9 @@
           <div class="bili-seg" style="width:50%;background:var(--school);">🇧🇷 50% PT</div>
           <div class="bili-seg" style="width:50%;background:#888;">🇺🇸 50% EN</div>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:600;">
-          <span>Português (língua materna)</span><span>Inglês (conteúdo real)</span>
-        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:600;"><span>Português (língua materna)</span><span>Inglês (conteúdo real)</span></div>
       </div>
-      <div class="quote-block" style="margin-top:10px;">
-        Modelo 50/50 considerado o mais equilibrado por especialistas: evita perda de proficiência na língua materna em anos críticos de alfabetização, mitigando o risco das escolas de imersão total.
-      </div>
+      <div class="quote-block" style="margin-top:10px;">Modelo 50/50 considerado o mais equilibrado por especialistas: evita perda de proficiência na língua materna em anos críticos de alfabetização, mitigando o risco das escolas de imersão total.</div>
       <ul class="bullets" style="margin-top:10px;">
         <li>Disciplinas de conteúdo real ministradas em inglês (Science, Ecology).</li>
         <li>O aluno aprende inglês estudando matérias reais em inglês — não estudando inglês pelo inglês. A língua é o meio, não o fim.</li>
@@ -1465,9 +1409,9 @@
 <section class="slide s-heavenly" data-title="Heavenly — Operação e Comercial">
   <div class="school-stripe"></div>
   <div class="school-badge"><div class="dot2"></div>HEAVENLY INTERNATIONAL SCHOOL</div>
-  <div>
+  <div style="flex-shrink:0;">
     <div class="kicker">E · Heavenly International School</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Jornada, turmas reduzidas e fidelização de famílias</h2>
+    <h2 class="title" style="font-size:clamp(18px,2.4vw,30px);">Jornada, turmas reduzidas e fidelização de famílias</h2>
     <div class="rule"></div>
   </div>
   <div class="grid3">
@@ -1483,31 +1427,16 @@
     <div class="card">
       <h3>Inclusão e neurodivergência</h3>
       <div class="steps" style="flex-direction:column;gap:8px;">
-        <div style="display:flex;align-items:flex-start;gap:10px;">
-          <div class="step-num" style="width:28px;height:28px;font-size:12px;flex-shrink:0;">1</div>
-          <div><b style="font-size:12px;">Recepção do laudo</b><p class="small">Solicitação de cópia para análise pedagógica.</p></div>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;">
-          <div class="step-num" style="width:28px;height:28px;font-size:12px;flex-shrink:0;">2</div>
-          <div><b style="font-size:12px;">Leitura assistida</b><p class="small">Suporte em avaliações para alunos que necessitam.</p></div>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;">
-          <div class="step-num" style="width:28px;height:28px;font-size:12px;flex-shrink:0;">3</div>
-          <div><b style="font-size:12px;">Formatos adaptados</b><p class="small">Tarefas em diferentes níveis de complexidade.</p></div>
-        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;"><div class="step-num" style="width:28px;height:28px;font-size:12px;flex-shrink:0;">1</div><div><b style="font-size:12px;">Recepção do laudo</b><p class="small">Solicitação de cópia para análise pedagógica.</p></div></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;"><div class="step-num" style="width:28px;height:28px;font-size:12px;flex-shrink:0;">2</div><div><b style="font-size:12px;">Leitura assistida</b><p class="small">Suporte em avaliações para alunos que necessitam.</p></div></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;"><div class="step-num" style="width:28px;height:28px;font-size:12px;flex-shrink:0;">3</div><div><b style="font-size:12px;">Formatos adaptados</b><p class="small">Tarefas em diferentes níveis de complexidade.</p></div></div>
       </div>
     </div>
     <div class="school-card">
       <h3>Política comercial — foco em famílias numerosas</h3>
       <div style="display:flex;gap:10px;margin:10px 0;">
-        <div style="flex:1;text-align:center;padding:10px;background:rgba(255,255,255,.6);border-radius:12px;border:1px solid var(--school-mid);">
-          <div class="stat-num" style="font-size:clamp(26px,3.2vw,42px);">30%</div>
-          <div class="stat-label">3º filho</div>
-        </div>
-        <div style="flex:1;text-align:center;padding:10px;background:rgba(255,255,255,.6);border-radius:12px;border:1px solid var(--school-mid);">
-          <div class="stat-num" style="font-size:clamp(26px,3.2vw,42px);">50%</div>
-          <div class="stat-label">4º filho+</div>
-        </div>
+        <div style="flex:1;text-align:center;padding:10px;background:rgba(255,255,255,.6);border-radius:12px;border:1px solid var(--school-mid);"><div class="stat-num" style="font-size:clamp(26px,3.2vw,42px);">30%</div><div class="stat-label">3º filho</div></div>
+        <div style="flex:1;text-align:center;padding:10px;background:rgba(255,255,255,.6);border-radius:12px;border:1px solid var(--school-mid);"><div class="stat-num" style="font-size:clamp(26px,3.2vw,42px);">50%</div><div class="stat-label">4º filho+</div></div>
       </div>
       <p class="small">Estratégia de fidelização de famílias numerosas: quanto mais filhos, menor o custo por aluno — e maior o vínculo com a escola.</p>
       <div class="quote-block" style="margin-top:8px;">"A escola adota abordagem que valoriza o desenvolvimento de habilidades interpessoais e socioemocionais. Os alunos são inseridos em projetos colaborativos. Introdução gradual de tecnologia: atividades sem telas têm prioridade."</div>
@@ -1522,27 +1451,21 @@
 <!-- ─── SLIDE 16 — MARISTA: IDENTIDADE ─── -->
 <section class="slide s-marista" data-title="Marista — Identidade e Força Institucional">
   <div class="school-stripe"></div>
-  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0;">
     <div class="school-badge"><div class="dot2"></div>COLÉGIO MARISTA (L2 SUL)</div>
     <span class="pill">Confessional Social · Inclusivo · Robusto</span>
     <span class="pill" style="background:rgba(139,30,36,.08);color:var(--red);">Consolidado / Tradicional Renovado</span>
   </div>
-  <div>
+  <div style="flex-shrink:0;">
     <div class="kicker">F · Colégio Marista</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Tradição, cuidado integral e força de rede</h2>
+    <h2 class="title" style="font-size:clamp(18px,2.4vw,30px);">Tradição, cuidado integral e força de rede</h2>
     <div class="rule"></div>
   </div>
   <div class="grid2">
     <div>
       <div class="grid2" style="gap:10px;">
-        <div class="status-box">
-          <div class="lbl">Metodologia</div>
-          <div class="val">Aprendizagem por interação social: o aluno constrói o conhecimento junto com colegas e professores. Exige mais autonomia dado o tamanho das turmas.</div>
-        </div>
-        <div class="status-box">
-          <div class="lbl">Material Didático</div>
-          <div class="val">Sistema Marista de Educação (SME). Editorial próprio, fortemente alinhado à BNCC.</div>
-        </div>
+        <div class="status-box"><div class="lbl">Metodologia</div><div class="val">Aprendizagem por interação social: o aluno constrói o conhecimento junto com colegas e professores. Exige mais autonomia dado o tamanho das turmas.</div></div>
+        <div class="status-box"><div class="lbl">Material Didático</div><div class="val">Sistema Marista de Educação (SME). Editorial próprio, fortemente alinhado à BNCC.</div></div>
       </div>
       <div class="card" style="margin-top:10px;">
         <h3>Percepção de mercado</h3>
@@ -1555,12 +1478,7 @@
     </div>
     <div class="school-card">
       <h3>Católico Social vs. Católico Dogmático</h3>
-      <div style="margin:10px 0;">
-        <div class="bili-track" style="height:22px;">
-          <div class="bili-seg" style="width:60%;background:var(--school);">Comunidade · Solidariedade</div>
-          <div class="bili-seg" style="width:40%;background:#888;">Fé · Valores</div>
-        </div>
-      </div>
+      <div style="margin:10px 0;"><div class="bili-track" style="height:22px;"><div class="bili-seg" style="width:60%;background:var(--school);">Comunidade · Solidariedade</div><div class="bili-seg" style="width:40%;background:#888;">Fé · Valores</div></div></div>
       <ul class="bullets">
         <li>Menos dogmático que a Heavenly; mais orientado à cidadania.</li>
         <li>Projetos estruturantes: <b>Campanha da Fraternidade</b> e Missões Sociais (PIS).</li>
@@ -1579,22 +1497,16 @@
 <section class="slide s-marista" data-title="Marista — Segurança e Inclusão TEA/TDAH">
   <div class="school-stripe"></div>
   <div class="school-badge"><div class="dot2"></div>COLÉGIO MARISTA (L2 SUL)</div>
-  <div>
+  <div style="flex-shrink:0;">
     <div class="kicker">F · Colégio Marista</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Segurança de referência e inclusão real</h2>
+    <h2 class="title" style="font-size:clamp(18px,2.4vw,30px);">Segurança de referência e inclusão real</h2>
     <div class="rule"></div>
   </div>
   <div class="grid2">
     <div>
       <div class="school-card" style="display:flex;align-items:center;gap:18px;padding:18px;">
-        <div style="text-align:center;flex-shrink:0;">
-          <div class="stat-num">260</div>
-          <div class="stat-label">câmeras</div>
-        </div>
-        <div>
-          <h3 style="color:var(--school);">Monitoramento 24/7</h3>
-          <p class="small" style="margin-top:4px;">Reconhecimento Facial integrado à rede de 260 câmeras. A resposta mais avançada, dentre as escolas visitadas, à preocupação das famílias com segurança física no Brasil.</p>
-        </div>
+        <div style="text-align:center;flex-shrink:0;"><div class="stat-num">260</div><div class="stat-label">câmeras</div></div>
+        <div><h3 style="color:var(--school);">Monitoramento 24/7</h3><p class="small" style="margin-top:4px;">Reconhecimento Facial integrado à rede de 260 câmeras. A resposta mais avançada, dentre as escolas visitadas, à preocupação das famílias com segurança física no Brasil.</p></div>
       </div>
       <div class="card" style="margin-top:10px;">
         <h3>SOE — Serviço de Orientação Educacional</h3>
@@ -1604,23 +1516,11 @@
     <div class="card">
       <h3>Liderança técnica em TEA/TDAH — processo institucionalizado</h3>
       <div class="steps" style="flex-direction:column;gap:10px;margin-top:10px;">
-        <div style="display:flex;align-items:flex-start;gap:10px;">
-          <div class="step-num" style="width:30px;height:30px;font-size:13px;flex-shrink:0;">1</div>
-          <div><b style="font-size:12.5px;">PDI — Plano de Desenvolvimento Individual</b><p class="small">Documento legal e pedagógico que rege a adaptação curricular do aluno atípico.</p></div>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;">
-          <div class="step-num" style="width:30px;height:30px;font-size:13px;flex-shrink:0;">2</div>
-          <div><b style="font-size:12.5px;">Segurança jurídica</b><p class="small">Oferece segurança jurídica e educacional impecável para a família.</p></div>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;">
-          <div class="step-num" style="width:30px;height:30px;font-size:13px;flex-shrink:0;">3</div>
-          <div><b style="font-size:12.5px;">Equipe multidisciplinar</b><p class="small">Acompanhamento contínuo e estruturado — não atua apenas com "boa vontade".</p></div>
-        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;"><div class="step-num" style="width:30px;height:30px;font-size:13px;flex-shrink:0;">1</div><div><b style="font-size:12.5px;">PDI — Plano de Desenvolvimento Individual</b><p class="small">Documento legal e pedagógico que rege a adaptação curricular do aluno atípico.</p></div></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;"><div class="step-num" style="width:30px;height:30px;font-size:13px;flex-shrink:0;">2</div><div><b style="font-size:12.5px;">Segurança jurídica</b><p class="small">Oferece segurança jurídica e educacional impecável para a família.</p></div></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;"><div class="step-num" style="width:30px;height:30px;font-size:13px;flex-shrink:0;">3</div><div><b style="font-size:12.5px;">Equipe multidisciplinar</b><p class="small">Acompanhamento contínuo e estruturado — não atua apenas com "boa vontade".</p></div></div>
       </div>
-      <div class="quote-block" style="margin-top:10px;">
-        "O Marista não atua apenas com 'boa vontade' na inclusão; o processo é institucionalizado."
-        
-      </div>
+      <div class="quote-block" style="margin-top:10px;">"O Marista não atua apenas com 'boa vontade' na inclusão; o processo é institucionalizado."</div>
     </div>
   </div>
   <div class="footer">
@@ -1633,39 +1533,25 @@
 <section class="slide s-marista" data-title="Marista — Bilinguismo e Projetos">
   <div class="school-stripe"></div>
   <div class="school-badge"><div class="dot2"></div>COLÉGIO MARISTA (L2 SUL)</div>
-  <div>
+  <div style="flex-shrink:0;">
     <div class="kicker">F · Colégio Marista</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Inglês como credencial, cidadania como missão</h2>
+    <h2 class="title" style="font-size:clamp(18px,2.4vw,30px);">Inglês como credencial, cidadania como missão</h2>
     <div class="rule"></div>
   </div>
   <div class="grid2">
     <div class="card">
       <h3>Inglês como complemento ao currículo</h3>
-      <div class="bili-track">
-        <div class="bili-seg" style="width:80%;background:var(--school);">🇧🇷 ~80% Português</div>
-        <div class="bili-seg" style="width:20%;background:#aaa;">🇺🇸 EN</div>
-      </div>
+      <div class="bili-track"><div class="bili-seg" style="width:80%;background:var(--school);">🇧🇷 ~80% Português</div><div class="bili-seg" style="width:20%;background:#aaa;">🇺🇸 EN</div></div>
       <p class="small" style="margin-top:6px;">O inglês funciona como um reforço de qualidade ao currículo principal, não como língua de instrução. Os materiais são certificados por Cambridge e Oxford — alta qualidade técnica — mas o tempo de contato diário com o idioma é bem menor do que na Eleva ou na Heavenly.</p>
     </div>
     <div class="school-card">
       <h3>Projetos estruturantes do cidadão solidário</h3>
       <div class="grid2" style="gap:8px;margin-top:8px;">
-        <div style="background:rgba(255,255,255,.6);border-radius:12px;padding:10px 12px;border:1px solid var(--school-mid);">
-          <b style="font-size:12px;color:var(--school);">Campanha da Fraternidade</b>
-          <p class="small" style="margin-top:4px;">Engajamento comunitário e consciência social desde os anos iniciais.</p>
-        </div>
-        <div style="background:rgba(255,255,255,.6);border-radius:12px;padding:10px 12px;border:1px solid var(--school-mid);">
-          <b style="font-size:12px;color:var(--school);">Missões Sociais (PIS)</b>
-          <p class="small" style="margin-top:4px;">Projetos de inserção social que conectam o aluno à realidade do país.</p>
-        </div>
-        <div style="grid-column:1/-1;background:rgba(255,255,255,.6);border-radius:12px;padding:10px 12px;border:1px solid var(--school-mid);">
-          <b style="font-size:12px;color:var(--school);">Campus Universitário</b>
-          <p class="small" style="margin-top:4px;">Estrutura física robusta que transmite a percepção de uma instituição completa — mais próxima de uma universidade do que de uma escola tradicional.</p>
-        </div>
+        <div style="background:rgba(255,255,255,.6);border-radius:12px;padding:10px 12px;border:1px solid var(--school-mid);"><b style="font-size:12px;color:var(--school);">Campanha da Fraternidade</b><p class="small" style="margin-top:4px;">Engajamento comunitário e consciência social desde os anos iniciais.</p></div>
+        <div style="background:rgba(255,255,255,.6);border-radius:12px;padding:10px 12px;border:1px solid var(--school-mid);"><b style="font-size:12px;color:var(--school);">Missões Sociais (PIS)</b><p class="small" style="margin-top:4px;">Projetos de inserção social que conectam o aluno à realidade do país.</p></div>
+        <div style="grid-column:1/-1;background:rgba(255,255,255,.6);border-radius:12px;padding:10px 12px;border:1px solid var(--school-mid);"><b style="font-size:12px;color:var(--school);">Campus Universitário</b><p class="small" style="margin-top:4px;">Estrutura física robusta que transmite a percepção de uma instituição completa — mais próxima de uma universidade do que de uma escola tradicional.</p></div>
       </div>
-      <div class="callout" style="border-color:var(--school-mid);background:var(--school-light);color:var(--school);margin-top:10px;">
-        Domina o mercado de famílias que priorizam "formação do bom cidadão"
-      </div>
+      <div class="callout" style="border-color:var(--school-mid);background:var(--school-light);color:var(--school);margin-top:10px;">Domina o mercado de famílias que priorizam "formação do bom cidadão"</div>
     </div>
   </div>
   <div class="footer">
@@ -1677,21 +1563,19 @@
 <!-- ─── SLIDE 19 — ELEVA: CIDADANIA GLOBAL ─── -->
 <section class="slide s-eleva" data-title="Eleva — Cidadania Global e Rede Inspired">
   <div class="school-stripe"></div>
-  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0;">
     <div class="school-badge"><div class="dot2"></div>ESCOLA ELEVA BRASÍLIA</div>
     <span class="pill">Global · Elitista · Inovador</span>
     <span class="pill" style="background:rgba(139,30,36,.08);color:var(--red);">A escola que define o teto de mensalidades do DF</span>
   </div>
-  <div>
+  <div style="flex-shrink:0;">
     <div class="kicker">G · Escola Eleva</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">O produto é o pertencimento à rede global</h2>
+    <h2 class="title" style="font-size:clamp(18px,2.4vw,30px);">O produto é o pertencimento à rede global</h2>
     <div class="rule"></div>
   </div>
   <div class="grid2">
     <div>
-      <div class="quote-block">
-        "O grande ativo da Eleva não é apenas o ensino, mas o pertencimento à rede Inspired (mais de 80 escolas pelo mundo)."
-      </div>
+      <div class="quote-block">"O grande ativo da Eleva não é apenas o ensino, mas o pertencimento à rede Inspired (mais de 80 escolas pelo mundo)."</div>
       <div class="card" style="margin-top:10px;">
         <h3>Proposta de valor central</h3>
         <ul class="bullets">
@@ -1711,20 +1595,11 @@
     <div class="school-card">
       <h3>Jornada Eleva: da imersão à cidadania</h3>
       <div style="margin:14px 0;display:flex;flex-direction:column;gap:10px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:36px;height:36px;border-radius:999px;background:var(--school);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
-          <div><b style="font-size:13px;">Formação bilíngue</b><p class="small" style="margin-top:2px;">Imersão no Brasil com metodologia Eleva.</p></div>
-        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:999px;background:var(--school);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div><div><b style="font-size:13px;">Formação bilíngue</b><p class="small" style="margin-top:2px;">Imersão no Brasil com metodologia Eleva.</p></div></div>
         <div style="width:2px;height:16px;background:var(--school-mid);margin-left:17px;"></div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:36px;height:36px;border-radius:999px;background:var(--school);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
-          <div><b style="font-size:13px;">Experiência internacional real</b><p class="small" style="margin-top:2px;">Períodos nas sedes da rede na Europa e nos EUA — parte da jornada, não viagem de formatura.</p></div>
-        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:999px;background:var(--school);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div><div><b style="font-size:13px;">Experiência internacional real</b><p class="small" style="margin-top:2px;">Períodos nas sedes da rede na Europa e nos EUA — parte da jornada, não viagem de formatura.</p></div></div>
         <div style="width:2px;height:16px;background:var(--school-mid);margin-left:17px;"></div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:36px;height:36px;border-radius:999px;background:var(--school);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
-          <div><b style="font-size:13px;">Cidadania Global</b><p class="small" style="margin-top:2px;">Currículo transferível e competências globais.</p></div>
-        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:999px;background:var(--school);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div><div><b style="font-size:13px;">Cidadania Global</b><p class="small" style="margin-top:2px;">Currículo transferível e competências globais.</p></div></div>
       </div>
     </div>
   </div>
@@ -1738,9 +1613,9 @@
 <section class="slide s-eleva" data-title="Eleva — Imersão 60% e Inovação">
   <div class="school-stripe"></div>
   <div class="school-badge"><div class="dot2"></div>ESCOLA ELEVA BRASÍLIA</div>
-  <div>
+  <div style="flex-shrink:0;">
     <div class="kicker">G · Escola Eleva</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Imersão em inglês, arquitetura aberta e inovação</h2>
+    <h2 class="title" style="font-size:clamp(18px,2.4vw,30px);">Imersão em inglês, arquitetura aberta e inovação</h2>
     <div class="rule"></div>
   </div>
   <div class="grid2">
@@ -1748,11 +1623,7 @@
       <h3>Imersão estrutural real (EF1)</h3>
       <div class="donut-wrap" style="margin:12px 0;">
         <div class="donut-ring">
-          <svg viewBox="0 0 36 36">
-            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e8e8e8" stroke-width="3.8"/>
-            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0B7A62" stroke-width="3.8"
-              stroke-dasharray="60 40" stroke-linecap="round"/>
-          </svg>
+          <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" fill="none" stroke="#e8e8e8" stroke-width="3.8"/><circle cx="18" cy="18" r="15.9" fill="none" stroke="#0B7A62" stroke-width="3.8" stroke-dasharray="60 40" stroke-linecap="round"/></svg>
           <div class="donut-label"><b>60%</b><span>Inglês</span></div>
         </div>
         <div>
@@ -1763,10 +1634,7 @@
           </ul>
         </div>
       </div>
-      <div class="quote-block">
-        "Aproximadamente 60% do tempo de instrução no Fundamental 1 ocorre em língua inglesa."
-        
-      </div>
+      <div class="quote-block">"Aproximadamente 60% do tempo de instrução no Fundamental 1 ocorre em língua inglesa."</div>
     </div>
     <div>
       <div class="card">
@@ -1798,23 +1666,17 @@
 <section class="slide s-eleva" data-title="Eleva — Desafios e Filtro Econômico">
   <div class="school-stripe"></div>
   <div class="school-badge"><div class="dot2"></div>ESCOLA ELEVA BRASÍLIA</div>
-  <div>
+  <div style="flex-shrink:0;">
     <div class="kicker">G · Escola Eleva</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">O desafio do corpo docente e o filtro pelo preço</h2>
+    <h2 class="title" style="font-size:clamp(18px,2.4vw,30px);">O desafio do corpo docente e o filtro pelo preço</h2>
     <div class="rule"></div>
   </div>
   <div class="grid2">
     <div class="card">
       <h3>Desafio do corpo docente internacional</h3>
       <div class="split" style="margin-top:10px;">
-        <div class="split-pos">
-          <h4>✓ Positivo</h4>
-          <p class="small">Professores estrangeiros trazem excelência cultural e fluência nativa autêntica.</p>
-        </div>
-        <div class="split-neg">
-          <h4>⚠ Risco</h4>
-          <p class="small">Rotatividade natural de professores a cada 2–3 anos (contratos temporários). Exige atenção constante da escola à continuidade do ensino.</p>
-        </div>
+        <div class="split-pos"><h4>✓ Positivo</h4><p class="small">Professores estrangeiros trazem excelência cultural e fluência nativa autêntica.</p></div>
+        <div class="split-neg"><h4>⚠ Risco</h4><p class="small">Rotatividade natural de professores a cada 2–3 anos (contratos temporários). Exige atenção constante da escola à continuidade do ensino.</p></div>
       </div>
       <p class="small" style="margin-top:10px;">Equilíbrio entre qualidade nativa e estabilidade do corpo docente é o <b>principal desafio operacional</b> da Eleva.</p>
     </div>
@@ -1839,22 +1701,19 @@
 <!-- ─── SLIDE 22 — GALOIS: IDENTIDADE E PERFORMANCE ─── -->
 <section class="slide s-galois" data-title="Galois — Alta Performance e Cultura">
   <div class="school-stripe"></div>
-  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0;">
     <div class="school-badge"><div class="dot2"></div>COLÉGIO GALOIS (L2 SUL)</div>
     <span class="pill">Focado em conteúdo · Disciplinado · Orientado a resultados</span>
     <span class="pill" style="background:rgba(139,30,36,.08);color:var(--red);">Alta Performance Acadêmica Consolidada</span>
   </div>
-  <div>
+  <div style="flex-shrink:0;">
     <div class="kicker">H · Colégio Galois</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Resultados como identidade — e como negócio</h2>
+    <h2 class="title" style="font-size:clamp(18px,2.4vw,30px);">Resultados como identidade — e como negócio</h2>
     <div class="rule"></div>
   </div>
   <div class="grid2">
     <div>
-      <div class="quote-block">
-        "A identidade central é a excelência métrica. Existe um esforço colossal de gestão de imagem para manter a percepção de rigor absoluto."
-        
-      </div>
+      <div class="quote-block">"A identidade central é a excelência métrica. Existe um esforço colossal de gestão de imagem para manter a percepção de rigor absoluto."</div>
       <div class="card" style="margin-top:10px;">
         <h3>Cultura de testes (Q13)</h3>
         <ul class="bullets">
@@ -1866,14 +1725,8 @@
     </div>
     <div>
       <div class="split">
-        <div class="split-pos">
-          <h4>👍 Percepção positiva</h4>
-          <p class="small">Pais elogiam efusivamente a disciplina e os resultados finais. Aprovações de alto calibre (Medicina, Direito) como prova social.</p>
-        </div>
-        <div class="split-neg">
-          <h4>⚠ Percepção crítica</h4>
-          <p class="small">Subtexto constante de ansiedade e pressão psicológica gerada pelo ambiente altamente competitivo.</p>
-        </div>
+        <div class="split-pos"><h4>👍 Percepção positiva</h4><p class="small">Pais elogiam efusivamente a disciplina e os resultados finais. Aprovações de alto calibre (Medicina, Direito) como prova social.</p></div>
+        <div class="split-neg"><h4>⚠ Percepção crítica</h4><p class="small">Subtexto constante de ansiedade e pressão psicológica gerada pelo ambiente altamente competitivo.</p></div>
       </div>
       <div class="school-card" style="margin-top:10px;">
         <h3>Cultura cívica e valores (Q16)</h3>
@@ -1895,34 +1748,25 @@
 <section class="slide s-galois" data-title="Galois — Inclusão, Comercial e Riscos">
   <div class="school-stripe"></div>
   <div class="school-badge"><div class="dot2"></div>COLÉGIO GALOIS (L2 SUL)</div>
-  <div>
+  <div style="flex-shrink:0;">
     <div class="kicker">H · Colégio Galois</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">Sem flexibilidade — e sem precisar ter</h2>
+    <h2 class="title" style="font-size:clamp(18px,2.4vw,30px);">Sem flexibilidade — e sem precisar ter</h2>
     <div class="rule"></div>
   </div>
   <div class="grid3">
     <div class="card">
       <h3>Inclusão: o "Resolve" (Q15)</h3>
       <p class="small" style="margin-top:6px;">A escola não adapta o currículo ao aluno — ela adiciona mais horas de monitoria para que o aluno alcance o nível exigido. A lógica é: todos precisam chegar ao mesmo lugar; quem está atrás precisa correr mais.</p>
-      <div class="split-neg" style="margin-top:8px;border-radius:10px;">
-        <p class="small"><b>Crianças com TDAH ou TEA:</b> o ambiente historicamente é muito desafiador. A metodologia exige atenção prolongada e quietude em sala. A própria cultura de alta exigência age como um filtro — alunos com dificuldades tendem a não permanecer.</p>
-      </div>
+      <div class="split-neg" style="margin-top:8px;border-radius:10px;"><p class="small"><b>Crianças com TDAH ou TEA:</b> o ambiente historicamente é muito desafiador. A metodologia exige atenção prolongada e quietude em sala. A própria cultura de alta exigência age como um filtro — alunos com dificuldades tendem a não permanecer.</p></div>
     </div>
     <div class="card">
       <h3>Comercial inelástico (Q23)</h3>
       <p class="small" style="margin-top:6px;">Política de descontos extremamente conservadora. A escola sabe que seu público não negocia preço — a família que tem como objetivo a Medicina ou o Direito na UnB está disposta a pagar o valor exigido. A reputação elimina a necessidade de desconto.</p>
-      <div style="margin:10px 0;text-align:center;">
-        <div class="stat-num">0%</div>
-        <div class="stat-label">descontos estruturais</div>
-        <p class="small" style="margin-top:6px;">Sem descontos por irmão ou volume — demandinelástica é a estratégia.</p>
-      </div>
+      <div style="margin:10px 0;text-align:center;"><div class="stat-num">0%</div><div class="stat-label">descontos estruturais</div><p class="small" style="margin-top:6px;">Sem descontos por irmão ou volume — demanda inelástica é a estratégia.</p></div>
     </div>
     <div class="school-card">
       <h3>Bilinguismo e entrega futura</h3>
-      <div class="bili-track">
-        <div class="bili-seg" style="width:90%;background:var(--school);">🇧🇷 BNCC padrão</div>
-        <div class="bili-seg" style="width:10%;background:#bbb;">EN</div>
-      </div>
+      <div class="bili-track"><div class="bili-seg" style="width:90%;background:var(--school);">🇧🇷 BNCC padrão</div><div class="bili-seg" style="width:10%;background:#bbb;">EN</div></div>
       <p class="small" style="margin-top:8px;">O ponto mais vulnerável frente à Eleva e à Heavenly. O inglês segue o currículo nacional padrão, com acréscimos pontuais — sem imersão real no idioma.</p>
       <div class="callout" style="border-color:var(--school-mid);background:var(--school-light);color:var(--school);margin-top:10px;">Projeto vendido: inserção objetiva no ensino superior de prestígio</div>
       <p class="small" style="margin-top:8px;">Inabalável no nicho de famílias que encaram a escola como "esteira de aprovação" rumo ao sucesso financeiro e profissional tradicional.</p>
@@ -1938,27 +1782,19 @@
 <section class="slide" data-title="Matriz Comparativa Consolidada">
   <div>
     <div class="kicker">I · Matriz comparativa e oportunidades Everest</div>
-    <h2 class="title" style="font-size:clamp(20px,2.6vw,34px);">As 4 escolas lado a lado — onde cada uma para</h2>
+    <h2 class="title" style="font-size:clamp(18px,2.4vw,30px);">As 4 escolas lado a lado — onde cada uma para</h2>
     <div class="rule"></div>
-    <p class="subtitle">A matriz mostra o que cada escola entrega bem — e as lacunas que deixa. Nenhuma delas combina bilinguismo real + inclusão com protocolo + resultados acadêmicos comprováveis + formação de valores.</p>
+    <p class="subtitle" style="font-size:12.5px;line-height:1.35;">O que cada escola entrega bem — e as lacunas que deixa. Nenhuma combina bilinguismo real + inclusão com protocolo + resultados comprováveis + formação de valores.</p>
   </div>
-  <div class="tablewrap scroll matrix">
-    <table>
+  <div class="tablewrap scroll matrix" style="flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;">
+    <table style="flex:1;height:100%;">
       <thead>
         <tr>
           <th>Dimensão</th>
-          <th style="background:rgba(99,68,160,.06);padding:8px 12px;">
-            <img src="https://hisbsb.com.br/wp-content/uploads/2025/06/heavenly-logo-header.png" alt="Heavenly" style="max-height:28px;width:auto;object-fit:contain;display:block;margin:0 auto;"/>
-          </th>
-          <th style="background:rgba(11,106,160,.06);padding:8px 12px;">
-            <img src="https://brasilia.colegiosmaristas.com.br/wp-content/uploads/sites/7/2023/05/logo-BSB.png" alt="Marista" style="max-height:28px;width:auto;object-fit:contain;display:block;margin:0 auto;"/>
-          </th>
-          <th style="background:rgba(11,122,98,.06);padding:8px 12px;">
-            <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/Escola-Eleva-Logo.svg" alt="Eleva" style="max-height:24px;width:auto;object-fit:contain;display:block;margin:0 auto;"/>
-          </th>
-          <th style="background:rgba(26,51,102,.06);padding:8px 12px;">
-            <img src="https://galois.com.br/wp-content/uploads/2019/07/Galois-Logo-Positivo-RGB.png" alt="Galois" style="max-height:28px;width:auto;object-fit:contain;display:block;margin:0 auto;"/>
-          </th>
+          <th style="background:rgba(99,68,160,.06);padding:8px 12px;"><img src="https://hisbsb.com.br/wp-content/uploads/2025/06/heavenly-logo-header.png" alt="Heavenly" style="max-height:28px;width:auto;object-fit:contain;display:block;margin:0 auto;"/></th>
+          <th style="background:rgba(11,106,160,.06);padding:8px 12px;"><img src="https://brasilia.colegiosmaristas.com.br/wp-content/uploads/sites/7/2023/05/logo-BSB.png" alt="Marista" style="max-height:28px;width:auto;object-fit:contain;display:block;margin:0 auto;"/></th>
+          <th style="background:rgba(11,122,98,.06);padding:8px 12px;"><img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/Escola-Eleva-Logo.svg" alt="Eleva" style="max-height:24px;width:auto;object-fit:contain;display:block;margin:0 auto;"/></th>
+          <th style="background:rgba(26,51,102,.06);padding:8px 12px;"><img src="https://galois.com.br/wp-content/uploads/2019/07/Galois-Logo-Positivo-RGB.png" alt="Galois" style="max-height:28px;width:auto;object-fit:contain;display:block;margin:0 auto;"/></th>
         </tr>
       </thead>
       <tbody>
@@ -1973,7 +1809,7 @@
       </tbody>
     </table>
   </div>
-  <div class="callout" style="align-self:flex-start;margin-top:8px;">Nenhuma escola combina hoje: inglês real + inclusão com protocolo + resultados comprováveis + formação de valores</div>
+  <div class="callout" style="align-self:flex-start;margin-top:4px;flex-shrink:0;">Nenhuma escola combina hoje: inglês real + inclusão com protocolo + resultados comprováveis + formação de valores</div>
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 24 · Matriz</div>
@@ -1989,35 +1825,30 @@
     <p class="subtitle">A oportunidade não está em copiar o que as concorrentes fazem bem. Está em ser a única escola que combina, de forma comprovável, o que hoje só existe em partes separadas.</p>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;flex:1;min-height:0;">
-
     <div style="border-radius:16px;border:2px solid rgba(26,51,102,.2);background:rgba(26,51,102,.04);padding:16px 14px;display:flex;flex-direction:column;gap:8px;">
       <img src="https://galois.com.br/wp-content/uploads/2019/07/Galois-Logo-Positivo-RGB.png" alt="Galois" style="max-height:28px;width:auto;object-fit:contain;"/>
       <div style="height:1px;background:rgba(26,51,102,.15);"></div>
       <p style="font-size:12px;color:var(--muted);margin:0;">O que o Everest pode absorver:</p>
       <p style="font-size:13px;font-weight:600;color:#1A3366;line-height:1.4;margin:0;">Referências acadêmicas comprováveis — aprovações, olimpíadas e resultados verificáveis como evidências comprobatórias da proposta de valor.</p>
     </div>
-
     <div style="border-radius:16px;border:2px solid rgba(11,106,160,.2);background:rgba(11,106,160,.04);padding:16px 14px;display:flex;flex-direction:column;gap:8px;">
       <img src="https://brasilia.colegiosmaristas.com.br/wp-content/uploads/sites/7/2023/05/logo-BSB.png" alt="Marista" style="max-height:28px;width:auto;object-fit:contain;"/>
       <div style="height:1px;background:rgba(11,106,160,.15);"></div>
       <p style="font-size:12px;color:var(--muted);margin:0;">O que o Everest pode absorver:</p>
       <p style="font-size:13px;font-weight:600;color:#0B6AA0;line-height:1.4;margin:0;">Inclusão com protocolo real e formação de valores — não como discurso, mas como processo.</p>
     </div>
-
     <div style="border-radius:16px;border:2px solid rgba(99,68,160,.2);background:rgba(99,68,160,.04);padding:16px 14px;display:flex;flex-direction:column;gap:8px;">
       <img src="https://hisbsb.com.br/wp-content/uploads/2025/06/heavenly-logo-header.png" alt="Heavenly" style="max-height:28px;width:auto;object-fit:contain;"/>
       <div style="height:1px;background:rgba(99,68,160,.15);"></div>
       <p style="font-size:12px;color:var(--muted);margin:0;">O que o Everest pode absorver:</p>
       <p style="font-size:13px;font-weight:600;color:#6344A0;line-height:1.4;margin:0;">Bilinguismo integrado ao currículo e formação confessional com identidade clara e aspiracional.</p>
     </div>
-
     <div style="border-radius:16px;border:2px solid rgba(11,122,98,.2);background:rgba(11,122,98,.04);padding:16px 14px;display:flex;flex-direction:column;gap:8px;">
       <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/Escola-Eleva-Logo.svg" alt="Eleva" style="max-height:24px;width:auto;object-fit:contain;"/>
       <div style="height:1px;background:rgba(11,122,98,.15);"></div>
       <p style="font-size:12px;color:var(--muted);margin:0;">O que o Everest pode absorver:</p>
       <p style="font-size:13px;font-weight:600;color:#0B7A62;line-height:1.4;margin:0;">Modelo pedagógico estruturado, rotina premium e operação de alto padrão como produto percebido.</p>
     </div>
-
   </div>
   <div style="background:rgba(139,30,36,.06);border:1.5px solid rgba(139,30,36,.2);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:14px;">
     <img src="https://colegioeverest.com.br/images/logo-Everest.svg" alt="Everest" style="height:32px;width:auto;flex-shrink:0;"/>
@@ -2029,7 +1860,6 @@
   </div>
 </section>
 
-<!-- ─── SLIDE 26 — CONDIÇÕES DE VIABILIDADE ─── -->
 <!-- ─── TRANSIÇÃO BLOCO 3 ─── -->
 <section class="slide slide-chapter" data-title="Bloco 3 — Decisão">
   <div class="ch-watermark">03</div>
@@ -2052,95 +1882,52 @@
     <div class="rule"></div>
     <p class="subtitle">O que é básico no premium já deveria ser padrão. Esta é a proposta que o Everest tem condições únicas de construir — e que nenhuma concorrente entrega de forma integrada.</p>
   </div>
-
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;min-height:0;">
-
     <!-- Pilar 1 -->
     <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;">
       <div style="position:absolute;top:-10px;right:-10px;font-size:80px;font-weight:800;color:rgba(139,30,36,.06);line-height:1;user-select:none;">1</div>
-      <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-      </div>
+      <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
       <div style="display:flex;align-items:center;gap:8px;">
-        <div>
-          <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Pilar 1</p>
-          <h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0;">Conveniência como produto</h3>
-        </div>
-        <details class="tooltip-details" style="margin-left:auto;position:relative;">
-          <summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary>
-          <div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25);">72% dos respondentes usam carro para levar os filhos à escola. Tempo médio aceitável: até 20 minutos. A Região Primária concentra 67% do núcleo elegível — majoritariamente Lago Sul, Park Way e Jardim Botânico. Rotas de transporte coletivo escolar podem ampliar o raio funcional em até 30%.</div>
-        </details>
+        <div><p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Pilar 1</p><h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0;">Conveniência como produto</h3></div>
+        <details class="tooltip-details" style="margin-left:auto;position:relative;"><summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary><div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25);">72% dos respondentes usam carro para levar os filhos à escola. Tempo médio aceitável: até 20 minutos. A Região Primária concentra 67% do núcleo elegível — majoritariamente Lago Sul, Park Way e Jardim Botânico. Rotas de transporte coletivo escolar podem ampliar o raio funcional em até 30%.</div></details>
       </div>
-      <ul class="bullets" style="margin:0;">
-        <li>Localização que minimize tempo e imprevisibilidade para a Região Primária.</li>
-        <li>Entrada e saída como experiência: fluxo, segurança e previsibilidade.</li>
-        <li>Mitigadores de raio: rotas e apoio de transporte (van própria, janelas de horário, pontos coletivos por RA).</li>
-      </ul>
+      <ul class="bullets" style="margin:0;"><li>Localização que minimize tempo e imprevisibilidade para a Região Primária.</li><li>Entrada e saída como experiência: fluxo, segurança e previsibilidade.</li><li>Mitigadores de raio: rotas e apoio de transporte (van própria, janelas de horário, pontos coletivos por RA).</li></ul>
       <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">A jornada começa antes do portão.</div>
     </div>
-
     <!-- Pilar 2 -->
     <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;">
       <div style="position:absolute;top:-10px;right:-10px;font-size:80px;font-weight:800;color:rgba(139,30,36,.06);line-height:1;user-select:none;">2</div>
-      <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      </div>
+      <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
       <div style="display:flex;align-items:center;gap:8px;">
-        <div>
-          <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Pilar 2</p>
-          <h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0;">Tese comprovável</h3>
-        </div>
-        <details class="tooltip-details" style="margin-left:auto;position:relative;">
-          <summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary>
-          <div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25);">Nenhuma das 4 escolas analisadas combina bilinguismo real + inclusão com protocolo + referências acadêmicas comprováveis. Galois e Marista não têm bilinguismo estrutural. Eleva filtra pelo preço. Heavenly ainda está em consolidação de marca. O espaço está vazio.</div>
-        </details>
+        <div><p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Pilar 2</p><h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0;">Tese comprovável</h3></div>
+        <details class="tooltip-details" style="margin-left:auto;position:relative;"><summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary><div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25);">Nenhuma das 4 escolas analisadas combina bilinguismo real + inclusão com protocolo + referências acadêmicas comprováveis. Galois e Marista não têm bilinguismo estrutural. Eleva filtra pelo preço. Heavenly ainda está em consolidação de marca. O espaço está vazio.</div></details>
       </div>
-      <ul class="bullets" style="margin:0;">
-        <li>Referências acadêmicas comprováveis + bilinguismo real + inclusão com protocolo.</li>
-        <li>Narrativa simples: o que será entregue e como aparece na rotina do aluno.</li>
-        <li>Evidências comprobatórias visíveis desde o primeiro contato comercial.</li>
-      </ul>
+      <ul class="bullets" style="margin:0;"><li>Referências acadêmicas comprováveis + bilinguismo real + inclusão com protocolo.</li><li>Narrativa simples: o que será entregue e como aparece na rotina do aluno.</li><li>Evidências comprobatórias visíveis desde o primeiro contato comercial.</li></ul>
       <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">Promessa é dívida. Experiência gera confiança.</div>
     </div>
-
     <!-- Pilar 3 -->
     <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;">
       <div style="position:absolute;top:-10px;right:-10px;font-size:80px;font-weight:800;color:rgba(139,30,36,.06);line-height:1;user-select:none;">3</div>
-      <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-      </div>
+      <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
       <div style="display:flex;align-items:center;gap:8px;">
-        <div>
-          <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Pilar 3</p>
-          <h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0;">Educação personalizada</h3>
-        </div>
-        <details class="tooltip-details" style="margin-left:auto;position:relative;">
-          <summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary>
-          <div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25);">Marista atende turmas de 25–30 alunos — escala incompatível com personalização real. Galois não adapta o currículo ao aluno. Eleva exige maturidade precoce — critério excludente para perfis neurodivergentes. Nenhuma escola posiciona o professor como orientador de trajetória individual.</div>
-        </details>
+        <div><p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Pilar 3</p><h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0;">Educação personalizada</h3></div>
+        <details class="tooltip-details" style="margin-left:auto;position:relative;"><summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary><div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25);">Marista atende turmas de 25–30 alunos — escala incompatível com personalização real. Galois não adapta o currículo ao aluno. Eleva exige maturidade precoce — critério excludente para perfis neurodivergentes. Nenhuma escola posiciona o professor como orientador de trajetória individual.</div></details>
       </div>
-      <ul class="bullets" style="margin:0;">
-        <li>Currículo que se adapta ao ritmo, perfil e contexto de cada aluno — não o aluno que se adapta ao currículo.</li>
-        <li>Identificação precoce de potenciais e necessidades: não espera o problema aparecer.</li>
-        <li>O professor como orientador de trajetória, não apenas transmissor de conteúdo.</li>
-      </ul>
+      <ul class="bullets" style="margin:0;"><li>Currículo que se adapta ao ritmo, perfil e contexto de cada aluno — não o aluno que se adapta ao currículo.</li><li>Identificação precoce de potenciais e necessidades: não espera o problema aparecer.</li><li>O professor como orientador de trajetória, não apenas transmissor de conteúdo.</li></ul>
       <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">Cada aluno é um projeto único.</div>
     </div>
-
   </div>
-
   <div style="background:var(--ink);border-radius:14px;padding:13px 20px;display:flex;align-items:center;gap:16px;">
     <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">Proposta de Valor =</span>
     <span style="font-size:13.5px;font-weight:700;color:#fff;">Conveniência &nbsp;+&nbsp; Tese Comprovável &nbsp;+&nbsp; Educação Personalizada</span>
   </div>
-
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 30</div>
   </div>
 </section>
 
-<!-- ─── SLIDE 27 — PRÓXIMOS PASSOS ─── -->
+<!-- ─── SLIDE — REFLEXÃO ESTRATÉGICA IA ─── -->
 <section class="slide" data-title="Reflexão Estratégica — IA">
   <div>
     <div class="kicker">K · Reflexão Estratégica · Horizonte de Futuro</div>
@@ -2148,10 +1935,7 @@
     <div class="rule"></div>
     <p class="subtitle">A pergunta que as melhores escolas do mundo já estão respondendo — e que define quem será premium na próxima década.</p>
   </div>
-
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1;min-height:0;">
-
-    <!-- Esquerda — pergunta central -->
     <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:24px;display:flex;flex-direction:column;gap:16px;">
       <p style="font-size:13px;font-style:italic;color:var(--ink);line-height:1.7;border-left:3px solid var(--red);padding-left:14px;margin:0;">"Se a IA executa o trabalho cognitivo mecânico — memorização, resolução algorítmica, pesquisa básica — o que sobra para a escola ensinar?"</p>
       <p style="font-size:13px;color:#555;line-height:1.7;margin:0;">A resposta não está na tecnologia. Está nos atributos que a IA não replica:</p>
@@ -2165,104 +1949,130 @@
       </div>
       <p style="font-size:12.5px;color:#555;line-height:1.7;margin:0;">Esses são exatamente os pilares que o Everest já quer defender — e que nenhuma concorrente de Brasília está articulando com clareza.</p>
     </div>
-
-    <!-- Direita — benchmarks globais -->
     <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:24px;display:flex;flex-direction:column;gap:14px;">
       <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0;">Como o mundo está respondendo</p>
-
       <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;">🇸🇬</span>
-          <div style="font-size:12.5px;color:var(--ink);line-height:1.6;"><b>Singapura</b> — <a href="https://www.moe.gov.sg/edutech-masterplan" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline;">EdTech Masterplan 2030</a>: IA como tutor adaptativo, com centro de pesquisa dedicado à ética da IA na educação.</div>
-        </div>
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;">🇫🇮</span>
-          <div style="font-size:12.5px;color:var(--ink);line-height:1.6;"><b>Finlândia</b> — <a href="https://www.aifinland.fi/" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline;">AI in Learning</a>: compromisso nacional de alfabetização em IA. Foco em equidade e bem-estar, não apenas performance.</div>
-        </div>
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;">🇰🇷</span>
-          <div style="font-size:12.5px;color:var(--ink);line-height:1.6;"><b>Coreia do Sul</b> — <a href="https://www.keris.or.kr/" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline;">Ministry of Education / KERIS</a>: IA no currículo nacional em todos os anos escolares desde 2025.</div>
-        </div>
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;">🇺🇸</span>
-          <div style="font-size:12.5px;color:var(--ink);line-height:1.6;"><b>EUA</b> — <a href="https://alpha.school/" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline;">Alpha School</a>: 2h de conteúdo com tutor de IA + 4h de desenvolvimento de habilidades humanas. Alunos no top 1% nacional.</div>
-        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;"><span style="font-size:20px;flex-shrink:0;">🇸🇬</span><div style="font-size:12.5px;color:var(--ink);line-height:1.6;"><b>Singapura</b> — <a href="https://www.moe.gov.sg/edutech-masterplan" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline;">EdTech Masterplan 2030</a>: IA como tutor adaptativo, com centro de pesquisa dedicado à ética da IA na educação.</div></div>
+        <div style="display:flex;gap:12px;align-items:flex-start;"><span style="font-size:20px;flex-shrink:0;">🇫🇮</span><div style="font-size:12.5px;color:var(--ink);line-height:1.6;"><b>Finlândia</b> — <a href="https://www.aifinland.fi/" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline;">AI in Learning</a>: compromisso nacional de alfabetização em IA. Foco em equidade e bem-estar, não apenas performance.</div></div>
+        <div style="display:flex;gap:12px;align-items:flex-start;"><span style="font-size:20px;flex-shrink:0;">🇰🇷</span><div style="font-size:12.5px;color:var(--ink);line-height:1.6;"><b>Coreia do Sul</b> — <a href="https://www.keris.or.kr/" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline;">Ministry of Education / KERIS</a>: IA no currículo nacional em todos os anos escolares desde 2025.</div></div>
+        <div style="display:flex;gap:12px;align-items:flex-start;"><span style="font-size:20px;flex-shrink:0;">🇺🇸</span><div style="font-size:12.5px;color:var(--ink);line-height:1.6;"><b>EUA</b> — <a href="https://alpha.school/" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline;">Alpha School</a>: 2h de conteúdo com tutor de IA + 4h de desenvolvimento de habilidades humanas. Alunos no top 1% nacional.</div></div>
       </div>
     </div>
-
   </div>
-
   <div style="background:var(--ink);border-radius:14px;padding:13px 20px;display:flex;align-items:center;gap:16px;">
     <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;">Oportunidade =</span>
     <span style="font-size:13.5px;font-weight:700;color:#fff;">A escola que responde essa pergunta antes das concorrentes não compete no mesmo mercado — ela define o mercado.</span>
   </div>
-
   <div class="footer">
     <div class="logos"><img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/></div>
     <div class="meta">Slide 30b</div>
   </div>
 </section>
 
+<!-- ─── SLIDE 32 — RECOMENDAÇÕES ESTRATÉGICAS (CORRIGIDO) ─── -->
 <section class="slide" data-title="Recomendações Estratégicas">
-  <div>
-    <div class="kicker">K · Recomendações Estratégicas</div>
-    <h2 class="title" style="font-size:clamp(22px,2.8vw,36px);">Próximos passos</h2>
+
+  <!-- Header -->
+  <div style="flex-shrink:0;">
+    <div class="kicker">L · Recomendações Estratégicas</div>
+    <h2 class="title" style="font-size:clamp(24px,3vw,40px);line-height:1.06;">Próximos passos</h2>
     <div class="rule"></div>
-    <p class="subtitle">Reduzir risco antes de comprometer investimento — testar antes de escalar.</p>
+    <p class="subtitle" style="margin-top:5px;">Reduzir risco antes de comprometer investimento — testar antes de escalar.</p>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;min-height:0;">
+  <!-- Agenda: pipeline com setas -->
+  <div style="flex-shrink:0;">
+    <p style="font-size:10.5px;font-weight:700;color:var(--red);letter-spacing:.09em;text-transform:uppercase;margin:0 0 10px 0;">Agenda objetiva</p>
+    <div class="pipeline-steps" style="display:flex;align-items:stretch;gap:0;">
 
-    <!-- Agenda -->
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0;">Agenda objetiva</p>
-
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="display:flex;gap:12px;align-items:flex-start;background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;">
-          <span style="font-size:11px;font-weight:800;color:var(--red);background:rgba(139,30,36,.1);border-radius:6px;padding:3px 7px;flex-shrink:0;">01</span>
-          <div><b style="font-size:13px;color:var(--ink);">Pesquisa de mercado</b><br/><span style="font-size:12px;color:#666;line-height:1.5;">Diagnóstico de percepção atual, teste de conceito da tese nos três pilares, validação do posicionamento, teste de localização por região de interesse e simulação de intenção de matrícula.</span></div>
+      <!-- Step 01 -->
+      <div class="pipeline-step" style="flex:1;background:rgba(139,30,36,.06);border:1px solid rgba(139,30,36,.18);border-radius:12px 0 0 12px;padding:16px 18px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:11px;font-weight:800;color:#fff;background:var(--red);border-radius:5px;padding:2px 8px;line-height:1.6;">01</span>
+          <b style="font-size:13px;color:var(--ink);">Pesquisa de mercado</b>
         </div>
-        <div style="display:flex;gap:12px;align-items:flex-start;background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;">
-          <span style="font-size:11px;font-weight:800;color:var(--red);background:rgba(139,30,36,.1);border-radius:6px;padding:3px 7px;flex-shrink:0;">02</span>
-          <div><b style="font-size:13px;color:var(--ink);">Fechar a proposta</b><br/><span style="font-size:12px;color:#666;line-height:1.5;">Com os aprendizados da pesquisa: refinar os pilares, prototipar o modelo de educação personalizada e definir a narrativa da escola frente à IA.</span></div>
-        </div>
-        <div style="display:flex;gap:12px;align-items:flex-start;background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;">
-          <span style="font-size:11px;font-weight:800;color:var(--red);background:rgba(139,30,36,.1);border-radius:6px;padding:3px 7px;flex-shrink:0;">03</span>
-          <div><b style="font-size:13px;color:var(--ink);">Validar a operação</b><br/><span style="font-size:12px;color:#666;line-height:1.5;">Com as regiões priorizadas pela pesquisa: shortlist de espaços e imóveis por critério de acesso + simulação financeira + desenho operacional de logística.</span></div>
-        </div>
-        <div style="display:flex;gap:12px;align-items:flex-start;background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;">
-          <span style="font-size:11px;font-weight:800;color:var(--red);background:rgba(139,30,36,.1);border-radius:6px;padding:3px 7px;flex-shrink:0;">04</span>
-          <div><b style="font-size:13px;color:var(--ink);">Ir ao mercado</b><br/><span style="font-size:12px;color:#666;line-height:1.5;">Captação faseada — Primária → Secundária → Terciária — com métricas por pilar e por território antes de escalar.</span></div>
-        </div>
+        <p style="font-size:11.5px;color:#555;margin:0;line-height:1.5;">Diagnóstico de percepção, teste de conceito nos três pilares, validação de posicionamento e intenção de matrícula.</p>
+      </div>
+      <div class="pipeline-arrow" style="display:flex;align-items:center;padding:0 2px;z-index:1;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M6 11h10M12 7l4 4-4 4" stroke="rgba(139,30,36,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
 
-      <div style="margin-top:auto;background:rgba(139,30,36,.07);border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;color:var(--red);">
-        ⚠ Os blocos 02, 03 e 04 só avançam com os aprendizados do bloco 01 em mãos.
+      <!-- Step 02 -->
+      <div class="pipeline-step" style="flex:1;background:#f7f7f8;border:1px solid #e8e8ec;padding:16px 18px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:11px;font-weight:800;color:var(--red);background:rgba(139,30,36,.1);border-radius:5px;padding:2px 8px;line-height:1.6;">02</span>
+          <b style="font-size:13px;color:var(--ink);">Fechar a proposta</b>
+        </div>
+        <p style="font-size:11.5px;color:#555;margin:0;line-height:1.5;">Refinar os pilares, prototipar educação personalizada e definir narrativa frente à IA.</p>
       </div>
+      <div class="pipeline-arrow" style="display:flex;align-items:center;padding:0 2px;z-index:1;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M6 11h10M12 7l4 4-4 4" stroke="rgba(139,30,36,.3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- Step 03 -->
+      <div class="pipeline-step" style="flex:1;background:#f7f7f8;border:1px solid #e8e8ec;padding:16px 18px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:11px;font-weight:800;color:var(--red);background:rgba(139,30,36,.1);border-radius:5px;padding:2px 8px;line-height:1.6;">03</span>
+          <b style="font-size:13px;color:var(--ink);">Validar a operação</b>
+        </div>
+        <p style="font-size:11.5px;color:#555;margin:0;line-height:1.5;">Shortlist de espaços nas regiões priorizadas + simulação financeira + desenho logístico.</p>
+      </div>
+      <div class="pipeline-arrow" style="display:flex;align-items:center;padding:0 2px;z-index:1;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M6 11h10M12 7l4 4-4 4" stroke="rgba(139,30,36,.3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- Step 04 -->
+      <div class="pipeline-step" style="flex:1;background:#f7f7f8;border:1px solid #e8e8ec;border-radius:0 12px 12px 0;padding:16px 18px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:11px;font-weight:800;color:var(--red);background:rgba(139,30,36,.1);border-radius:5px;padding:2px 8px;line-height:1.6;">04</span>
+          <b style="font-size:13px;color:var(--ink);">Ir ao mercado</b>
+        </div>
+        <p style="font-size:11.5px;color:#555;margin:0;line-height:1.5;">Captação faseada — Primária → Secundária → Terciária — com métricas por pilar e território.</p>
+      </div>
+
     </div>
-
-    <!-- Riscos -->
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0;">Riscos a monitorar</p>
-      <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
-        <div style="background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;border-left:3px solid var(--red);">
-          <p style="font-size:12.5px;color:var(--ink);margin:0;line-height:1.5;">🔍 Tese não ressoa com o mercado esperado — a pesquisa deve mapear isso antes de qualquer investimento.</p>
-        </div>
-        <div style="background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;border-left:3px solid var(--red);">
-          <p style="font-size:12.5px;color:var(--ink);margin:0;line-height:1.5;">⚡ Concorrente ocupa primeiro o espaço da IA no premium de Brasília.</p>
-        </div>
-        <div style="background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;border-left:3px solid var(--red);">
-          <p style="font-size:12.5px;color:var(--ink);margin:0;line-height:1.5;">🚧 Fricção logística não resolvida compromete a percepção premium.</p>
-        </div>
-        <div style="background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;border-left:3px solid var(--red);">
-          <p style="font-size:12.5px;color:var(--ink);margin:0;line-height:1.5;">🔄 Confusão de marca residual com a Heavenly na Região Primária.</p>
-        </div>
-        <div style="background:#f7f7f8;border-radius:12px;padding:12px 14px;border:1.5px solid #e8e8ec;border-left:3px solid var(--red);">
-          <p style="font-size:12.5px;color:var(--ink);margin:0;line-height:1.5;">⚠️ Execução inconsistente dos pilares — proposta forte no discurso, fraca na entrega.</p>
-        </div>
-      </div>
+    <!-- Aviso sequencial -->
+    <div style="background:rgba(139,30,36,.07);border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;color:var(--red);margin-top:8px;display:flex;align-items:center;gap:8px;">
+      <span>⚠</span> Os blocos 02, 03 e 04 só avançam com os aprendizados do 01 em mãos.
     </div>
+  </div>
 
+  <!-- Riscos: faixa de 5 chips -->
+  <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;">
+    <p style="font-size:10.5px;font-weight:700;color:var(--red);letter-spacing:.09em;text-transform:uppercase;margin:0;">Riscos a monitorar</p>
+    <div class="risks-row" style="display:flex;gap:10px;flex:1;min-height:0;">
+
+      <div style="flex:1;background:#f7f7f8;border-radius:12px;border:1px solid #e8e8ec;border-left:4px solid var(--red);padding:12px 14px;display:flex;flex-direction:column;gap:5px;">
+        <span style="font-size:16px;line-height:1;">🔍</span>
+        <p style="font-size:12px;color:var(--ink);margin:0;font-weight:600;line-height:1.3;">Tese não ressoa</p>
+        <p style="font-size:11px;color:#666;margin:0;line-height:1.4;">A pesquisa deve mapear isso antes de qualquer investimento.</p>
+      </div>
+
+      <div style="flex:1;background:#f7f7f8;border-radius:12px;border:1px solid #e8e8ec;border-left:4px solid var(--red);padding:12px 14px;display:flex;flex-direction:column;gap:5px;">
+        <span style="font-size:16px;line-height:1;">⚡</span>
+        <p style="font-size:12px;color:var(--ink);margin:0;font-weight:600;line-height:1.3;">Janela de IA</p>
+        <p style="font-size:11px;color:#666;margin:0;line-height:1.4;">Concorrente ocupa primeiro o espaço da IA no premium de Brasília.</p>
+      </div>
+
+      <div style="flex:1;background:#f7f7f8;border-radius:12px;border:1px solid #e8e8ec;border-left:4px solid var(--red);padding:12px 14px;display:flex;flex-direction:column;gap:5px;">
+        <span style="font-size:16px;line-height:1;">🚧</span>
+        <p style="font-size:12px;color:var(--ink);margin:0;font-weight:600;line-height:1.3;">Fricção logística</p>
+        <p style="font-size:11px;color:#666;margin:0;line-height:1.4;">Não resolvida, compromete a percepção premium antes mesmo da matrícula.</p>
+      </div>
+
+      <div style="flex:1;background:#f7f7f8;border-radius:12px;border:1px solid #e8e8ec;border-left:4px solid var(--red);padding:12px 14px;display:flex;flex-direction:column;gap:5px;">
+        <span style="font-size:16px;line-height:1;">🔄</span>
+        <p style="font-size:12px;color:var(--ink);margin:0;font-weight:600;line-height:1.3;">Confusão de marca</p>
+        <p style="font-size:11px;color:#666;margin:0;line-height:1.4;">Resíduo Heavenly na Região Primária pode contaminar o novo posicionamento.</p>
+      </div>
+
+      <div style="flex:1;background:#f7f7f8;border-radius:12px;border:1px solid #e8e8ec;border-left:4px solid var(--red);padding:12px 14px;display:flex;flex-direction:column;gap:5px;">
+        <span style="font-size:16px;line-height:1;">⚠️</span>
+        <p style="font-size:12px;color:var(--ink);margin:0;font-weight:600;line-height:1.3;">Execução inconsistente</p>
+        <p style="font-size:11px;color:#666;margin:0;line-height:1.4;">Proposta forte no discurso, fraca na entrega — corrói confiança rápido.</p>
+      </div>
+
+    </div>
   </div>
 
   <div class="footer">
@@ -2272,8 +2082,6 @@
 </section>
 
       </div><!-- /slides -->
-
-
 
 <div class="controls" role="group" aria-label="Navegação do deck">
         <div class="controls-logo">
@@ -2310,7 +2118,6 @@
   };
   window._goHome = function(){ idx = 0; render(); };
 
-  // Exposed so mobile can override
   window._next = next;
   window._prev = prev;
 
@@ -2356,7 +2163,6 @@ function revealAllForPrint(){
     var page = document.createElement('div');
     page.className = 'print-page';
 
-    // Header bar
     var header = document.createElement('div');
     header.className = 'print-header';
     header.innerHTML =
@@ -2364,32 +2170,16 @@ function revealAllForPrint(){
       '<img class="ph-right" src="' + opinLogo   + '" alt="Opinião Consultoria"/>';
     page.appendChild(header);
 
-    // Slide area
     var wrap = document.createElement('div');
     wrap.className = 'print-wrap';
 
     var clone = s.cloneNode(true);
     clone.classList.add('active', 'print-clone');
-    // zoom reduces layout size — 1280×720 becomes 1047×589 in document flow
     clone.style.cssText = [
-      'position:relative',
-      'width:1280px',
-      'height:720px',
-      'min-height:unset',
-      'max-height:720px',
-      'zoom:0.8179',
-      'opacity:1',
-      'transform:none',
-      'overflow:hidden',
-      'isolation:isolate',
-      'display:flex',
-      'flex-direction:column',
-      'gap:14px',
-      'box-sizing:border-box',
-      'pointer-events:none',
-      'border:none',
-      'flex:0 0 auto',
-      'scroll-snap-align:none'
+      'position:relative','width:1280px','height:720px','min-height:unset','max-height:720px',
+      'zoom:0.8179','opacity:1','transform:none','overflow:hidden','isolation:isolate',
+      'display:flex','flex-direction:column','gap:14px','box-sizing:border-box',
+      'pointer-events:none','border:none','flex:0 0 auto','scroll-snap-align:none'
     ].join(';');
 
     var footer = clone.querySelector('.footer');
@@ -2416,26 +2206,22 @@ window.addEventListener('afterprint',  restoreAfterPrint);
   var slidesEl = document.getElementById('slides');
   var allSlides = Array.from(document.querySelectorAll('.slide'));
 
-  // ── Hamburger menu ──
   var topbar = document.querySelector('.topbar');
   var nav    = document.querySelector('.nav');
 
   if(topbar && nav){
-    // Build hamburger button
     var burger = document.createElement('button');
     burger.id = 'burger';
     burger.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
     burger.style.cssText = 'display:none;background:none;border:none;color:#fff;cursor:pointer;padding:6px;margin-left:auto;';
     topbar.appendChild(burger);
 
-    // Build drawer
     var drawer = document.createElement('div');
     drawer.id = 'nav-drawer';
     drawer.style.cssText = 'display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:999;';
     var panel = document.createElement('div');
     panel.style.cssText = 'position:absolute;top:0;left:0;bottom:0;width:80vw;max-width:300px;background:#fff;overflow-y:auto;padding:24px 20px;';
 
-    // Clone nav links into drawer as a vertical list
     Array.from(nav.querySelectorAll('a')).forEach(function(a){
       var item = document.createElement('div');
       item.style.cssText = 'border-bottom:1px solid #eee;';
@@ -2445,10 +2231,7 @@ window.addEventListener('afterprint',  restoreAfterPrint);
       link.rel = a.getAttribute('rel') || '';
       link.textContent = a.textContent;
       link.style.cssText = 'display:block;padding:14px 0;font-size:14px;font-weight:700;color:#111316;text-decoration:none;letter-spacing:.04em;text-transform:uppercase;';
-      link.addEventListener('click', function(){
-        closeDrawer();
-        // allow default href navigation to proceed
-      });
+      link.addEventListener('click', function(){ closeDrawer(); });
       item.appendChild(link);
       panel.appendChild(item);
     });
@@ -2462,22 +2245,14 @@ window.addEventListener('afterprint',  restoreAfterPrint);
     burger.addEventListener('click', openDrawer);
 
     function applyMobileNav(){
-      if(isMobile()){
-        burger.style.display = 'flex';
-        nav.style.display    = 'none';
-      } else {
-        burger.style.display = 'none';
-        nav.style.display    = '';
-        closeDrawer();
-      }
+      if(isMobile()){ burger.style.display = 'flex'; nav.style.display = 'none'; }
+      else { burger.style.display = 'none'; nav.style.display = ''; closeDrawer(); }
     }
     applyMobileNav();
     window.addEventListener('resize', applyMobileNav);
   }
 
-  // ── Scroll-snap navigation ──
   function currentIdx(){
-    // Use offsetLeft comparison — immune to border widths and rounding errors
     var cx = slidesEl.scrollLeft + window.innerWidth * 0.5;
     var best = 0, bestDist = Infinity;
     for(var j = 0; j < allSlides.length; j++){
@@ -2489,9 +2264,7 @@ window.addEventListener('afterprint',  restoreAfterPrint);
   function scrollToIdx(i){
     var t = allSlides[Math.max(0, Math.min(allSlides.length-1, i))];
     if(!t) return;
-    // Scroll horizontal to the slide
     slidesEl.scrollTo({ left: t.offsetLeft, behavior: 'smooth' });
-    // Scroll vertical to page top so the topbar and slide header are visible
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -2514,9 +2287,6 @@ window.addEventListener('afterprint',  restoreAfterPrint);
     document.title = 'EVEREST — ' + (allSlides[i] && allSlides[i].dataset.title || 'Slide '+(i+1));
   }
 
-  // forceMobileDarkSlides removed — isolation:isolate on .slide.cover and
-  // .slide.slide-chapter ensures correct stacking context on all viewports.
-
   if(slidesEl){
     var _t;
     slidesEl.addEventListener('scroll', function(){
@@ -2524,19 +2294,12 @@ window.addEventListener('afterprint',  restoreAfterPrint);
       clearTimeout(_t);
       _t = setTimeout(syncCounter, 80);
     }, { passive: true });
-
-    // Sync counter + fix dark slides as soon as mobile layout is active
-    if(isMobile()){
-      setTimeout(syncCounter, 50);
-      // Logo already embedded in controls HTML
-    }
+    if(isMobile()){ setTimeout(syncCounter, 50); }
   }
 
-  // Re-snap to current slide after resize / orientation change
   function reSnap(){
     if(!isMobile() || !slidesEl) return;
     var i = currentIdx();
-    // Use offsetLeft so the measurement is always fresh after layout reflow
     var target = allSlides[Math.max(0, Math.min(allSlides.length-1, i))];
     if(target) slidesEl.scrollLeft = target.offsetLeft;
   }
@@ -2547,63 +2310,29 @@ window.addEventListener('afterprint',  restoreAfterPrint);
   });
 
   if(screen.orientation){
-    screen.orientation.addEventListener('change', function(){
-      setTimeout(reSnap, 200);
-    });
+    screen.orientation.addEventListener('change', function(){ setTimeout(reSnap, 200); });
   }
 })();
 </script>
 
-
 <!-- ── Password Gate ─────────────────────────────────────── -->
-<div id="pw-gate" style="
-  position:fixed;inset:0;z-index:99999;
-  background:var(--ink);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Montserrat',sans-serif;
-">
-  <div style="
-    background:#fff;border-radius:20px;padding:48px 40px;
-    width:100%;max-width:400px;margin:20px;
-    box-shadow:0 24px 80px rgba(0,0,0,.35);
-    text-align:center;
-  ">
-    <img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png"
-         style="height:48px;margin-bottom:28px;object-fit:contain;" alt="Opinião"/>
+<div id="pw-gate" style="position:fixed;inset:0;z-index:99999;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;">
+  <div style="background:#fff;border-radius:20px;padding:48px 40px;width:100%;max-width:400px;margin:20px;box-shadow:0 24px 80px rgba(0,0,0,.35);text-align:center;">
+    <img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" style="height:48px;margin-bottom:28px;object-fit:contain;" alt="Opinião"/>
     <h2 style="font-size:18px;font-weight:800;color:#111316;margin:0 0 6px;">Acesso restrito</h2>
-    <p style="font-size:13px;color:#888;margin:0 0 28px;line-height:1.5;">
-      Este documento é confidencial.<br/>Insira a senha para continuar.
-    </p>
-    <input id="pw-input" type="password" placeholder="Senha"
-      style="
-        width:100%;padding:13px 16px;border:1.5px solid #e8e8ec;
-        border-radius:10px;font-size:14px;font-family:inherit;
-        outline:none;margin-bottom:12px;box-sizing:border-box;
-        transition:border .2s;
-      "
-      onkeydown="if(event.key==='Enter')checkPw()"
-      onfocus="this.style.borderColor='#8b1e24'"
-      onblur="this.style.borderColor='#e8e8ec'"
-    />
+    <p style="font-size:13px;color:#888;margin:0 0 28px;line-height:1.5;">Este documento é confidencial.<br/>Insira a senha para continuar.</p>
+    <input id="pw-input" type="password" placeholder="Senha" style="width:100%;padding:13px 16px;border:1.5px solid #e8e8ec;border-radius:10px;font-size:14px;font-family:inherit;outline:none;margin-bottom:12px;box-sizing:border-box;transition:border .2s;" onkeydown="if(event.key==='Enter')checkPw()" onfocus="this.style.borderColor='#8b1e24'" onblur="this.style.borderColor='#e8e8ec'"/>
     <p id="pw-error" style="font-size:12px;color:#8b1e24;min-height:18px;margin:0 0 12px;"></p>
-    <button onclick="checkPw()" style="
-      width:100%;padding:13px;background:#8b1e24;color:#fff;
-      border:none;border-radius:10px;font-size:14px;font-weight:700;
-      font-family:inherit;cursor:pointer;
-      transition:background .2s;
-    "
-    onmouseover="this.style.background='#6e1720'"
-    onmouseout="this.style.background='#8b1e24'"
-    >Entrar</button>
-    <p style="font-size:11px;color:#ccc;margin:20px 0 0;">
-      Elaborado por Opinião Informação Estratégica · Reprodução Proibida
-    </p>
+    <button onclick="checkPw()" style="width:100%;padding:13px;background:#8b1e24;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .2s;" onmouseover="this.style.background='#6e1720'" onmouseout="this.style.background='#8b1e24'">Entrar</button>
+    <div style="margin:20px 0 0;display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" style="height:32px;object-fit:contain;opacity:.5;" alt="Opinião"/>
+      <p style="font-size:11px;color:#ccc;margin:0;">Reprodução Proibida</p>
+    </div>
   </div>
 </div>
 
 <script>
   (function(){
-    // Check session
     if(sessionStorage.getItem('everest_auth')==='1'){
       document.getElementById('pw-gate').style.display='none';
     }
@@ -2627,4 +2356,4 @@ window.addEventListener('afterprint',  restoreAfterPrint);
 </script>
 <!-- ── /Password Gate ─────────────────────────────────────── -->
 
-</body>
+</body></html>
