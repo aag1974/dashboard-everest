@@ -52,7 +52,7 @@
     .nav a{ color:#fff; text-decoration:none; opacity:.88; padding:7px 10px; border-radius:999px; }
     .nav a:hover{ background:rgba(255,255,255,.14); opacity:1; }
     .nav .dot{ width:5px;height:5px;border-radius:999px;background:rgba(255,255,255,.45);display:inline-block;margin:0 2px; }
-    .content{ height:calc(100% - 82px - env(safe-area-inset-top)); position:relative; background:linear-gradient(180deg,rgba(139,30,36,.02),transparent 28%); zoom:0.9; }
+    .content{ height:calc(100% - 82px - env(safe-area-inset-top)); position:relative; background:linear-gradient(180deg,rgba(139,30,36,.02),transparent 28%); }
     .slides{ height:100%; width:100%; position:relative; }
     .slide{
       position:absolute; inset:0;
@@ -141,8 +141,7 @@
       /* ── Layout reset ── */
       html, body { height: auto; overflow: auto; overflow-x: hidden; }
 
-      /* Reset zoom do desktop — crítico para Safari iOS não calcular largura errada */
-      .content { zoom: 1 !important; }
+      /* Reset zoom — já não é aplicado em mobile */
 
       body {
         background:
@@ -384,6 +383,11 @@
         top: 0 !important; left: 0 !important; right: 0 !important; bottom: unset !important;
         width: 100% !important; height: 5px !important;
       }
+    }
+
+    /* ── Zoom apenas no desktop — nunca na base CSS para não quebrar viewport mobile ── */
+    @media(min-width:769px){
+      .content{ zoom:0.9; }
     }
 
     /* ═══ BENCHMARK SYSTEM ═══ */
@@ -678,7 +682,7 @@
       .topbar{ height:calc(56px + env(safe-area-inset-top)); padding-top:env(safe-area-inset-top); }
       .stage{ padding:0; height:100dvh; align-items:stretch; }
       .deck{ width:100%; aspect-ratio:unset; height:100dvh; border-radius:0; box-shadow:none; }
-      .content{ height:calc(100dvh - 56px - env(safe-area-inset-top)); zoom:1; }
+      .content{ height:calc(100dvh - 56px - env(safe-area-inset-top)); }
       /* Slide 32 pipeline: steps empilhados */
       .pipeline-steps{ flex-direction:column !important; gap:0 !important; }
       .pipeline-steps > .pipeline-step{ border-radius:10px !important; margin-bottom:6px; }
