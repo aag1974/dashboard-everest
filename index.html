@@ -29,14 +29,13 @@
         radial-gradient(1100px 700px at 20% 5%, rgba(139,30,36,.08), transparent 60%),
         radial-gradient(900px 600px at 90% 20%, rgba(0,0,0,.06), transparent 55%),
         var(--bg-soft);
-      overflow:hidden;
+      overflow:auto;
     }
-    .stage{ height:100%; display:flex; align-items:center; justify-content:center; padding:clamp(8px,1.8vw,24px); }
+    .stage{ height:100vh; display:flex; flex-direction:column; }
     .deck{
-      width:min(1280px,96vw); aspect-ratio:16/9;
-      background:var(--bg); border-radius:var(--radius);
-      box-shadow:var(--shadow); overflow:hidden; position:relative;
-      border:1px solid rgba(0,0,0,.06);
+      width:100%; flex:1;
+      background:var(--bg); border-radius:0;
+      overflow:hidden; position:relative;
     }
     .topbar{
       height:82px; background:var(--red);
@@ -793,7 +792,7 @@
         <i class="dot"></i>
         <a href="Relatorio_Desk_Research.pdf" target="_blank" rel="noopener">Desk Research</a>
         <i class="dot"></i>
-        <a href="Relatorio_Benchmark.pdf" target="_blank" rel="noopener">Benchmark</a>
+        <a href="Relatorio_Benchmarking.pdf" target="_blank" rel="noopener">Benchmark</a>
         <i class="dot"></i>
         <a href="apresentacao_executiva.pdf" target="_blank" rel="noopener">Apresentação</a>
         <i class="dot"></i>
