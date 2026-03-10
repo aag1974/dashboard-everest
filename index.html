@@ -206,17 +206,19 @@
         height: auto !important;
         position: static !important;
         width: 100% !important;
+        max-width: 100vw !important;
       }
       #slides::-webkit-scrollbar { display: none; }
 
-      /* Each slide: full-width snap unit, auto height, scrollable vertically */
+      /* Each slide: full-width snap unit — usa 100% do pai, NÃO 100vw
+         100vw em iOS inclui scrollbar width e causa overflow acumulado */
       .slide {
-        flex: 0 0 100vw !important;
-        width: 100vw !important;
+        flex: 0 0 100% !important;
+        width: 100% !important;
         height: auto !important;
         min-height: unset !important;
         max-height: unset !important;
-        position: relative !important; /* keep relative so absolute children (school-stripe) work */
+        position: relative !important;
         inset: unset !important;
         opacity: 1 !important;
         transform: none !important;
