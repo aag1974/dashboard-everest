@@ -2,10 +2,8 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#8b1e24" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>EVEREST — Viabilidade DF</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +30,8 @@
         radial-gradient(1100px 700px at 20% 5%, rgba(139,30,36,.08), transparent 60%),
         radial-gradient(900px 600px at 90% 20%, rgba(0,0,0,.06), transparent 55%),
         var(--bg-soft);
-      overflow:auto;
+      overflow-y:auto;
+      overflow-x:hidden;
     }
     .stage{ height:100vh; display:flex; flex-direction:column; }
     .deck{
@@ -44,9 +43,6 @@
       height:82px; background:var(--red);
       display:flex; align-items:center; justify-content:space-between;
       padding:0 var(--padX); color:#fff; flex-shrink:0;
-      /* iOS: empurra conteúdo abaixo da status bar e preenche o fundo vermelho */
-      padding-top: env(safe-area-inset-top);
-      height: calc(82px + env(safe-area-inset-top));
     }
     .brand{ display:flex; align-items:center; gap:14px; min-width:220px; }
     .brand img{ height:42px; width:auto; filter:drop-shadow(0 6px 18px rgba(0,0,0,.18)); }
@@ -54,7 +50,7 @@
     .nav a{ color:#fff; text-decoration:none; opacity:.88; padding:7px 10px; border-radius:999px; }
     .nav a:hover{ background:rgba(255,255,255,.14); opacity:1; }
     .nav .dot{ width:5px;height:5px;border-radius:999px;background:rgba(255,255,255,.45);display:inline-block;margin:0 2px; }
-    .content{ height:calc(100% - 82px - env(safe-area-inset-top)); position:relative; background:linear-gradient(180deg,rgba(139,30,36,.02),transparent 28%); }
+    .content{ height:calc(100% - 82px); position:relative; background:linear-gradient(180deg,rgba(139,30,36,.02),transparent 28%); }
     .slides{ height:100%; width:100%; position:relative; }
     .slide{
       position:absolute; inset:0;
@@ -141,9 +137,7 @@
     /* ═══ MOBILE ═══ */
     @media (max-width: 768px) {
       /* ── Layout reset ── */
-      html, body { height: auto; overflow: auto; overflow-x: hidden; }
-
-      /* Reset zoom — já não é aplicado em mobile */
+      html, body { height: auto; overflow-y: auto; overflow-x: hidden; }
 
       body {
         background:
@@ -169,8 +163,15 @@
         overflow: visible !important;
       }
 
-      /* Topbar: compact */
-      .topbar { height: calc(56px + env(safe-area-inset-top)) !important; padding: env(safe-area-inset-top) 16px 0 !important; flex-wrap: nowrap !important; }
+      /* Topbar: compact + sticky para não sumir ao rolar slides longos */
+      .topbar {
+        height: 56px !important;
+        padding: 0 16px !important;
+        flex-wrap: nowrap !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 200 !important;
+      }
       .brand img { height: 28px; }
       .brand { min-width: unset; gap: 10px; }
       /* nav hidden on mobile — hamburger drawer used instead */
@@ -681,10 +682,10 @@
     @media(max-width:900px){
       .nav{ display:none; }
       .grid2,.grid3{ grid-template-columns:1fr; }
-      .topbar{ height:calc(56px + env(safe-area-inset-top)); padding-top:env(safe-area-inset-top); }
+      .topbar{ height:56px; }
       .stage{ padding:0; height:100dvh; align-items:stretch; }
       .deck{ width:100%; aspect-ratio:unset; height:100dvh; border-radius:0; box-shadow:none; }
-      .content{ height:calc(100dvh - 56px - env(safe-area-inset-top)); }
+      .content{ height:calc(100dvh - 56px); }
       /* Slide 32 pipeline: steps empilhados */
       .pipeline-steps{ flex-direction:column !important; gap:0 !important; }
       .pipeline-steps > .pipeline-step{ border-radius:10px !important; margin-bottom:6px; }
