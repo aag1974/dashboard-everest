@@ -2,7 +2,8 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="theme-color" content="#8b1e24" />
   <title>EVEREST — Viabilidade DF</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2292,6 +2293,7 @@ window.addEventListener('afterprint',  restoreAfterPrint);
     var i = currentIdx();
     document.getElementById('counter').textContent = (i+1) + ' / ' + allSlides.length;
     document.title = 'EVEREST — ' + (allSlides[i] && allSlides[i].dataset.title || 'Slide '+(i+1));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   if(slidesEl){
