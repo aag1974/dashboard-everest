@@ -150,6 +150,7 @@
         display: block !important;
         height: auto !important;
         padding: 0 !important;
+        overflow-x: clip !important;
       }
 
       /* Deck: full width, auto height, no aspect-ratio */
@@ -160,7 +161,10 @@
         border-radius: 0 !important;
         box-shadow: none !important;
         border: none !important;
-        overflow: visible !important;
+        /* overflow:visible causava zoom-out: Safari via 32 slides × 100vw = 3200vw
+           overflow-x:clip contém horizontalmente sem cortar conteúdo vertical */
+        overflow-x: clip !important;
+        overflow-y: visible !important;
       }
 
       /* Topbar: compact + sticky para não sumir ao rolar slides longos */
