@@ -654,11 +654,14 @@
       @media (max-width: 768px) {
         details.tooltip-details > div {
           position:fixed !important;
-          right:16px !important;
-          top:auto !important;
-          bottom:80px !important;
-          width:calc(100vw - 32px) !important;
+          left:50% !important;
+          right:auto !important;
+          top:50% !important;
+          bottom:auto !important;
+          transform:translate(-50%, -50%) !important;
+          width:calc(100vw - 40px) !important;
           max-width:340px !important;
+          z-index:9999 !important;
         }
       }
 
@@ -1783,34 +1786,34 @@
   </div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
     <!-- Pilar 1 -->
-    <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;">
+    <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:visible;">
       <div style="position:absolute;top:-10px;right:-10px;font-size:80px;font-weight:800;color:rgba(139,30,36,.06);line-height:1;user-select:none;">1</div>
       <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
       <div style="display:flex;align-items:center;gap:8px;">
         <div><p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Pilar 1</p><h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0;">Conveniência como produto</h3></div>
-        <details class="tooltip-details" style="margin-left:auto;position:relative;"><summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary><div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25);">72% dos respondentes usam carro para levar os filhos à escola. Tempo médio aceitável: até 20 minutos. A Região Primária concentra 67% do núcleo elegível — majoritariamente Lago Sul, Park Way e Jardim Botânico. Rotas de transporte coletivo escolar podem ampliar o raio funcional em até 30%.</div></details>
+        <details class="tooltip-details" style="margin-left:auto;position:relative;"><summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary><div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.25);">72% dos respondentes usam carro para levar os filhos à escola. Tempo médio aceitável: até 20 minutos. A Região Primária concentra 67% do núcleo elegível — majoritariamente Lago Sul, Park Way e Jardim Botânico. Rotas de transporte coletivo escolar podem ampliar o raio funcional em até 30%.</div></details>
       </div>
       <ul class="bullets" style="margin:0;"><li>Localização que minimize tempo e imprevisibilidade para a Região Primária.</li><li>Entrada e saída como experiência: fluxo, segurança e previsibilidade.</li><li>Mitigadores de raio: rotas e apoio de transporte (van própria, janelas de horário, pontos coletivos por RA).</li></ul>
       <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">A jornada começa antes do portão.</div>
     </div>
     <!-- Pilar 2 -->
-    <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;">
+    <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:visible;">
       <div style="position:absolute;top:-10px;right:-10px;font-size:80px;font-weight:800;color:rgba(139,30,36,.06);line-height:1;user-select:none;">2</div>
       <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
       <div style="display:flex;align-items:center;gap:8px;">
         <div><p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Pilar 2</p><h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0;">Tese comprovável</h3></div>
-        <details class="tooltip-details" style="margin-left:auto;position:relative;"><summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary><div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25);">Nenhuma das 4 escolas analisadas combina bilinguismo real + inclusão com protocolo + referências acadêmicas comprováveis. Galois e Marista não têm bilinguismo estrutural. Eleva filtra pelo preço. Heavenly ainda está em consolidação de marca. O espaço está vazio.</div></details>
+        <details class="tooltip-details" style="margin-left:auto;position:relative;"><summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary><div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.25);">Nenhuma das 4 escolas analisadas combina bilinguismo real + inclusão com protocolo + referências acadêmicas comprováveis. Galois e Marista não têm bilinguismo estrutural. Eleva filtra pelo preço. Heavenly ainda está em consolidação de marca. O espaço está vazio.</div></details>
       </div>
       <ul class="bullets" style="margin:0;"><li>Referências acadêmicas comprováveis + bilinguismo real + inclusão com protocolo.</li><li>Narrativa simples: o que será entregue e como aparece na rotina do aluno.</li><li>Evidências comprobatórias visíveis desde o primeiro contato comercial.</li></ul>
       <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">Promessa é dívida. Experiência gera confiança.</div>
     </div>
     <!-- Pilar 3 -->
-    <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;">
+    <div style="border-radius:18px;background:#f7f7f8;border:1.5px solid #e8e8ec;padding:20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:visible;">
       <div style="position:absolute;top:-10px;right:-10px;font-size:80px;font-weight:800;color:rgba(139,30,36,.06);line-height:1;user-select:none;">3</div>
       <div style="width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
       <div style="display:flex;align-items:center;gap:8px;">
         <div><p style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;">Pilar 3</p><h3 style="font-size:15px;font-weight:800;color:var(--ink);margin:0;">Educação personalizada</h3></div>
-        <details class="tooltip-details" style="margin-left:auto;position:relative;"><summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary><div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.25);">Marista atende turmas de 25–30 alunos — escala incompatível com personalização real. Galois não adapta o currículo ao aluno. Eleva exige maturidade precoce — critério excludente para perfis neurodivergentes. Nenhuma escola posiciona o professor como orientador de trajetória individual.</div></details>
+        <details class="tooltip-details" style="margin-left:auto;position:relative;"><summary style="cursor:pointer;list-style:none;width:22px;height:22px;border-radius:50%;background:rgba(139,30,36,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--red);border:none;">?</summary><div style="position:absolute;right:0;top:28px;width:260px;background:var(--ink);color:#fff;border-radius:12px;padding:14px;font-size:12px;line-height:1.6;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.25);">Marista atende turmas de 25–30 alunos — escala incompatível com personalização real. Galois não adapta o currículo ao aluno. Eleva exige maturidade precoce — critério excludente para perfis neurodivergentes. Nenhuma escola posiciona o professor como orientador de trajetória individual.</div></details>
       </div>
       <ul class="bullets" style="margin:0;"><li>Currículo que se adapta ao ritmo, perfil e contexto de cada aluno — não o aluno que se adapta ao currículo.</li><li>Identificação precoce de potenciais e necessidades: não espera o problema aparecer.</li><li>O professor como orientador de trajetória, não apenas transmissor de conteúdo.</li></ul>
       <div style="margin-top:auto;padding:8px 12px;border-radius:10px;background:rgba(139,30,36,.07);font-size:11.5px;font-weight:700;color:var(--red);">Cada aluno é um projeto único.</div>
@@ -2231,4 +2234,26 @@ window.addEventListener('afterprint',  restoreAfterPrint);
 </script>
 <!-- ── /Password Gate ─────────────────────────────────────── -->
 
+<script>
+(function() {
+  // When a tooltip-details opens, close all others
+  document.addEventListener('click', function(e) {
+    var clicked = e.target.closest('details.tooltip-details');
+    // Small delay so the clicked one finishes toggling first
+    setTimeout(function() {
+      document.querySelectorAll('details.tooltip-details').forEach(function(d) {
+        if (d !== clicked) d.removeAttribute('open');
+      });
+    }, 0);
+  });
+  // Close all tooltips when clicking anywhere outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('details.tooltip-details')) {
+      document.querySelectorAll('details.tooltip-details').forEach(function(d) {
+        d.removeAttribute('open');
+      });
+    }
+  });
+})();
+</script>
 </body></html>
