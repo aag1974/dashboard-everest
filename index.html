@@ -1986,10 +1986,11 @@
         <div class="controls-logo">
           <img src="https://grupoopiniao.inf.br/wp-content/uploads/2025/05/OPINIAO_marca_F01-300x196.png" alt="Opinião Consultoria"/>
         </div>
-        <button class="btn" id="home" title="Voltar ao início" style="font-size:15px;padding:5px 8px;opacity:.6;" onclick="window._goHome&&window._goHome()">⌂</button>
         <button class="btn" id="prev" title="Anterior (←)">←</button>
         <div class="counter" id="counter">1 / 32</div>
         <button class="btn" id="next" title="Próximo (→)">→</button>
+        <div style="width:1px;height:20px;background:var(--line);margin:0 4px;flex-shrink:0;"></div>
+        <button class="btn" id="home" title="Sumário" style="opacity:.55;padding:8px 10px;" onclick="window._goHome&&window._goHome()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
       </div>
     </div><!-- /content -->
   </div><!-- /deck -->
@@ -2022,7 +2023,11 @@
     var i = slides.findIndex(function(s){ return s.dataset.title === title; });
     if(i >= 0){ idx = i; render(); }
   };
-  window._goHome = function(){ idx = 0; render(); };
+  window._goHome = function(){
+    var i = slides.findIndex(function(s){ return s.dataset.title === 'Sumário'; });
+    idx = (i >= 0) ? i : 0;
+    render();
+  };
 
   window._next = next;
   window._prev = prev;
