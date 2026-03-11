@@ -2046,23 +2046,6 @@
     if(k==='End' ){ idx=slides.length-1; render(); }
   });
 
-  // ── Swipe mobile ──────────────────────────────────────────
-  (function(){
-    var tx = 0, ty = 0;
-    document.addEventListener('touchstart', function(e){
-      tx = e.touches[0].clientX;
-      ty = e.touches[0].clientY;
-    }, { passive: true });
-    document.addEventListener('touchend', function(e){
-      var dx = e.changedTouches[0].clientX - tx;
-      var dy = e.changedTouches[0].clientY - ty;
-      // Só dispara se movimento horizontal > 50px e mais horizontal que vertical
-      if(Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
-      if(dx < 0) window._next();
-      else        window._prev();
-    }, { passive: true });
-  })();
-
   render();
 })();
 
@@ -2189,10 +2172,6 @@ window.addEventListener('afterprint',  restoreAfterPrint);
 
   // No mobile, _next/_prev usam o mesmo render() do desktop
   // que apenas alterna a classe .active — sem nenhum scroll horizontal
-  window.addEventListener('resize', function(){
-    // ao girar o aparelho, rola para o topo para não ficar em posição estranha
-    window.scrollTo({ top: 0 });
-  });
 })();
 </script>
 
